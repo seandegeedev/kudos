@@ -1,0 +1,17 @@
+# Environment variables
+.env
+
+# Bun
+node_modules
+
+# Logs folder
+logs/*
+!logs/.gitkeep
+
+# Media folder
+media/*
+!media/.gitkeep
+
+# Data folder
+data/*
+!data/.gitkeep
