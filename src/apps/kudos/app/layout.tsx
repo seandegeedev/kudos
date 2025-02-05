@@ -1,6 +1,8 @@
-import { geistSans } from '@/app/ui/font/font';
+import { urbanist } from '@/app/ui/font/font';
 
 import type { Metadata } from 'next';
+
+import '@/app/ui/style/main.scss';
 
 export const metadata: Metadata = {
   title: 'Kudos',
@@ -14,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable}`}>{children}</body>
+      <body className={`${urbanist.variable}`}>{children}</body>
     </html>
   );
 }

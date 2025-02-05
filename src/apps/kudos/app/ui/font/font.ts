@@ -1,6 +1,6 @@
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Urbanist } from 'next/font/google';
 
-export const geistSans = Geist({
-  variable: '--font-geist-sans',
+export const urbanist = Urbanist({
+  variable: '--font-urbanist',
   subsets: ['latin'],
 });
