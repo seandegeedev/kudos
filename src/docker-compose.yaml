@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: apps/kudos/Dockerfile
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "${NEXT_PORT}:3000"
+    volumes:
+      - source_app:/usr/local/src/kudos
+    profiles: [prod, app]
+volumes:
+  source_app:

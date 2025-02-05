@@ -7,11 +7,18 @@ Made with ❤️ by [Sean De Gee](https://github.com/SeanDeGeeDev) for [Sintrex 
 
 ## Current Versions
 
+- OS: Ubuntu 24.04.1 LT
 - Node: 22.13.1
 - Bun: 1.2.2
 - Docker: 27.5.1
 
 ## Getting Started - Production
+
+### Prerequisites
+
+On you production machine, the following prerequisites should be installed
+
+- Docker: 27.5.1
 
 Within the `src` folder:
 
@@ -52,7 +59,7 @@ On you development machine, the following prerequisites should be installed
 
 ### Create a `.env` file
 
-Using the provided `template.env` create a `.env` file and define/change any needed environment variables within.
+Within the `src` folder, using the provided `template.env` create a `.env` file and define/change any needed environment variables within.
 
 ### Install dependencies
 
