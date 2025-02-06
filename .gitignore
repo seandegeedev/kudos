@@ -12,6 +12,12 @@ logs/*
 media/*
 !media/.gitkeep
 
-# Data folder
-data/*
-!data/.gitkeep
+# Database data folder
+data/db/*
+!data/db/.gitkeep
+
+# pgAdmin sessions folder [ignore all in pgadmin folder except sessions directory itself]
+data/pgadmin/*
+data/pgadmin/sessions/*
+!data/pgadmin/sessions/
+!data/pgadmin/sessions/.gitkeep

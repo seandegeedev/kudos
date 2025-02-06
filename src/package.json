@@ -1,0 +1,17 @@
+{
+  "name": "kudos",
+  "version": "0.1.0",
+  "author": "Sean De Gee",
+  "description": "Kudos",
+  "license": "MIT",
+  "packageManager": "bun@1.2.2",
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "modules/*",
+    "types/*"
+  ],
+  "trustedDependencies": [
+    "@parcel/watcher"
+  ]
+}
