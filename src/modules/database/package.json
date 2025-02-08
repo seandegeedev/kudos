@@ -1,0 +1,27 @@
+{
+  "name": "@kudos/database",
+  "version": "0.1.0",
+  "module": "index.ts",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "update": "bun update --latest",
+    "db:migrate:deploy": "bunx prisma migrate deploy",
+    "db:migrate:dev": "bunx prisma migrate dev",
+    "db:push:deploy": "bunx prisma db push --skip-generate",
+    "db:push:dev": "bunx prisma db push --force-reset",
+    "db:generate": "bunx prisma generate"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.2",
+    "prisma": "^6.3.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.3.1"
+  }
+}
