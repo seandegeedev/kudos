@@ -74,8 +74,6 @@ bun install
 docker-compose -p kudos --profile db-only up -d
 ```
 
-> The Adminer interface will be availabe on localhost port 8090
-
 ### Push database schema
 In `app/modules/database`, run:
 
