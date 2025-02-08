@@ -1,0 +1,334 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model User {
+  id                      String                     @id @default(uuid())
+  created                 DateTime                   @default(now())
+  archived                Boolean                    @default(false)
+  email                   String                     @unique
+  verified                Boolean                    @default(false)
+  password                String
+  firstName               String                     @db.VarChar(25)
+  lastName                String                     @db.VarChar(25)
+  avatar                  String                     @default("")
+  admin                   Boolean                    @default(false)
+  realms                  RealmMembership[]
+  socialTeam              SocialTeamMembership?
+  kudosInvites            KudosInvite[]
+  realmInvites            RealmInvite[]
+  tokenLedgerEntries      UserTokenLedgerEntry[]
+  userTokenRequests       UserTokenRequest[]         @relation("userTokenRequests")
+  socialTeamTokenRequests SocialTeamTokenRequest[]   @relation("socialTeamTokenRequests")
+  tokenApprovals          UserTokenRequest[]         @relation("userTokenApprovals")
+}
+
+model EmailVerificationToken {
+  id      String   @id @default(uuid())
+  created DateTime @default(now())
+  email   String   @unique
+  token   String   @unique
+}
+
+model KudosInvite {
+  id       String   @id @default(uuid())
+  created  DateTime @default(now())
+  archived Boolean  @default(false)
+  email    String
+  fromID   String
+  code     String
+  redeemed Boolean  @default(false)
+  from     User     @relation(fields: [fromID], references: [id])
+}
+
+model Realm {
+  id              String            @id @default(uuid())
+  created         DateTime          @default(now())
+  archived        Boolean           @default(false)
+  name            String            @unique
+  description     String
+  members         RealmMembership[]
+  seasons         Season[]
+  invites         RealmInvite[]
+  settings        RealmSettings?
+  kudos           Kudos[]
+  gotchas         Gotcha[]
+}
+
+model RealmSettings {
+  id              String            @id @default(uuid())
+  lastUpdated     DateTime          @default(now())
+  realmID         String            @unique
+  realm           Realm             @relation(fields: [realmID], references: [id])
+}
+
+model RealmInvite {
+  id          String      @id @default(uuid())
+  created     DateTime    @default(now())
+  archived    Boolean     @default(false)
+  email       String
+  fromID      String
+  realmID     String
+  code        String
+  redeemed    Boolean     @default(false)
+  from        User        @relation(fields: [fromID], references: [id])
+  realm       Realm       @relation(fields: [realmID], references: [id])
+}
+
+model RealmMembership {
+  id                          String                  @id @default(uuid())
+  joined                      DateTime                @default(now())
+  archived                    Boolean                 @default(false)
+  userID                      String
+  realmID                     String
+  admin                       Boolean                 @default(false)
+  default                     Boolean                 @default(false)
+  avatar                      String
+  alias                       String                  @db.VarChar(25)
+  lightXP                     Int                     @default(0)
+  darkXP                      Int                     @default(0)
+  user                        User                    @relation(fields: [userID], references: [id])
+  realm                       Realm                   @relation(fields: [realmID], references: [id])
+  kudosGiven                  Kudos[]                 @relation("kudosGiven")
+  kudosReceived               Kudos[]                 @relation("kudosReceived")
+  kudosSecondsGiven           KudosSeconds[]
+  gotchasGiven                Gotcha[]                @relation("gotchasGiven")
+  gotchasReceived             Gotcha[]                @relation("gotchasReceived")
+  gotchaSecondsGiven          GotchaSeconds[]
+  gotchadisputeSecondsGiven   GotchaDisputeSeconds[]
+  settings                    RealmMembershipSettings?
+  achievements                Achievements[]
+  @@unique([userID, realmID])
+}
+
+model RealmMembershipSettings {
+  id              String            @id @default(uuid())
+  lastUpdated     DateTime          @default(now())
+  membershipID    String            @unique
+  membership      RealmMembership   @relation(fields: [membershipID], references: [id])
+}
+
+model Kudos {
+  id              String            @id @default(uuid())
+  created         DateTime          @default(now())
+  expires         DateTime
+  description     String
+  giverID         String
+  receiverID      String
+  realmID         String
+  level           Int
+  requiredSeconds Int
+  seconds         KudosSeconds[]
+  media           KudosMedia[]
+  giver           RealmMembership   @relation(fields: [giverID], references: [id], name: "kudosGiven")
+  receiver        RealmMembership   @relation(fields: [receiverID], references: [id], name: "kudosReceived")
+  realm           Realm             @relation(fields: [realmID], references: [id])
+}
+
+model KudosSeconds {
+  id          String            @id @default(uuid())
+  created     DateTime          @default(now())
+  memberID    String
+  gotchaID    String
+  member      RealmMembership   @relation(fields: [memberID], references: [id])
+  kudos       Kudos             @relation(fields: [gotchaID], references: [id])
+}
+
+model KudosMedia {
+  id          String      @id @default(uuid())
+  uploaded    DateTime    @default(now())
+  caption     String
+  filename    String
+  kudosID     String
+  kudos       Kudos       @relation(fields: [kudosID], references: [id])
+}
+
+model Gotcha {
+  id              String            @id @default(uuid())
+  created         DateTime          @default(now())
+  expires         DateTime
+  description     String
+  giverID         String
+  receiverID      String
+  realmID         String
+  amount          Int
+  requiredSeconds Int
+  media           GotchaMedia[]
+  giver           RealmMembership   @relation(fields: [giverID], references: [id], name: "gotchasGiven")
+  receiver        RealmMembership   @relation(fields: [receiverID], references: [id], name: "gotchasReceived")
+  seconds         GotchaSeconds[]
+  realm           Realm             @relation(fields: [realmID], references: [id])
+  settlement      GotchaSettlement?
+  dispute         GotchaDispute?
+}
+
+model GotchaSeconds {
+  id          String            @id @default(uuid())
+  created     DateTime          @default(now())
+  memberID    String
+  gotchaID    String
+  member      RealmMembership   @relation(fields: [memberID], references: [id])
+  gotcha      Gotcha            @relation(fields: [gotchaID], references: [id])
+}
+
+model GotchaMedia {
+  id          String      @id @default(uuid())
+  uploaded    DateTime    @default(now())
+  caption     String
+  filename    String
+  gotchaID    String
+  gotcha      Gotcha      @relation(fields: [gotchaID], references: [id])
+}
+
+model GotchaSettlement {
+  id              String      @id @default(uuid())
+  settlementDate  DateTime    @default(now())
+  paid            Boolean     @default(false)
+  forgiven        Boolean     @default(false)
+  gotchaID        String      @unique
+  gotcha          Gotcha      @relation(fields: [gotchaID], references: [id])
+}
+
+model GotchaDispute {
+  id              String                  @id @default(uuid())
+  created         DateTime                @default(now())
+  expires         DateTime
+  reason          String
+  requiredSeconds Int
+  gotchaID        String                  @unique
+  gotcha          Gotcha                  @relation(fields: [gotchaID], references: [id])
+  seconds         GotchaDisputeSeconds[]
+}
+
+model GotchaDisputeSeconds {
+  id          String            @id @default(uuid())
+  created     DateTime          @default(now())
+  memberID    String
+  disputeID   String
+  member      RealmMembership   @relation(fields: [memberID], references: [id])
+  dispute     GotchaDispute     @relation(fields: [disputeID], references: [id])
+}
+
+model Season {
+  id          String      @id @default(uuid())
+  created     DateTime    @default(now())
+  archived    Boolean     @default(false)
+  name        String
+  description String
+  startDate   DateTime
+  endDate     DateTime
+  realmID     String
+  realm       Realm       @relation(fields: [realmID], references: [id])
+}
+
+model Achievements {
+  id               String            @id  @default(uuid())
+  dateRecieved     DateTime          @default(now())
+  code             String
+  membershipID     String
+  membership       RealmMembership   @relation(fields: [membershipID], references: [id])
+}
+
+model SocialTeam {
+  id                  String                        @id @default(uuid())
+  created             DateTime                      @default(now())
+  archived            Boolean                       @default(false)
+  name                String                        @unique
+  description         String
+  avatar              String
+  members             SocialTeamMembership[]
+  tokenLedgerEntries  SocialTeamTokenLedgerEntry[]
+}
+
+model SocialTeamMembership {
+  id              String                        @id @default(uuid())
+  joined          DateTime                      @default(now())
+  archived        Boolean                       @default(false)
+  userID          String                        @unique
+  teamID          String
+  captain         Boolean                       @default(false)
+  user            User                          @relation(fields: [userID], references: [id])
+  team            SocialTeam                    @relation(fields: [teamID], references: [id])
+  settings        SocialTeamMembershipSettings?
+  @@unique([userID, teamID])
+}
+
+model SocialTeamMembershipSettings {
+  id              String                @id @default(uuid())
+  lastUpdated     DateTime              @default(now())
+  membershipID    String                @unique
+  membership      SocialTeamMembership  @relation(fields: [membershipID], references: [id])
+}
+
+model TokenPot {
+  id                        String                    @id @default(uuid())
+  created                   DateTime                  @default(now())
+  archived                  Boolean                   @default(false)
+  name                      String                    @unique
+  description               String
+  transactions              TokenTransaction[]
+  userTokenRequests         UserTokenRequest[]
+  socialTeamTokenRequests   SocialTeamTokenRequest[]
+}
+
+model TokenTransaction {
+  id              String                        @id @default(uuid())
+  timestamp       DateTime                      @default(now())
+  type            String
+  description     String
+  potID           String
+  pot             TokenPot                      @relation(fields: [potID], references: [id])
+  userEntries     UserTokenLedgerEntry[]
+  teamEntries     SocialTeamTokenLedgerEntry[]
+}
+
+model UserTokenLedgerEntry {
+  id              String           @id @default(uuid())
+  userID          String
+  transactionID   String
+  amount          Int
+  balance         Int
+  user            User             @relation(fields: [userID], references: [id])
+  transaction     TokenTransaction @relation(fields: [transactionID], references: [id])
+}
+
+model SocialTeamTokenLedgerEntry {
+  id              String           @id @default(uuid())
+  teamID          String
+  transactionID   String
+  amount          Int
+  balance         Int
+  team            SocialTeam       @relation(fields: [teamID], references: [id])
+  transaction     TokenTransaction @relation(fields: [transactionID], references: [id])
+}
+
+model UserTokenRequest {
+  id            String      @id @default(uuid())
+  created       DateTime    @default(now())
+  archived      Boolean     @default(false)
+  requesterID   String
+  approverID    String
+  potID         String
+  amount        Int
+  approved      Boolean     @default(false)
+  requester     User        @relation(fields: [requesterID], references: [id], name: "userTokenRequests")
+  approver      User        @relation(fields: [approverID], references: [id], name: "userTokenApprovals")
+  pot           TokenPot    @relation(fields: [potID], references: [id])
+}
+
+model SocialTeamTokenRequest {
+  id            String      @id @default(uuid())
+  created       DateTime    @default(now())
+  archived      Boolean     @default(false)
+  requesterID   String
+  potID         String
+  amount        Int
+  approved      Boolean     @default(false)
+  requester     User        @relation(fields: [requesterID], references: [id], name: "socialTeamTokenRequests")
+  pot           TokenPot    @relation(fields: [potID], references: [id])
+}
