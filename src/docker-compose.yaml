@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: apps/kudos/Dockerfile
+    depends_on:
+      - db
     restart: always
     env_file:
       - .env
@@ -24,6 +26,26 @@ services:
     volumes:
         - ../data/db:/var/lib/postgresql/data/
     profiles: [prod, db-only, migrate]
+  db-migrate:
+    build:
+      context: ./
+      dockerfile: ./modules/database/Dockerfile
+    depends_on:
+      - db
+    env_file:
+      - .env
+    volumes:
+      - source_db-migrate:/usr/local/src/kudos
+    profiles: [migrate]
+  redis:
+    image: redis:7.4.1
+    restart: always
+    ports:
+        - 6379:6379
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    profiles: [prod, db-only]
   pgadmin:
     image: dpage/pgadmin4
     restart: always
@@ -42,3 +64,5 @@ services:
     profiles: [prod, db-only]
 volumes:
   source_app:
+  source_db-migrate:
+  redis_data:
