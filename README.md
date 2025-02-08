@@ -24,7 +24,7 @@ On you production machine, the following prerequisites will need to be installed
 
 ### Production Server Setup
 
-You can run the provided bash script `server_setup_prod.sh` on a fresh installation of Ubuntu 24.04.1 to setup the production server environment or run the commands therein manually if desired.
+You can run the provided bash script `util/server_setup_prod.sh` on a fresh installation of Ubuntu 24.04.1 to setup the production server environment or run the commands therein manually if desired.
 
 ### Clone this repository
 
@@ -74,7 +74,7 @@ On you development machine, the following prerequisites will need to be installe
 
 ### Development Server Setup
 
-You can run the provided bash script `server_setup_dev.sh` on a fresh installation of Ubuntu 24.04.1 to setup the development server environment or run the commands therein manually if desired.
+You can run the provided bash script `util/server_setup_dev.sh` on a fresh installation of Ubuntu 24.04.1 to setup the development server environment or run the commands therein manually if desired.
 
 ### Clone this repository
 
