@@ -142,3 +142,27 @@ bun db:push:dev
 ### Side Effects
 - Upon first starting the `db` docker container, a `kudos` directory will be created in the `data/db` folder that the container will mount to and will contain the postgresql database data for kudos.
 - Upon first starting the `pgadmin` docker container, files will be created in the `data/pgadmin` folder that the container will mount to and will contain the pgAdmin data for kudos
+
+### pgAdmin Setup
+
+Upon first login, the Kudos database connection will need to be added on pgAdmin.
+
+Once logged into pgAdmin (using the admin credentials defined in your `.env` file), right click on "Servers" in the Object Explorer in the left and select Register -> Server:
+
+![image](https://github.com/user-attachments/assets/b59ddedb-41de-4d5b-bf5b-1f9db5545ed5)
+
+The configuration is as below:
+
+General Tab:
+
+![Screenshot 2025-02-08 082242](https://github.com/user-attachments/assets/21a8ee7a-66ed-436f-a88c-97a8c022b186)
+
+Connection Tab:
+
+![Screenshot 2025-02-08 082344](https://github.com/user-attachments/assets/edb09615-b697-4397-9236-b32cedc999d6)
+
+> ⚠️ Replace the password with the one that you've defined in your `.env` file
+
+
+
+
