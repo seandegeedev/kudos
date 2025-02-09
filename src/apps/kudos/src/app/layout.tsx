@@ -1,8 +1,8 @@
-import { urbanist } from '@/app/ui/font/font';
+import { urbanist } from '@/src/ui/font/font';
 
 import type { Metadata } from 'next';
 
-import '@/app/ui/style/main.scss';
+import '@/src/ui/style/main.scss';
 
 export const metadata: Metadata = {
   title: 'Kudos',
