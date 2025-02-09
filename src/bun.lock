@@ -8,6 +8,7 @@
       "name": "kudos",
       "version": "0.1.0",
       "dependencies": {
+        "clsx": "^2.1.1",
         "next": "^15.1.6",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
@@ -27,14 +28,14 @@
       "name": "@kudos/database",
       "version": "0.1.0",
       "dependencies": {
-        "@prisma/client": "latest",
+        "@prisma/client": "^6.3.1",
       },
       "devDependencies": {
-        "@types/bun": "latest",
-        "prisma": "latest",
+        "@types/bun": "^1.2.2",
+        "prisma": "^6.3.1",
       },
       "peerDependencies": {
-        "typescript": "latest",
+        "typescript": "^5.7.3",
       },
     },
   },
@@ -279,6 +280,8 @@
     "chokidar": ["chokidar@4.0.3", "", { "dependencies": { "readdirp": "^4.0.1" } }, "sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA=="],
 
     "client-only": ["client-only@0.0.1", "", {}, "sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA=="],
+
+    "clsx": ["clsx@2.1.1", "", {}, "sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA=="],
 
     "color": ["color@4.2.3", "", { "dependencies": { "color-convert": "^2.0.1", "color-string": "^1.9.0" } }, "sha512-1rXeuUUiGGrykh+CeBdu5Ie7OJwinCgQY0bc7GCRxy5xVHy+moaqkpL/jqQq0MtQOeYcrqEz4abc5f0KtU7W4A=="],
 
