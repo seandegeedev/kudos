@@ -1,10 +1,11 @@
 import { version } from '@/package.json';
+import { requiresGettingStarted } from '@endpoints/root/root.db';
 import type { APIResponseNoData, APIResponseStatus } from '@kudos/types-api';
 import type { Request, Response } from 'express';
 
 export const status = async (req: Request, res: Response) => {
   try {
-    const getStartedRequired = true;
+    const getStartedRequired = await requiresGettingStarted();
 
     const response: APIResponseStatus = {
       status: 200,
@@ -20,7 +21,7 @@ export const status = async (req: Request, res: Response) => {
   } catch (error) {
     const response: APIResponseNoData = {
       status: 500,
-      error: error,
+      error: `${error}`,
       data: null,
     };
 

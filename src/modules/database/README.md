@@ -2,6 +2,14 @@
 
 ### Development
 
+Generate prisma client
+
+> Client must be generated to be able to be used by other services and modules.
+
+```bash
+bun db:generate
+```
+
 Force push the current schema to the database
 
 ```bash

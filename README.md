@@ -126,6 +126,12 @@ bun install
 docker-compose -p kudos --profile db-only up -d
 ```
 
+Run a database migration
+
+```bash
+docker compose -p kudos run --rm  db-migrate
+```
+
 ### Stop the database containers
 
 ```bash
