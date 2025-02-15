@@ -20,7 +20,7 @@ COPY ../../package.json ./
 COPY ../../bun.lock ./
 
 # Copy the kudos app package.json file to the container
-COPY package.json ./apps/kudos/
+COPY package.json ./services/api/
 
 # Copy the rest of the application code
 COPY . .
@@ -29,8 +29,7 @@ COPY . .
 RUN bun install
 
 # Build the application
-WORKDIR /usr/local/src/kudos/apps/kudos
-RUN bun run build
+WORKDIR /usr/local/src/kudos/services/api
 
 # Start the application
 ENTRYPOINT ["bun", "start"]
