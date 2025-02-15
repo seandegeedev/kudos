@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # =================================================================
-# ⚠️ Clears all pgAdmin data from the data/pgAdmin directory. Note: This file should be run from the root directory of the project - . ./util/data_clear_database.
+# Clears all pgAdmin data from the data/pgAdmin directory.
+# ⚠️ Note: This file should be run from the root directory of the project - . ./util/data_clear_postgres.sh
 
 # Define the target directory
 cd data/pgadmin || exit 1

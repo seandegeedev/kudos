@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # =================================================================
-# ⚠️ Clears all postgres data from the data/db directory. Note: This file should be run from the root directory of the project - . ./util/data_clear_database.
+# Clears all postgres data from the data/db directory.
+# ⚠️ Note: This file should be run from the root directory of the project - . ./util/data_clear_database.sh
 
 # Define the target directory
 cd data/db || exit 1
