@@ -1,0 +1,10 @@
+{
+  "name": "@kudos/types-api",
+  "version": "0.1.0",
+  "description": "Kudos API types",
+  "module": "index.ts",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  }
+}
