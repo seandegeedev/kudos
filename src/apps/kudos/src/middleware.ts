@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-
 import { isGetStartedRequired } from '@/src/middleware/auth.middleware';
+
+export const config = {
+  matcher: ['/((?!api|_next/static|_next/image|icon.svg|sitemap.xml|robots.txt).*)'],
+};
 
 export const middleware = async (request: NextRequest) => {
   /* Get started check - also functions as API reachability check */
@@ -27,8 +30,4 @@ export const middleware = async (request: NextRequest) => {
   if (request.nextUrl.pathname.startsWith('/get-started')) {
     return NextResponse.redirect(new URL('/', request.url));
   }
-};
-
-export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|icon.svg|sitemap.xml|robots.txt).*)'],
 };
