@@ -1,4 +1,4 @@
-const BASE_URL = process.env.API_SERVER_URL;
+const BASE_URL = process.env.API_SERVER_URL || '';
 const DEFAULT_OPTIONS: RequestInit = {};
 
 /* Wrapper around fetch that adds the base URL and default options */
@@ -7,11 +7,15 @@ const apiFetch = async (relativePath: string | URL | Request, options?: RequestI
     relativePath = relativePath.slice(1);
   }
 
-  const url = new URL(relativePath.toString(), BASE_URL);
+  const SANITIZED_BASE_URL = BASE_URL.endsWith('/') ? BASE_URL : BASE_URL + '/';
+
+  const url = new URL(relativePath.toString(), SANITIZED_BASE_URL);
 
   return fetch(url, { ...DEFAULT_OPTIONS, ...options });
 };
 
-export default {
+const kudosAPI = {
   fetch: apiFetch,
 };
+
+export default kudosAPI;
