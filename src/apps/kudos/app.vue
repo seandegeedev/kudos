@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+  const welcomeMessage = useKudosWelcomeMessage();
+
+  welcomeMessage.display();
+</script>
+
 <template>
   <NuxtPage />
 </template>
