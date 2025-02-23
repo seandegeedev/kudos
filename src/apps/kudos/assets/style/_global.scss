@@ -1,0 +1,63 @@
+/*
+  Some base, global styling for basic elements (e.g. html, body, a, h1, h2, etc.) 🌍
+*/
+
+:root {
+  /* Text selection colors and backgrounds */
+  ::selection {
+    color: var(--color-text-selection-type);
+    background: var(--color-text-selection-background);
+  }
+
+  ::-moz-selection {
+    color: var(--color-text-selection-type);
+    background: var(--color-text-selection-background);
+  }
+}
+
+html {
+  /* Apply background color to html element so that there isn't a falsh of white on page load */
+  background: var(--color-background-01);
+}
+
+a,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+div,
+span,
+button,
+input,
+textarea,
+select {
+  /* Default text color */
+  color: var(--color-text-normal);
+}
+
+a {
+  line-height: 1rem;
+
+  text-underline-offset: 0.2rem;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  line-height: 1rem;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+svg.nuxt-icon {
+  height: auto;
+  margin: 0;
+}

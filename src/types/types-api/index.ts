@@ -17,3 +17,31 @@ export type APIResponse<T> =
 export type APIResponseNoData = APIResponse<null>;
 
 export type APIResponseStatus = APIResponse<{ version: string; getStartedRequired: boolean }>;
+
+export type APIResponseAuthVerify = APIResponse<{
+  user: {
+    id: string;
+    created: Date;
+    archived: boolean;
+    email: string;
+    verified: boolean;
+    firstName: string;
+    lastName: string;
+    avatar: string;
+    admin: boolean;
+  };
+}>;
+
+export type APIResponseAuthLogin = APIResponse<{
+  user: {
+    id: string;
+    created: Date;
+    archived: boolean;
+    email: string;
+    verified: boolean;
+    firstName: string;
+    lastName: string;
+    avatar: string;
+    admin: boolean;
+  };
+}>;

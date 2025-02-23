@@ -1,0 +1,54 @@
+/*
+  Color palette for the Gotcha app 🎨
+*/
+
+:root {
+  --color-accent-00: #25adb7;
+
+  --color-background-00: #17191c;
+  --color-background-01: #1a1c1f;
+
+  --color-border-00: #2b3037;
+  --color-border-01: #1d2227;
+
+  --color-text-normal: #b7c0ca;
+  --color-text-muted: #383b42;
+  --color-text-bright: #d7e0eb;
+  --color-text-brightest: #ffffff;
+
+  --color-input-background-00: #17191c;
+  --color-input-border-00: var(--color-border-00);
+
+  --color-button-normal-background-00: #56a6ac;
+  --color-button-normal-background-01: #6ab6bb;
+  --color-button-normal-border-00: #56a6ac;
+  --color-button-normal-border-01: #6ab6bb;
+
+  --color-button-outline-background-00: transparent;
+  --color-button-outline-background-01: #1a1f1f;
+  --color-button-outline-border-00: #2d3236;
+
+  --color-button-mono-background-00: #1a1f1f;
+  --color-button-mono-background-01: #262c2c;
+  --color-button-mono-border-00: #2d3236;
+
+  --color-button-disabled-background-00: transparent;
+  --color-button-disabled-border-00: #1e2224;
+
+  --color-item-highlight-00: #282a31;
+
+  --color-text-selection-type: var(--color-text-brightest);
+  --color-text-selection-background: var(--color-accent-00);
+
+  --color-status-red-00: #cf7b7b;
+  --color-status-red-type-00: #bd9494;
+  --color-status-red-border-00: #613e3e;
+  --color-status-red-background-00: #302727;
+  --color-status-red-background-01: #412c2c;
+
+  --color-status-green-00: #7bcf7b;
+  --color-status-green-type-00: #94bd94;
+  --color-status-green-border-00: #3e613e;
+  --color-status-green-background-00: #273027;
+  --color-status-green-background-01: #2c3c2c;
+}

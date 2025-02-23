@@ -1,0 +1,60 @@
+/*
+  Low-level typography related styling ⌨️
+ */
+
+@font-face {
+  font-family: 'Urbanist';
+  src: url('/fonts/Urbanist-VariableFont_wght.ttf') format('truetype supports variations');
+  src: url('/fonts/Urbanist-VariableFont_wght.ttf') format('truetype-variations');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 100 900;
+}
+
+@font-face {
+  font-family: 'Urbanist';
+  src: url('/fonts/Urbanist-Italic-VariableFont_wght.ttf') format('truetype supports variations');
+  src: url('/fonts/Urbanist-Italic-VariableFont_wght.ttf') format('truetype-variations');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 100 900;
+}
+
+:root {
+  font-family: 'Urbanist', sans-serif;
+  font-size: 14px;
+
+  --font-size--2: clamp(0.6076rem, 0.5407rem + 0.3345vw, 0.8rem);
+  --font-size--1: clamp(0.7292rem, 0.635rem + 0.471vw, 1rem);
+  --font-size-0: clamp(0.875rem, 0.7446rem + 0.6522vw, 1.25rem);
+  --font-size-1: clamp(1.05rem, 0.8717rem + 0.8913vw, 1.5625rem);
+  --font-size-2: clamp(1.26rem, 1.0189rem + 1.2054vw, 1.9531rem);
+  --font-size-3: clamp(1.512rem, 1.1887rem + 1.6164vw, 2.4414rem);
+  --font-size-4: clamp(1.8144rem, 1.384rem + 2.1519vw, 3.0518rem);
+  --font-size-5: clamp(2.1773rem, 1.6077rem + 2.8477vw, 3.8147rem);
+}
+
+* {
+  /* Apply default font weight to all elements, including headings etc. */
+  font-weight: 400;
+}
+
+h1 {
+  font-size: var(--font-size-5);
+}
+
+h2 {
+  font-size: var(--font-size-4);
+}
+
+h3 {
+  font-size: var(--font-size-3);
+}
+
+h4 {
+  font-size: var(--font-size-2);
+}
+
+h5 {
+  font-size: var(--font-size-1);
+}

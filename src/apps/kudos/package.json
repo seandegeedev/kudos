@@ -21,6 +21,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@kudos/types-api": "workspace:*",
     "@vueuse/core": "^12.7.0",
     "@vueuse/nuxt": "^12.7.0",
     "nuxt-svgo": "^4.0.14",
