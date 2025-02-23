@@ -1,1 +1,1 @@
-# Kudos App
+# Kudos (@kudos/app)

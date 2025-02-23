@@ -33,4 +33,4 @@ WORKDIR /usr/local/src/kudos/apps/kudos
 RUN bun run build
 
 # Start the application
-ENTRYPOINT ["bun", "start"]
+ENTRYPOINT ["bun", "/usr/local/src/kudos/apps/kudos/.output/server/index.mjs"]

@@ -1,28 +1,29 @@
 {
-  "name": "kudos",
-  "version": "0.1.0",
+  "name": "@kudos/app",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "update": "bun update --latest"
   },
   "dependencies": {
-    "clsx": "^2.1.1",
-    "next": "^15.1.6",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "@pinia/nuxt": "^0.10.1",
+    "axios": "^1.7.9",
+    "gsap": "^3.12.7",
+    "nuxt": "^3.15.4",
+    "pinia": "^3.0.1",
+    "vue": "latest",
+    "vue-router": "latest",
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@eslint/eslintrc": "^3",
-    "eslint": "^9",
-    "eslint-config-next": "15.1.6",
-    "sass": "^1.83.4",
-    "typescript": "^5"
+    "@vueuse/core": "^12.7.0",
+    "@vueuse/nuxt": "^12.7.0",
+    "nuxt-svgo": "^4.0.14",
+    "sass": "^1.85.0"
   }
 }

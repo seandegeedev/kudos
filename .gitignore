@@ -4,6 +4,10 @@
 # Bun
 node_modules
 
+# Frontend
+.nuxt
+.output
+
 # Logs folder
 logs/*
 !logs/.gitkeep
