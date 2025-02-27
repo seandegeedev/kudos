@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+  const route = useRoute();
   const error = useError();
 </script>
 
@@ -10,7 +11,7 @@
         <template v-if="error.statusCode !== 404">
           <div class="error-page__center-wrapper">
             <img src="/images/kudos-logo.svg" alt="Kudos" class="error-page__kudos-logo" />
-            <h3 class="error-page__error-title">Fokkit 🙈</h3>
+            <h4 class="error-page__error-title">Fokkit 🙈</h4>
             <template v-if="error.message.includes('ECONNREFUSED') || error.message.includes('Network Error')">
               <div class="error-page__error-message">
                 <p class="error-page__error-message-paragraph">
@@ -18,6 +19,7 @@
                 </p>
                 <p class="error-page__error-message-paragraph">Go bother the manne in Dev Ops to find out which 😉</p>
               </div>
+              <a :href="route.fullPath" class="try-again-button">Try Again</a>
             </template>
             <template v-else>
               <div class="error-page__blurb">
@@ -55,7 +57,7 @@
     }
 
     &__kudos-logo {
-      height: 5rem;
+      height: 7rem;
       margin-bottom: 1rem;
       max-width: 80vw;
       width: auto;
@@ -87,11 +89,48 @@
       border: 1px solid var(--color-status-red-border-00);
       border-radius: 0.5rem;
 
+      animation: fade-in-top 0.2s ease-in-out;
+
       &-paragraph {
         color: var(--color-status-red-type-00);
 
         line-height: 1.75rem;
       }
+
+      @keyframes fade-in-top {
+        0% {
+          opacity: 0;
+          transform: translateY(-0.5rem);
+        }
+        80% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+
+  .try-again-button {
+    margin-top: 1rem;
+    padding: 0.75rem 1.25rem;
+
+    justify-self: center;
+
+    background-color: var(--color-button-outline-background-00);
+    border: 1px solid var(--color-button-outline-border-00);
+    border-radius: 0.5rem;
+    color: var(--color-text-bright);
+
+    text-align: center;
+    text-decoration: none;
+
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: var(--color-button-outline-background-01);
     }
   }
 </style>
