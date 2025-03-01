@@ -28,6 +28,10 @@ COPY . .
 # Install the dependencies for the application
 RUN bun install
 
+# Generate Prisma client
+WORKDIR /usr/local/src/kudos/modules/database
+RUN bun db:generate
+
 # Build the application
 WORKDIR /usr/local/src/kudos/services/api
 

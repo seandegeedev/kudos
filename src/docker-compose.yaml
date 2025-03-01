@@ -56,7 +56,7 @@ services:
     env_file:
       - .env
     ports:
-      - "${NEXT_PORT}:3000"
+      - "${NUXT_PORT}:3000"
     volumes:
       - source_app:/usr/local/src/kudos
     profiles: [prod, app]
