@@ -1,5 +1,6 @@
 import { version } from '@/package.json';
 import { requiresGettingStarted } from '@endpoints/root/root.db';
+
 import type { APIResponseNoData, APIResponseStatus } from '@kudos/types-api';
 import type { Request, Response } from 'express';
 
