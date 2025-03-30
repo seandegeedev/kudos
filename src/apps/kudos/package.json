@@ -13,9 +13,9 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.10.1",
-    "axios": "^1.7.9",
+    "axios": "^1.8.4",
     "gsap": "^3.12.7",
-    "nuxt": "^3.15.4",
+    "nuxt": "^3.16.1",
     "pinia": "^3.0.1",
     "vue": "latest",
     "vue-router": "latest",
@@ -23,9 +23,9 @@
   },
   "devDependencies": {
     "@kudos/types-api": "workspace:*",
-    "@vueuse/core": "^12.7.0",
-    "@vueuse/nuxt": "^12.7.0",
-    "nuxt-svgo": "^4.0.14",
-    "sass": "^1.85.0"
+    "@vueuse/core": "^12.8.2",
+    "@vueuse/nuxt": "^12.8.2",
+    "nuxt-svgo": "^4.0.16",
+    "sass": "^1.86.0"
   }
 }
