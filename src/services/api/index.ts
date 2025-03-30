@@ -6,13 +6,13 @@ import apiRoot from '@endpoints/root/root.route';
 const app = express();
 
 const API_PORT = process.env.API_PORT || 5000;
-const CLIENT_URL = process.env.CLIENT_URL || `http://localhost:3000`;
+const API_CLIENT_URL = process.env.API_CLIENT_URL || `http://localhost:3000`;
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: CLIENT_URL,
+    origin: API_CLIENT_URL,
     credentials: true,
   })
 );

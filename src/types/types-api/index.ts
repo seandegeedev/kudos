@@ -1,5 +1,15 @@
 export type ExpressLocals = {
-  user: Object | null;
+  user: {
+    id: string;
+    created: Date;
+    archived: boolean;
+    email: string;
+    verified: boolean;
+    firstName: string;
+    lastName: string;
+    avatar: string;
+    admin: boolean;
+  } | null;
 };
 
 export type APIResponse<T> =

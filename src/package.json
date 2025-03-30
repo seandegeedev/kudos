@@ -4,14 +4,11 @@
   "author": "Sean De Gee",
   "description": "Kudos",
   "license": "MIT",
-  "packageManager": "bun@1.2.2",
+  "packageManager": "bun@1.2.7",
   "workspaces": [
     "apps/*",
     "services/*",
     "modules/*",
     "types/*"
-  ],
-  "trustedDependencies": [
-    "@parcel/watcher"
   ]
 }
