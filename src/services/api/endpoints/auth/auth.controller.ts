@@ -4,7 +4,13 @@ import z from 'zod';
 import authDB from '@endpoints/auth/auth.db';
 
 import type { Request, Response, NextFunction } from 'express';
-import type { APIResponseNoData, APIResponseAuthLogin, APIResponseAuthVerify, ExpressLocals } from '@kudos/types-api';
+import type {
+  APIResponseNoData,
+  APIResponseAuthLogin,
+  APIResponseAuthVerify,
+  APIResponseBootstrapAdmin,
+  ExpressLocals,
+} from '@kudos/types-api';
 
 // Get environment variables
 const JWT_SECRET = process.env.API_JWT_SECRET || 'gotcha_secret';
@@ -380,6 +386,96 @@ export const confirmEmail = async (req: Request, res: Response) => {
     };
 
     res.json(response);
+    return;
+  } catch (error) {
+    const response: APIResponseNoData = {
+      status: 500,
+      error: error,
+      data: null,
+    };
+
+    res.json(response);
+    return;
+  }
+};
+
+// Bootstrap admin user if not already created
+export const bootstrapAdminUser = async (req: Request, res: Response) => {
+  try {
+    const requestSchema = z.object({
+      name: z.string().min(3),
+      surname: z.string().min(3),
+      email: z.string().email(),
+      password: z.string().min(3),
+    });
+
+    const validRequest = requestSchema.safeParse(req.body);
+
+    // Check if request body is provided and valid
+    if (!validRequest.success) {
+      const response: APIResponseNoData = {
+        status: 400,
+        error: 'Invalid request body',
+        data: null,
+      };
+
+      res.json(response);
+      return;
+    }
+
+    // Check if admin setup is actually required
+    const bootstrapRequired = await authDB.adminBootstrapRequired();
+
+    if (!bootstrapRequired) {
+      const response: APIResponseNoData = {
+        status: 400,
+        error: 'An admin user already exists',
+        data: null,
+      };
+
+      res.json(response);
+      return;
+    }
+
+    const { name, surname, email, password } = validRequest.data;
+
+    // Bootstrap the admin user
+    const user = await authDB.bootstrapAdmin({ name, surname, email, password });
+
+    // Create and store the email verification token
+    const token = jwt.sign({ user: user.id }, JWT_SECRET);
+
+    await authDB.storeEmailVerificationToken({ email, token });
+
+    // Create response object 📦
+    const response: APIResponseBootstrapAdmin = {
+      status: 200,
+      error: null,
+      data: {
+        user: {
+          id: user.id,
+          created: user.created,
+          archived: user.archived,
+          email: user.email,
+          verified: user.verified,
+          avatar: user.avatar,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          admin: user.admin,
+        },
+      },
+    };
+
+    // Create response cookie 🍪
+    const cookieExpirationDate = new Date(Date.now() + COOKIE_EXPIRATION);
+
+    res
+      .cookie(COOKIE_NAME, jwt.sign({ user: user.id }, JWT_SECRET, { expiresIn: TOKEN_EXPIRATION }), {
+        httpOnly: true,
+        secure: false,
+        expires: cookieExpirationDate,
+      })
+      .json(response);
     return;
   } catch (error) {
     const response: APIResponseNoData = {

@@ -81,8 +81,83 @@ export const validateVerificationToken = async (token: string): Promise<boolean>
   }
 };
 
+export const adminBootstrapRequired = async (): Promise<boolean> => {
+  try {
+    // Check if any admin users exist in the database
+    const adminUsers = await prisma.user.findMany({
+      where: {
+        admin: true,
+      },
+    });
+
+    // If no admin users exist, return true else false
+    return adminUsers.length === 0;
+  } catch (error) {
+    throw new Error(`Failed to check if admin bootstrap is required: ${error}`);
+  }
+};
+
+export const bootstrapAdmin = async (details: {
+  name: string;
+  surname: string;
+  email: string;
+  password: string;
+}): Promise<Prisma.UserGetPayload<object>> => {
+  try {
+    const hashedPassword = await bcrypt.hash(details.password, 12);
+
+    const user = await prisma.user.create({
+      data: {
+        firstName: details.name,
+        lastName: details.surname,
+        email: details.email,
+        password: hashedPassword,
+        admin: true,
+      },
+    });
+
+    return user;
+  } catch (error) {
+    throw new Error(`Failed to bootstrap admin user: ${error}`);
+  }
+};
+
+export const storeEmailVerificationToken = async (details: { email: string; token: string }): Promise<void> => {
+  try {
+    const existingToken = await prisma.emailVerificationToken.findFirst({
+      where: {
+        email: details.email,
+      },
+    });
+
+    // If token exists, update it with the new token, otherwise, create a new token
+    if (existingToken) {
+      await prisma.emailVerificationToken.update({
+        where: {
+          id: existingToken.id,
+        },
+        data: {
+          token: details.token,
+        },
+      });
+    } else {
+      await prisma.emailVerificationToken.create({
+        data: {
+          email: details.email,
+          token: details.token,
+        },
+      });
+    }
+  } catch (error) {
+    throw new Error(`Failed to store email verification token: ${error}`);
+  }
+};
+
 export default {
   verifyCredentials,
   getUserByID,
   validateVerificationToken,
+  adminBootstrapRequired,
+  bootstrapAdmin,
+  storeEmailVerificationToken,
 };

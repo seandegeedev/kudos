@@ -77,3 +77,21 @@ export type APIResponseAuthLogin = APIResponse<{
     admin: boolean;
   };
 }>;
+
+/*
+ * 2.3 GET /api/auth/lbootstrap-admin
+------------------------------------------------------------------------------------------------
+ */
+export type APIResponseBootstrapAdmin = APIResponse<{
+  user: {
+    id: string;
+    created: Date;
+    archived: boolean;
+    email: string;
+    verified: boolean;
+    firstName: string;
+    lastName: string;
+    avatar: string;
+    admin: boolean;
+  };
+}>;
