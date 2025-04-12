@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default function useKudosAPI() {
+export const useKudosAPI = () => {
   const runtimeConfig = useRuntimeConfig();
 
   const kudosAPI = axios.create({
@@ -10,4 +10,6 @@ export default function useKudosAPI() {
   });
 
   return kudosAPI;
-}
+};
+
+export default useKudosAPI;

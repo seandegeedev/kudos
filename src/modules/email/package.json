@@ -1,0 +1,18 @@
+{
+  "name": "@kudos/email",
+  "version": "0.1.0",
+  "module": "index.ts",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "update": "bun update --latest"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.9"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

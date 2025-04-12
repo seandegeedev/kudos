@@ -1,0 +1,21 @@
+{
+  "name": "@kudos/job-engine",
+  "version": "0.1.0",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "update": "bun update --latest",
+    "dev": "bun index.ts",
+    "start": "bun index.ts"
+  },
+  "devDependencies": {
+    "@kudos/types-job-engine": "workspace:*",
+    "@types/bun": "^1.2.9"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "bullmq": "^5.48.1"
+  }
+}

@@ -1,5 +1,5 @@
-export default function () {
-  const display = function () {
+export default () => {
+  const display = () => {
     const logo = `
                                          +
                                        +++
@@ -46,4 +46,4 @@ export default function () {
   return {
     display,
   };
-}
+};

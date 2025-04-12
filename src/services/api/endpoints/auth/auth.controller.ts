@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import type ms from 'ms';
+import z from 'zod';
 import authDB from '@endpoints/auth/auth.db';
 
 import type { Request, Response, NextFunction } from 'express';
@@ -107,11 +108,23 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
   }
 };
 
-export const protectAdminOnly = async (req: Request, res: Response, next: NextFunction) => {
+export const protectAdminOnly = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const locals = res.locals as ExpressLocals;
 
-    // If the request has local set and the user is an admin, continue, else return 403
+    // Check if user is logged in, if not, return 401
+    if (!locals) {
+      const response: APIResponseNoData = {
+        status: 401,
+        error: 'Unauthorized',
+        data: null,
+      };
+
+      res.json(response);
+      return;
+    }
+
+    // If the user is an admin, continue, else return 403
     if (!locals.user?.admin) {
       const response: APIResponseNoData = {
         status: 403,
@@ -236,7 +249,7 @@ export const login = async (req: Request, res: Response) => {
 };
 
 // Logout endpoint 🔑
-export const logout = async function (_req: Request, res: Response) {
+export const logout = async (_req: Request, res: Response) => {
   try {
     const response: APIResponseNoData = {
       status: 200,
@@ -260,7 +273,7 @@ export const logout = async function (_req: Request, res: Response) {
 };
 
 // Endpoint to verify if user is logged in 🔑
-export const verify = async function (_req: Request, res: Response) {
+export const verify = async (_req: Request, res: Response) => {
   const locals = res.locals as ExpressLocals;
   const userData = locals.user;
 
@@ -283,4 +296,99 @@ export const verify = async function (_req: Request, res: Response) {
 
   res.json(response);
   return;
+};
+
+// Send email verification mail for logged in user 🔑
+export const sendEmailVerification = async (req: Request, res: Response) => {
+  const locals = res.locals as ExpressLocals;
+  const userData = locals.user;
+
+  // Check if user is logged in, if not, return 401
+  if (!userData) {
+    const response: APIResponseNoData = {
+      status: 401,
+      error: 'Unauthorized',
+      data: null,
+    };
+
+    res.json(response);
+    return;
+  }
+
+  try {
+    const response: APIResponseNoData = {
+      status: 200,
+      error: null,
+      data: null,
+    };
+
+    res.json(response);
+    return;
+  } catch (error) {
+    const response: APIResponseNoData = {
+      status: 500,
+      error: error,
+      data: null,
+    };
+
+    res.json(response);
+    return;
+  }
+};
+
+// Confirm email verification token 🔑
+export const confirmEmailVerification = async (req: Request, res: Response) => {
+  try {
+    // Check if request body is provided and valid
+    const requestSchema = z.object({
+      token: z.string(),
+    });
+
+    const validRequest = requestSchema.safeParse(req.body);
+
+    if (!validRequest.success) {
+      const response: APIResponseNoData = {
+        status: 400,
+        error: 'Invalid request body',
+        data: null,
+      };
+
+      res.json(response);
+      return;
+    }
+
+    const { token } = validRequest.data;
+
+    // Check if token is valid ✅
+    const validToken = await authDB.validateVerificationToken(token);
+
+    if (!validToken) {
+      const response: APIResponseNoData = {
+        status: 400,
+        error: 'Invalid verification token',
+        data: null,
+      };
+
+      res.json(response);
+      return;
+    }
+
+    const response: APIResponseNoData = {
+      status: 200,
+      error: null,
+      data: null,
+    };
+
+    res.json(response);
+    return;
+  } catch (error) {
+    const response: APIResponseNoData = {
+      status: 500,
+      error: error,
+      data: null,
+    };
+
+    res.json(response);
+    return;
+  }
 };

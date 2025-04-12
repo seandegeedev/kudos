@@ -1,3 +1,8 @@
+/*
+ * 1. Express Locals object
+------------------------------------------------------------------------------------------------
+ */
+
 export type ExpressLocals = {
   user: {
     id: string;
@@ -12,6 +17,10 @@ export type ExpressLocals = {
   } | null;
 };
 
+/*
+ * 2. API Responses
+------------------------------------------------------------------------------------------------
+ */
 export type APIResponse<T> =
   | {
       status: number;
@@ -26,7 +35,16 @@ export type APIResponse<T> =
 
 export type APIResponseNoData = APIResponse<null>;
 
+/*
+ * 2.1 GET /api/status
+------------------------------------------------------------------------------------------------
+ */
 export type APIResponseStatus = APIResponse<{ version: string; getStartedRequired: boolean }>;
+
+/*
+ * 2.2 GET /api/auth/verify
+------------------------------------------------------------------------------------------------
+  */
 
 export type APIResponseAuthVerify = APIResponse<{
   user: {
@@ -42,6 +60,10 @@ export type APIResponseAuthVerify = APIResponse<{
   };
 }>;
 
+/*
+ * 2.3 GET /api/auth/login
+------------------------------------------------------------------------------------------------
+ */
 export type APIResponseAuthLogin = APIResponse<{
   user: {
     id: string;

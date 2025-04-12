@@ -1,10 +1,10 @@
 {
-  "name": "@kudos/types-api",
+  "name": "@kudos/types-job-engine",
   "version": "0.1.0",
   "module": "index.ts",
   "exports": {
     ".": "./index.ts"
   },
-  "description": "Kudos API types",
+  "description": "Kudos Job Engine types",
   "type": "module"
 }

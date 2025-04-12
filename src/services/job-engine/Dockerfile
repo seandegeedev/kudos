@@ -19,8 +19,8 @@ WORKDIR /usr/local/src/kudos
 COPY ../../package.json ./
 COPY ../../bun.lock ./
 
-# Copy the kudos api package.json file to the container
-COPY package.json ./services/api/
+# Copy the kudos job-engine package.json file to the container
+COPY package.json ./services/job-engine/
 
 # Copy the rest of the service code
 COPY . .
@@ -28,12 +28,8 @@ COPY . .
 # Install the dependencies for the service
 RUN bun install
 
-# Generate Prisma client
-WORKDIR /usr/local/src/kudos/modules/database
-RUN bun db:generate
-
 # Build the service
-WORKDIR /usr/local/src/kudos/services/api
+WORKDIR /usr/local/src/kudos/services/job-engine
 
 # Start the service
 ENTRYPOINT ["bun", "start"]
