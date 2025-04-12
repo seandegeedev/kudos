@@ -46,6 +46,18 @@ services:
     volumes:
       - source_api:/usr/local/src/kudos
     profiles: [prod, api]
+  job-engine:
+    build:
+      context: ./
+      dockerfile: ./services/job-engine/Dockerfile
+    depends_on:
+      - db
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - source_job-engine:/usr/local/src/kudos
+    profiles: [prod, job-engine]
   app:
     build:
       context: .
@@ -81,3 +93,4 @@ volumes:
   source_db-migrate:
   redis_data:
   source_api:
+  source_job-engine:
