@@ -16,6 +16,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@kudos/email": "workspace:*",
     "bullmq": "^5.48.1"
   }
 }
