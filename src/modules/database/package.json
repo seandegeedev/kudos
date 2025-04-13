@@ -11,7 +11,7 @@
     "db:migrate:deploy": "bunx prisma migrate deploy",
     "db:migrate:dev": "bunx prisma migrate dev",
     "db:push:deploy": "bunx prisma db push --skip-generate",
-    "db:push:dev": "bunx prisma db push --force-reset",
+    "db:push:dev": "bunx prisma db push --force-reset --skip-generate",
     "db:generate": "bunx prisma generate"
   },
   "devDependencies": {

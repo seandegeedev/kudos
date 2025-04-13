@@ -145,6 +145,11 @@ In `app/modules/database`, run:
 bun db:push:dev
 ```
 
+### Remove all local docker volumes (if docker caching issues occur)
+```bash
+docker volume rm $(docker volume ls -qf dangling=true)
+```
+
 ### Side Effects
 - Upon first starting the `db` docker container, a `kudos` directory will be created in the `data/db` folder that the container will mount to and will contain the postgresql database data for kudos.
 - Upon first starting the `pgadmin` docker container, files will be created in the `data/pgadmin` folder that the container will mount to and will contain the pgAdmin data for kudos

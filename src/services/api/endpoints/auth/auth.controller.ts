@@ -20,6 +20,7 @@ const COOKIE_EXPIRATION = process.env.API_COOKIE_EXPIRATION
   : 60 * 60 * 1000;
 const TOKEN_EXPIRATION = (process.env.API_JWT_TOKEN_EXPIRATION || '1h') as ms.StringValue;
 
+// Route protection middleware
 export const protect = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.cookies[COOKIE_NAME];
@@ -114,6 +115,7 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
   }
 };
 
+// Route protection middleware for admin only
 export const protectAdminOnly = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const locals = res.locals as ExpressLocals;
