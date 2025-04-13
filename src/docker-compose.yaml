@@ -52,6 +52,7 @@ services:
       dockerfile: ./services/job-engine/Dockerfile
     depends_on:
       - db
+      - redis
     restart: always
     env_file:
       - .env
