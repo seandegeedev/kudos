@@ -59,6 +59,7 @@
       "dependencies": {
         "@kudos/database": "workspace:*",
         "bcrypt": "^5.1.1",
+        "bullmq": "^5.48.1",
         "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
         "express": "^5.1.0",
@@ -86,6 +87,7 @@
       "name": "@kudos/job-engine",
       "version": "0.1.0",
       "dependencies": {
+        "@kudos/email": "workspace:*",
         "bullmq": "^5.48.1",
       },
       "devDependencies": {

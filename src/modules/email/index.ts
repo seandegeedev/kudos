@@ -14,7 +14,7 @@ export const sendVerificationEmail = async ({
   const mailOptions = {
     from: { name: 'Kudos', address: SMTP_USER },
     to: email,
-    subject: 'Gotcha | Account Verification Token',
+    subject: 'Kudos | Account Verification Token',
     text: `Hello, ${firstName}\n\nPlease verify your account by clicking the link: \n${CLIENT_URL}/verification?token=${token}\n`,
   };
 

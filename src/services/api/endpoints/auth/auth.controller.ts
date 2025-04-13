@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import type ms from 'ms';
 import z from 'zod';
 import authDB from '@endpoints/auth/auth.db';
+import { addEmailVerificationJob } from '@/job-engine/queues/emailQueue';
 
 import type { Request, Response, NextFunction } from 'express';
 import type {
@@ -448,6 +449,13 @@ export const bootstrapAdminUser = async (req: Request, res: Response) => {
     const token = jwt.sign({ user: user.id }, JWT_SECRET);
 
     await authDB.storeEmailVerificationToken({ email, token });
+
+    // Create verification email job
+    await addEmailVerificationJob({
+      firstName: name,
+      email,
+      token,
+    });
 
     // Create response object 📦
     const response: APIResponseBootstrapAdmin = {

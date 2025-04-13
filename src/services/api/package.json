@@ -11,6 +11,7 @@
   "devDependencies": {
     "@eslint/js": "^9.24.0",
     "@kudos/types-api": "workspace:*",
+    "@kudos/types-job-engine": "workspace:*",
     "@types/bcrypt": "^5.0.2",
     "@types/bun": "^1.2.9",
     "@types/cookie-parser": "^1.4.8",
@@ -28,6 +29,7 @@
   "dependencies": {
     "@kudos/database": "workspace:*",
     "bcrypt": "^5.1.1",
+    "bullmq": "^5.48.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^5.1.0",
