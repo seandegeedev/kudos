@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   ssr: false,
   devtools: { enabled: false },
-  modules: ['@vueuse/nuxt', 'nuxt-svgo', '@pinia/nuxt'],
+  modules: ['@vueuse/nuxt', 'nuxt-svgo', '@pinia/nuxt', '@nuxt/image'],
   runtimeConfig: {
     public: {
       API_SERVER_URL: process.env.API_SERVER_URL,
@@ -14,7 +14,7 @@ export default defineNuxtConfig({
       viewport: 'width=device-width, initial-scale=1',
       charset: 'utf-8',
       title: 'Kudos',
-      meta: [{ hid: 'description', name: 'description', content: 'Sintrex Kudos' }],
+      meta: [{ name: 'description', content: 'Sintrex Kudos' }],
       link: [{ rel: 'icon', href: '/favicon.svg' }],
       htmlAttrs: {
         lang: 'en',
@@ -34,4 +34,4 @@ export default defineNuxtConfig({
     componentPrefix: 'icon',
     autoImportPath: './assets/icons/',
   },
-})
+});
