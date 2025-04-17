@@ -1,7 +1,7 @@
 export default defineNuxtRouteMiddleware(async (to, _from) => {
   // Redirect to /app if the user is trying to access the home page 🏠
-  if (to.path === '/' || to.path === '/app') {
-    return navigateTo('/app/account/profile');
+  if (to.path === '/') {
+    return navigateTo('/app');
   }
 
   // Redirect to /app/account/profile if the user is trying to access the /app/account page 🎣

@@ -1,5 +1,9 @@
 <script lang="ts" setup>
   import z from 'zod';
+  import type { APIResponseBootstrapAdmin } from '@kudos/types-api';
+
+  const router = useRouter();
+  const kudosAPI = useKudosAPI();
 
   const liveValidate = ref(false);
 
@@ -30,6 +34,8 @@
     password: '',
   });
 
+  const submissionError = ref('');
+
   // This function is called when the form is submitted or when liveValidate is enabled
   // and the user types in the form fields
   const validateForm = () => {
@@ -57,7 +63,7 @@
   };
 
   const displayError = computed(() => {
-    return Object.values(formErrors.value).find(error => error !== '');
+    return Object.values(formErrors.value).find(error => error !== '') || submissionError.value;
   });
 
   // If liveValidate is enabled, validate the form on every change
@@ -75,6 +81,32 @@
   const submitForm = async () => {
     if (validateForm()) {
       // Submit the form data to the server
+      try {
+        const response = await kudosAPI.post<APIResponseBootstrapAdmin>('/auth/bootstrap-admin', formData.value);
+
+        if (response.status !== 200) {
+          submissionError.value = 'A server error occurred while trying to create the admin user 💀';
+          return;
+        }
+
+        const innerResponse = response.data;
+
+        // If login is not successful, set the error message and return
+        if (innerResponse.status !== 200) {
+          if (innerResponse.status === 400) {
+            submissionError.value = 'An admin user already exists 😓';
+            return;
+          }
+
+          submissionError.value = 'A server error occurred while trying to create the admin user 💀';
+          return;
+        }
+
+        // If login is successful,  redirect to the app page
+        router.push({ name: 'app' });
+      } catch (error) {
+        submissionError.value = 'An error occurred 🙈 Please try again 🥲';
+      }
     }
   };
 </script>
