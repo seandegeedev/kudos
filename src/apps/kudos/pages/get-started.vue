@@ -45,5 +45,7 @@
 
     display: grid;
     gap: 1rem;
+
+    line-height: 1.2rem;
   }
 </style>
