@@ -98,9 +98,9 @@ export const adminBootstrapRequired = async (): Promise<boolean> => {
 };
 
 export const bootstrapAdmin = async (details: {
-  name: string;
-  surname: string;
   email: string;
+  firstName: string;
+  lastName: string;
   password: string;
 }): Promise<Prisma.UserGetPayload<object>> => {
   try {
@@ -108,8 +108,8 @@ export const bootstrapAdmin = async (details: {
 
     const user = await prisma.user.create({
       data: {
-        firstName: details.name,
-        lastName: details.surname,
+        firstName: details.firstName,
+        lastName: details.lastName,
         email: details.email,
         password: hashedPassword,
         admin: true,

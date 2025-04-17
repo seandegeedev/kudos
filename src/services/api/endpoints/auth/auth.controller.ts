@@ -406,9 +406,9 @@ export const confirmEmail = async (req: Request, res: Response) => {
 export const bootstrapAdminUser = async (req: Request, res: Response) => {
   try {
     const requestSchema = z.object({
-      name: z.string().min(3),
-      surname: z.string().min(3),
       email: z.string().email(),
+      firstName: z.string().min(3),
+      lastName: z.string().min(3),
       password: z.string().min(3),
     });
 
@@ -440,10 +440,10 @@ export const bootstrapAdminUser = async (req: Request, res: Response) => {
       return;
     }
 
-    const { name, surname, email, password } = validRequest.data;
+    const { firstName, lastName, email, password } = validRequest.data;
 
     // Bootstrap the admin user
-    const user = await authDB.bootstrapAdmin({ name, surname, email, password });
+    const user = await authDB.bootstrapAdmin({ email, firstName, lastName, password });
 
     // Create and store the email verification token
     const token = jwt.sign({ user: user.id }, JWT_SECRET);
@@ -452,7 +452,7 @@ export const bootstrapAdminUser = async (req: Request, res: Response) => {
 
     // Create verification email job
     await addEmailVerificationJob({
-      firstName: name,
+      firstName,
       email,
       token,
     });
