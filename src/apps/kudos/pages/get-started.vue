@@ -10,6 +10,7 @@
         <FormFieldText label="First Name" />
         <FormFieldText label="Last Name" />
         <FormFieldText label="Password" type="password" />
+        <FormButton class="save-button"><span>Save</span></FormButton>
       </form>
     </div>
   </main>
@@ -42,5 +43,9 @@
 
     display: grid;
     gap: 1rem;
+  }
+
+  .save-button {
+    justify-self: end;
   }
 </style>
