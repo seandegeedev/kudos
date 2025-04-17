@@ -5,13 +5,14 @@
     <AppVersionHeader />
     <div class="center-content">
       <NuxtImg class="kudos-logo" src="/images/kudos-logo.svg" alt="Kudos" />
-      <form action.prevent class="main-form">
-        <FormFieldText label="Email" type="email" :autofocus="true" />
-        <FormFieldText label="First Name" />
-        <FormFieldText label="Last Name" />
-        <FormFieldText label="Password" type="password" />
-        <FormButton class="save-button"><span>Save</span></FormButton>
-      </form>
+      <AppMessageBox class="greeting">
+        <p>Hi there 👋</p>
+        <p>
+          If you’re seeing this, this is probably a fresh installation of Kudos. Let’s complete the setup by creating
+          the first admin user 👑
+        </p>
+      </AppMessageBox>
+      <GettingStartedForm />
     </div>
   </main>
 </template>
@@ -25,8 +26,9 @@
   }
 
   .center-content {
-    margin-top: 10vh;
+    margin-top: 5vh;
     max-width: 30rem;
+    padding: 1rem;
     width: 100%;
 
     display: grid;
@@ -36,18 +38,14 @@
   }
 
   .kudos-logo {
+    margin-bottom: 1rem;
     width: 12rem;
   }
 
-  .main-form {
-    padding: 1rem;
+  .greeting {
     width: 100%;
 
     display: grid;
     gap: 1rem;
-  }
-
-  .save-button {
-    justify-self: end;
   }
 </style>
