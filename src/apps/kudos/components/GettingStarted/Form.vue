@@ -17,7 +17,7 @@
     password: z
       .string()
       .min(8, { message: 'Password should contain at least 8 characters 🔑' })
-      .max(100, { message: 'Password can only contain at most 100 characters 🔑' }),
+      .max(32, { message: 'Password can only contain at most 32 characters 🔑' }),
   });
 
   const formData = ref({

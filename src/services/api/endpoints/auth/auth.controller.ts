@@ -407,9 +407,9 @@ export const bootstrapAdminUser = async (req: Request, res: Response) => {
   try {
     const requestSchema = z.object({
       email: z.string().email(),
-      firstName: z.string().min(3),
-      lastName: z.string().min(3),
-      password: z.string().min(3),
+      firstName: z.string().nonempty(),
+      lastName: z.string().nonempty(),
+      password: z.string().min(8).max(32),
     });
 
     const validRequest = requestSchema.safeParse(req.body);
