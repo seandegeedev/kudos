@@ -26,6 +26,8 @@
 
   .center-content {
     margin-top: 10vh;
+    max-width: 30rem;
+    width: 100%;
 
     display: grid;
     gap: 1rem;
@@ -38,8 +40,8 @@
   }
 
   .main-form {
-    min-width: 23vw;
     padding: 1rem;
+    width: 100%;
 
     display: grid;
     gap: 1rem;
