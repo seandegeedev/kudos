@@ -15,7 +15,7 @@
     "db:generate": "bunx prisma generate"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.9",
+    "@types/bun": "^1.2.10",
     "prisma": "^6.6.0"
   },
   "peerDependencies": {

@@ -10,13 +10,13 @@
   },
   "devDependencies": {
     "@kudos/types-job-engine": "workspace:*",
-    "@types/bun": "^1.2.9"
+    "@types/bun": "^1.2.10"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"
   },
   "dependencies": {
     "@kudos/email": "workspace:*",
-    "bullmq": "^5.48.1"
+    "bullmq": "^5.49.1"
   }
 }
