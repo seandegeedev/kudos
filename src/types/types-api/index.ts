@@ -79,10 +79,28 @@ export type APIResponseAuthLogin = APIResponse<{
 }>;
 
 /*
- * 2.3 GET /api/auth/lbootstrap-admin
+ * 2.3 GET /api/auth/bootstrap-admin
 ------------------------------------------------------------------------------------------------
  */
 export type APIResponseBootstrapAdmin = APIResponse<{
+  user: {
+    id: string;
+    created: Date;
+    archived: boolean;
+    email: string;
+    verified: boolean;
+    firstName: string;
+    lastName: string;
+    avatar: string;
+    admin: boolean;
+  };
+}>;
+
+/*
+ * 2.3 GET /api/auth/verify-user
+------------------------------------------------------------------------------------------------
+ */
+export type APIResponseUserVerify = APIResponse<{
   user: {
     id: string;
     created: Date;

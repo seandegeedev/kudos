@@ -126,7 +126,7 @@
     <FormFieldText label="First Name" :error="!!formErrors.firstName" v-model:value="formData.firstName" />
     <FormFieldText label="Last Name" :error="!!formErrors.lastName" v-model:value="formData.lastName" />
     <FormFieldText label="Password" type="password" :error="!!formErrors.password" v-model:value="formData.password" />
-    <FormButton class="save-button" @click="submitForm"><span>Save</span></FormButton>
+    <FormButton class="next-button" @click="submitForm"><span>Next</span></FormButton>
   </form>
 </template>
 
@@ -138,7 +138,7 @@
     gap: 1rem;
   }
 
-  .save-button {
+  .next-button {
     justify-self: end;
   }
 </style>

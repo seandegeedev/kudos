@@ -12,6 +12,7 @@ import type {
   APIResponseAuthVerify,
   APIResponseBootstrapAdmin,
   ExpressLocals,
+  APIResponseUserVerify,
 } from '@kudos/types-api';
 
 // Get environment variables
@@ -346,7 +347,7 @@ export const sendEmailVerification = async (req: Request, res: Response) => {
   }
 };
 
-// Confirm email verification token 🔑
+// Confirm email verification code 🔑
 export const verifyEmail = async (req: Request, res: Response) => {
   try {
     // Check if request body is provided and valid
@@ -392,6 +393,78 @@ export const verifyEmail = async (req: Request, res: Response) => {
 
     res.json(response);
     return;
+  } catch (error) {
+    const response: APIResponseNoData = {
+      status: 500,
+      error: error,
+      data: null,
+    };
+
+    res.json(response);
+    return;
+  }
+};
+
+// Confirm if user exists 🔑
+export const verifyUser = async (req: Request, res: Response) => {
+  try {
+    // Check if request body is provided and valid
+    const requestSchema = z.object({
+      userID: z.string().nonempty(),
+    });
+
+    const validRequest = requestSchema.safeParse(req.body);
+
+    if (!validRequest.success) {
+      const response: APIResponseNoData = {
+        status: 400,
+        error: 'Invalid request body',
+        data: null,
+      };
+
+      res.json(response);
+      return;
+    }
+
+    const { userID } = validRequest.data;
+
+    // Check if user exists ✅
+    const user = await authDB.getUserByID(userID);
+
+    if (!user) {
+      const response: APIResponseNoData = {
+        status: 404,
+        error: 'User does not exist',
+        data: null,
+      };
+
+      res.json(response);
+      return;
+    }
+
+    // Censor email address
+    const emailParts = user.email.split('@');
+    const censoredEmail = `${emailParts[0].substring(0, 3)}...@${emailParts[1]}`;
+
+    const response: APIResponseUserVerify = {
+      status: 200,
+      error: null,
+      data: {
+        user: {
+          id: user.id,
+          created: user.created,
+          archived: user.archived,
+          email: censoredEmail,
+          verified: user.verified,
+          avatar: user.avatar,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          admin: user.admin,
+        },
+      },
+    };
+
+    res.json(response);
   } catch (error) {
     const response: APIResponseNoData = {
       status: 500,

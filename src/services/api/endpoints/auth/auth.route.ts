@@ -6,6 +6,7 @@ import {
   verify,
   sendEmailVerification,
   verifyEmail,
+  verifyUser,
   bootstrapAdminUser,
 } from '@endpoints/auth/auth.controller';
 
@@ -16,6 +17,7 @@ router.get('/logout', logout);
 router.get('/verify', protect, verify);
 router.get('/send-email-verification', protect, sendEmailVerification);
 router.post('/verify-email', verifyEmail);
+router.post('/verify-user', verifyUser);
 router.post('/bootstrap-admin', bootstrapAdminUser);
 
 export default router;
