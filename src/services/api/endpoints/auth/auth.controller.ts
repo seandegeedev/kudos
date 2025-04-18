@@ -346,7 +346,7 @@ export const sendEmailVerification = async (req: Request, res: Response) => {
 };
 
 // Confirm email verification token 🔑
-export const confirmEmail = async (req: Request, res: Response) => {
+export const verifyEmail = async (req: Request, res: Response) => {
   try {
     // Check if request body is provided and valid
     const requestSchema = z.object({

@@ -4,12 +4,12 @@ export default defineNuxtRouteMiddleware(async (to, _from) => {
   const kudosAPI = useKudosAPI();
 
   // Handle email verification routing 📧
-  if (to.path === '/emailverification') {
+  if (to.path === '/verify-email') {
     const verificationToken = to.query.token;
 
     if (!verificationToken) return navigateTo('/login');
 
-    await kudosAPI.post<APIResponseNoData>('/auth/emailverification', {
+    await kudosAPI.post<APIResponseNoData>('/auth/verify-email', {
       token: verificationToken,
     });
 

@@ -15,7 +15,7 @@ export const sendVerificationEmail = async ({
     from: { name: 'Kudos', address: SMTP_USER },
     to: email,
     subject: 'Kudos | Account Verification Token',
-    text: `Hello, ${firstName}\n\nPlease verify your account by clicking the link: \n${CLIENT_URL}/verification?token=${token}\n`,
+    text: `Hello, ${firstName}\n\nPlease verify your account by clicking the link: \n${CLIENT_URL}/verify-email?token=${token}\n`,
   };
 
   await transporter.sendMail(mailOptions);
