@@ -43,12 +43,13 @@ export const getUserByID = async (id: string): Promise<Prisma.UserGetPayload<obj
   }
 };
 
-export const validateVerificationToken = async (token: string): Promise<boolean> => {
+export const validateVerificationCode = async (details: { userID: string; code: number }): Promise<boolean> => {
   try {
     // Check if token exists in the database
-    const emailToken = await prisma.emailVerificationToken.findUnique({
+    const emailToken = await prisma.emailVerificationCode.findUnique({
       where: {
-        token: token,
+        userID: details.userID,
+        code: details.code,
       },
     });
 
@@ -57,7 +58,7 @@ export const validateVerificationToken = async (token: string): Promise<boolean>
       // Change user's verified status to true
       await prisma.user.update({
         where: {
-          email: emailToken.email,
+          id: details.userID,
         },
         data: {
           verified: true,
@@ -65,9 +66,10 @@ export const validateVerificationToken = async (token: string): Promise<boolean>
       });
 
       // Delete token from the database
-      await prisma.emailVerificationToken.delete({
+      await prisma.emailVerificationCode.delete({
         where: {
-          token: token,
+          userID: details.userID,
+          code: details.code,
         },
       });
 
@@ -122,42 +124,43 @@ export const bootstrapAdmin = async (details: {
   }
 };
 
-export const storeEmailVerificationToken = async (details: { email: string; token: string }): Promise<void> => {
+export const storeEmailVerificationCode = async (details: { userID: string; code: number }): Promise<void> => {
   try {
-    const existingToken = await prisma.emailVerificationToken.findFirst({
+    // Check if token already exists for the user
+    const existingToken = await prisma.emailVerificationCode.findUnique({
       where: {
-        email: details.email,
+        userID: details.userID,
       },
     });
 
     // If token exists, update it with the new token, otherwise, create a new token
     if (existingToken) {
-      await prisma.emailVerificationToken.update({
+      await prisma.emailVerificationCode.update({
         where: {
           id: existingToken.id,
         },
         data: {
-          token: details.token,
+          code: details.code,
         },
       });
     } else {
-      await prisma.emailVerificationToken.create({
+      await prisma.emailVerificationCode.create({
         data: {
-          email: details.email,
-          token: details.token,
+          userID: details.userID,
+          code: details.code,
         },
       });
     }
   } catch (error) {
-    throw new Error(`Failed to store email verification token: ${error}`);
+    throw new Error(`Failed to store email verification code: ${error}`);
   }
 };
 
 export default {
   verifyCredentials,
   getUserByID,
-  validateVerificationToken,
+  validateVerificationCode,
   adminBootstrapRequired,
   bootstrapAdmin,
-  storeEmailVerificationToken,
+  storeEmailVerificationCode,
 };

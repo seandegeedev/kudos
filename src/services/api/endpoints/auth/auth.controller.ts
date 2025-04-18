@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import type ms from 'ms';
 import z from 'zod';
+import { randomInt } from 'crypto';
 import authDB from '@endpoints/auth/auth.db';
 import { addEmailVerificationJob } from '@/job-engine/queues/emailQueue';
 
@@ -350,7 +351,8 @@ export const verifyEmail = async (req: Request, res: Response) => {
   try {
     // Check if request body is provided and valid
     const requestSchema = z.object({
-      token: z.string(),
+      userID: z.string().nonempty(),
+      code: z.number(),
     });
 
     const validRequest = requestSchema.safeParse(req.body);
@@ -366,10 +368,10 @@ export const verifyEmail = async (req: Request, res: Response) => {
       return;
     }
 
-    const { token } = validRequest.data;
+    const { userID, code } = validRequest.data;
 
     // Check if token is valid ✅
-    const validToken = await authDB.validateVerificationToken(token);
+    const validToken = await authDB.validateVerificationCode({ userID, code });
 
     if (!validToken) {
       const response: APIResponseNoData = {
@@ -445,16 +447,16 @@ export const bootstrapAdminUser = async (req: Request, res: Response) => {
     // Bootstrap the admin user
     const user = await authDB.bootstrapAdmin({ email, firstName, lastName, password });
 
-    // Create and store the email verification token
-    const token = jwt.sign({ user: user.id }, JWT_SECRET);
+    // Create and store a random 4-digit email verification code
+    const code = randomInt(1000, 10000);
 
-    await authDB.storeEmailVerificationToken({ email, token });
+    await authDB.storeEmailVerificationCode({ userID: user.id, code });
 
     // Create verification email job
     await addEmailVerificationJob({
       firstName,
       email,
-      token,
+      code,
     });
 
     // Create response object 📦

@@ -19,6 +19,7 @@ model User {
   lastName                String                     @db.VarChar(25)
   avatar                  String                     @default("")
   admin                   Boolean                    @default(false)
+  emailVerificationCode   EmailVerificationCode?
   realms                  RealmMembership[]
   socialTeam              SocialTeamMembership?
   kudosInvites            KudosInvite[]
@@ -29,11 +30,12 @@ model User {
   tokenApprovals          UserTokenRequest[]         @relation("userTokenApprovals")
 }
 
-model EmailVerificationToken {
+model EmailVerificationCode {
   id      String   @id @default(uuid())
   created DateTime @default(now())
-  email   String   @unique
-  token   String   @unique
+  userID  String   @unique
+  code    Int      @unique
+  user    User     @relation(fields: [userID], references: [id])
 }
 
 model KudosInvite {
