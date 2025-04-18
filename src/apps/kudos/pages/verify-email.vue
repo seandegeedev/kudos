@@ -52,7 +52,17 @@
 </script>
 
 <template>
-  <main clas verify-email>
-    <h1>Verify</h1>
+  <main class="verify-email">
+    <AppVersionHeader />
+    <VerifyEmailForm />
   </main>
 </template>
+
+<style lang="scss" scoped>
+  .verify-email {
+    height: 100vh;
+
+    align-content: start;
+    display: grid;
+  }
+</style>
