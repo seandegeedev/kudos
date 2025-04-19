@@ -94,7 +94,7 @@
 </script>
 
 <template>
-  <div class="form-field-code">
+  <div class="form-field-code" :style="{ 'grid-template-columns': displayCode.length }">
     <input
       v-for="(_char, index) of displayCode"
       :key="index"
@@ -121,7 +121,7 @@
 
   .code-input {
     padding: 0.5rem 1rem;
-    width: 3.75rem;
+    width: 100%;
 
     background: var(--color-form-field-background);
     border: 1px solid var(--color-form-field-border);
