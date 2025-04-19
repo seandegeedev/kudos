@@ -1,16 +1,62 @@
 <script lang="ts" setup>
   import z from 'zod';
+  import type { APIResponseUserVerify } from '@kudos/types-api';
 
+  const route = useRoute();
+  const router = useRouter();
+
+  const kudosAPI = useKudosAPI();
+
+  const userID = route.query.userID as string;
+
+  // If userID is not present in the query parameters, redirect to the app page
+  if (!userID) {
+    router.push({ name: 'app' });
+  }
+
+  const userData = ref<{
+    id: string;
+    created: Date;
+    archived: boolean;
+    email: string;
+    verified: boolean;
+    firstName: string;
+    lastName: string;
+    avatar: string;
+    admin: boolean;
+  }>();
   const code = ref('');
   const error = ref('');
   const submissionError = ref('');
-  const censoredEmail = ref('s*****@seandegee.tech');
 
   const displayError = computed(() => {
     return error.value || submissionError.value;
   });
 
   const validationSchema = z.string().length(4, { message: 'Verification code incomplete ❌' });
+
+  const runChecks = async () => {
+    // Check if the userID is valid
+    const userCheckResponse = await kudosAPI.post<APIResponseUserVerify>('/auth/verify-user', {
+      userID,
+    });
+
+    // User not found or invalid userID
+    if (userCheckResponse.data.status !== 200 || !userCheckResponse.data.data) {
+      router.push({ name: 'app' });
+      return;
+    }
+
+    const user = userCheckResponse.data.data.user;
+
+    // Check if the user is already verified
+    if (user.verified) {
+      router.push({ name: 'app' });
+      return;
+    }
+
+    userData.value = user;
+  };
 
   const validateForm = () => {
     const result = validationSchema.safeParse(code.value);
@@ -28,6 +74,8 @@
     if (validateForm()) {
     }
   };
+
+  await runChecks();
 </script>
 
 <template>
@@ -38,7 +86,8 @@
 
     <AppMessageBox class="verify-message">
       <p>
-        Kudos has sent a verification code to <span class="email-text">{{ censoredEmail }}</span
+        Hey, {{ userData?.firstName }}. Kudos has sent a verification code to
+        <span class="email-text">{{ userData?.email }}</span
         >.
       </p>
       <p>Check you inbox and input the code below to activate your account.</p>
