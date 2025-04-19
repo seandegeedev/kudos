@@ -1,10 +1,5 @@
 <script lang="ts" setup>
   const code = ref(''); // Example code, replace with actual logic to generate or retrieve the code
-
-  watch(code, newCode => {
-    // Handle code change
-    console.log('Code changed:', newCode);
-  });
 </script>
 
 <template>

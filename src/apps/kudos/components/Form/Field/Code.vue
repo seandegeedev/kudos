@@ -18,6 +18,18 @@
 
   const displayCode = ref<string[]>([]);
   const inputs = ref<(HTMLInputElement | null)[]>([]);
+  const errorOnEmpty = ref(false);
+
+  // Set show error to true once the user has entered a fill code at least once
+  watch(
+    () => props.code,
+    newCode => {
+      if (newCode.length === displayCode.value.length && !errorOnEmpty.value) {
+        errorOnEmpty.value = true;
+        return;
+      }
+    }
+  );
 
   const focusInput = (index: number) => {
     const input = inputs.value[index] as HTMLInputElement;
@@ -27,7 +39,10 @@
   };
 
   const isValidInput = (char: string): boolean => {
-    // Check if the character is a number or letter based on the type
+    // Check if the character is a number or letter based on the type or if it is empty
+    if (char === '') {
+      return true;
+    }
     if (props.type === 'numeric') {
       return /^[0-9]$/.test(char);
     } else if (props.type === 'alphanumeric') {
@@ -53,6 +68,11 @@
       const input = inputs.value[index] as HTMLInputElement;
       input.value = truncatedInput;
 
+      // Move focus to the next input
+      if (truncatedInput && index < props.length - 1) {
+        focusInput(index + 1);
+      }
+
       return;
     }
 
@@ -60,7 +80,7 @@
     displayCode.value[index] = truncatedInput;
     emit('update:code', displayCode.value.join(''));
 
-    // Move focus to the next input if the character is valid
+    // Move focus to the next input
     if (truncatedInput && index < props.length - 1) {
       focusInput(index + 1);
     }
@@ -74,18 +94,49 @@
 </script>
 
 <template>
-  <div>
-    <div v-for="(_char, index) of displayCode" :key="index" class="code-input-container">
-      <input
-        ref="inputs"
-        type="text"
-        class="code-input"
-        maxlength="2"
-        :data-index="index"
-        :value="displayCode[index]"
-        :autofocus="index === 0"
-        @input="updateCharacter(($event.target as HTMLInputElement).value, index)"
-      />
-    </div>
+  <div class="form-field-code">
+    <input
+      v-for="(_char, index) of displayCode"
+      :key="index"
+      ref="inputs"
+      type="text"
+      class="code-input"
+      maxlength="2"
+      :data-error="displayCode[index] === '' && errorOnEmpty"
+      :id="`code-input-${index}`"
+      :value="displayCode[index]"
+      :autofocus="index === 0"
+      @input="updateCharacter(($event.target as HTMLInputElement).value, index)"
+    />
   </div>
 </template>
+
+<style lang="scss" scoped>
+  .form-field-code {
+    display: grid;
+    gap: 1rem;
+    grid-auto-flow: column;
+    justify-content: start;
+  }
+
+  .code-input {
+    padding: 0.5rem 1rem;
+    width: 3.75rem;
+
+    background: var(--color-form-field-background);
+    border: 1px solid var(--color-form-field-border);
+    border-radius: 0.5rem;
+    outline: none;
+
+    font-size: 1.75rem;
+    text-align: center;
+
+    &:focus {
+      border: 1px solid var(--color-form-field-border-focus);
+    }
+
+    &[data-error='true'] {
+      border-color: var(--color-form-field-border-error);
+    }
+  }
+</style>
