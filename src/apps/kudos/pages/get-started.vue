@@ -3,13 +3,6 @@
     <AppVersionHeader />
     <div class="center-content">
       <NuxtImg class="kudos-logo" src="/images/kudos-logo.svg" alt="Kudos" />
-      <AppMessageBox class="greeting">
-        <p>Hi there 👋</p>
-        <p>
-          If you’re seeing this, this is probably a fresh installation of Kudos. Let’s complete the setup by creating
-          the first admin user 👑
-        </p>
-      </AppMessageBox>
       <GettingStartedForm />
     </div>
   </main>
@@ -38,14 +31,5 @@
   .kudos-logo {
     margin-bottom: 1rem;
     width: 12rem;
-  }
-
-  .greeting {
-    width: 100%;
-
-    display: grid;
-    gap: 1rem;
-
-    line-height: 1.2rem;
   }
 </style>

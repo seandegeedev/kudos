@@ -113,6 +113,16 @@
 
 <template>
   <form action.prevent class="getting-started-form">
+    <header class="header">
+      <h1>Get Started 💪</h1>
+    </header>
+    <AppMessageBox class="greeting">
+      <p>Hi there 👋</p>
+      <p>
+        If you’re seeing this, this is probably a fresh installation of Kudos. Let’s complete the setup by creating the
+        first admin user 👑
+      </p>
+    </AppMessageBox>
     <AppMessageBox v-if="displayError" type="error">
       <p>{{ displayError }}</p>
     </AppMessageBox>
@@ -136,6 +146,15 @@
 
     display: grid;
     gap: 1rem;
+  }
+
+  .greeting {
+    width: 100%;
+
+    display: grid;
+    gap: 1rem;
+
+    line-height: 1.2rem;
   }
 
   .next-button {
