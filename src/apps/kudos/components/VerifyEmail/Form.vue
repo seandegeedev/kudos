@@ -34,15 +34,15 @@
   <form class="verify-email-form">
     <header class="header">
       <h1>Verify your email</h1>
-      <p>Almost there! 🚀</p>
     </header>
-    <div class="verify-message">
+
+    <AppMessageBox class="verify-message">
       <p>
         Kudos has sent a verification code to <span class="email-text">{{ censoredEmail }}</span
         >.
       </p>
       <p>Check you inbox and input the code below to activate your account.</p>
-    </div>
+    </AppMessageBox>
     <AppMessageBox v-if="displayError" type="error">
       <p>{{ displayError }}</p>
     </AppMessageBox>
@@ -65,17 +65,17 @@
     display: grid;
     gap: 1rem;
 
-    text-align: center;
     line-height: 1.4rem;
 
     h1 {
       font-size: 2rem;
-      font-weight: 600;
+      font-weight: 500;
     }
   }
 
   .verify-message {
     text-align: center;
+    text-wrap: pretty;
     line-height: 1.4rem;
   }
 

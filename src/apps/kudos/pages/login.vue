@@ -3,9 +3,6 @@
     <AppVersionHeader />
     <div class="center-content">
       <NuxtImg class="kudos-logo" src="/images/kudos-logo.svg" alt="Kudos" />
-      <AppMessageBox class="greeting">
-        <p>Welcome 🔥</p>
-      </AppMessageBox>
       <LoginForm />
     </div>
   </main>

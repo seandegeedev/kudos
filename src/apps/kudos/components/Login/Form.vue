@@ -105,6 +105,9 @@
 
 <template>
   <form action.prevent class="login-form">
+    <header class="header">
+      <h1>Login</h1>
+    </header>
     <AppMessageBox v-if="displayError" type="error">
       <p>{{ displayError }}</p>
     </AppMessageBox>
@@ -126,6 +129,16 @@
 
     display: grid;
     gap: 1rem;
+  }
+
+  .header {
+    display: grid;
+    gap: 1rem;
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 500;
+    }
   }
 
   .save-button {
