@@ -120,7 +120,7 @@
 </script>
 
 <template>
-  <form class="verify-email-form">
+  <form class="verify-email-form" v-if="userData">
     <header class="header">
       <h1>Verify your email</h1>
     </header>
