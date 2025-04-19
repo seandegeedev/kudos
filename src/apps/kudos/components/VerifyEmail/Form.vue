@@ -28,6 +28,7 @@
   const code = ref('');
   const error = ref('');
   const submissionError = ref('');
+  const message = ref('');
 
   const displayError = computed(() => {
     return error.value || submissionError.value;
@@ -59,6 +60,10 @@
   };
 
   const validateForm = () => {
+    message.value = '';
+    submissionError.value = '';
+    error.value = '';
+
     const result = validationSchema.safeParse(code.value);
 
     if (result.success) {
@@ -71,7 +76,43 @@
   };
 
   const submitForm = async () => {
-    if (validateForm()) {
+    if (!validateForm()) {
+      return;
+    }
+
+    const response = await kudosAPI.post('/auth/verify-email', {
+      userID,
+      code: code.value,
+    });
+
+    if (response.data.status === 200) {
+      router.push({ name: 'app' });
+    } else {
+      submissionError.value = response.data.message || 'Verification failed 💀 Please try again.';
+    }
+  };
+
+  const resendConfirmationEmail = async () => {
+    console.log('Resending confirmation email...');
+    const response = await kudosAPI.get('/auth/send-email-verification');
+
+    console.log('Response:', response);
+
+    if (response.data.status !== 200) {
+      submissionError.value = 'Failed to resend verification email. Please try again.';
+    } else {
+      submissionError.value = '';
+      message.value = 'Verification email resent 💪 Check your inbox 📩';
+    }
+  };
+
+  const signOut = async () => {
+    const response = await kudosAPI.get('/auth/logout');
+
+    if (response.data.status === 200) {
+      router.push({ name: 'login' });
+    } else {
+      submissionError.value = 'Failed to sign out. Please try again.';
     }
   };
 
@@ -86,7 +127,7 @@
 
     <AppMessageBox class="verify-message">
       <p>
-        Hey, {{ userData?.firstName }}. Kudos has sent a verification code to
+        Hey, {{ userData?.firstName }} 👋 Kudos has sent a verification code to
         <span class="email-text">{{ userData?.email }}</span
         >.
       </p>
@@ -95,10 +136,16 @@
     <AppMessageBox v-if="displayError" type="error">
       <p>{{ displayError }}</p>
     </AppMessageBox>
+    <AppMessageBox v-if="message">
+      <p>{{ message }}</p>
+    </AppMessageBox>
     <FormFieldCode v-model:code="code" type="numeric" />
-    <FormButton @click.prevent="submitForm" class="verify-button">Verify</FormButton>
+    <div class="actions">
+      <FormButton @click.prevent="submitForm" class="verify-button">Verify</FormButton>
+      <span class="sign-out" @click="signOut">Sign out</span>
+    </div>
     <div class="resend-message">
-      <p>Didn’t receive the code? 🙄 <span class="resend-text">Resend</span> it now</p>
+      <p>Didn’t receive the code? 🙄 <span class="resend-text" @click="resendConfirmationEmail">Resend</span> it now</p>
     </div>
   </form>
 </template>
@@ -122,16 +169,51 @@
     }
   }
 
+  .email-text {
+    font-weight: 500;
+    color: var(--color-accent-00);
+  }
+
   .verify-message {
     text-align: center;
     text-wrap: pretty;
     line-height: 1.4rem;
   }
 
-  .verify-button {
-    max-width: 10rem;
+  .actions {
     width: 100%;
 
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+  }
+
+  .sign-out {
+    color: var(--color-text-muted);
+    cursor: pointer;
+
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+      color: var(--color-accent-00);
+    }
+  }
+
+  .verify-button {
+    width: 7rem;
+
     text-align: center;
+  }
+
+  .resend-text {
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+      color: var(--color-accent-00);
+    }
   }
 </style>

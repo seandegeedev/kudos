@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware(async (to, _from) => {
 
   // Redirect to the /login page if the user is not authenticated, unless they are navigating to the login page or the setup page 🚪
   if (authVerificationResponse.data.status !== 200 || !authVerificationResponse.data.data) {
-    if (to.path !== '/login' && to.path !== '/get-started' && to.path !== '/verify-email') return navigateTo('/login');
+    if (to.path !== '/login' && to.path !== '/get-started') return navigateTo('/login');
   }
 
   // Redirect to the /verify-email page if the user is not verified🔑

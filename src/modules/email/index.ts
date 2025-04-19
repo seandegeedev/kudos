@@ -9,7 +9,7 @@ export const sendVerificationEmail = async ({
 }: {
   firstName: string;
   email: string;
-  code: number;
+  code: string;
 }) => {
   const mailOptions = {
     from: { name: 'Kudos', address: SMTP_USER },

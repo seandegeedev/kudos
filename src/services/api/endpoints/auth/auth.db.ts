@@ -43,7 +43,7 @@ export const getUserByID = async (id: string): Promise<Prisma.UserGetPayload<obj
   }
 };
 
-export const validateVerificationCode = async (details: { userID: string; code: number }): Promise<boolean> => {
+export const validateVerificationCode = async (details: { userID: string; code: string }): Promise<boolean> => {
   try {
     // Check if token exists in the database
     const emailToken = await prisma.emailVerificationCode.findUnique({
@@ -124,7 +124,7 @@ export const bootstrapAdmin = async (details: {
   }
 };
 
-export const storeEmailVerificationCode = async (details: { userID: string; code: number }): Promise<void> => {
+export const storeEmailVerificationCode = async (details: { userID: string; code: string }): Promise<void> => {
   try {
     // Check if token already exists for the user
     const existingToken = await prisma.emailVerificationCode.findUnique({

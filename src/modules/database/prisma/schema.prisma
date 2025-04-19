@@ -34,7 +34,7 @@ model EmailVerificationCode {
   id      String   @id @default(uuid())
   created DateTime @default(now())
   userID  String   @unique
-  code    Int      @unique
+  code    String   
   user    User     @relation(fields: [userID], references: [id])
 }
 

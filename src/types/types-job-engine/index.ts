@@ -18,7 +18,7 @@ export type GeneralEmailJobData = EmailJobData<EmailJobType, unknown>;
 export type VerificationEmailJobPayload = {
   firstName: string;
   email: string;
-  code: number;
+  code: string;
 };
 
 export type VerificationEmailJobData = EmailJobData<'verification', VerificationEmailJobPayload>;

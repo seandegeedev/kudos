@@ -327,12 +327,22 @@ export const sendEmailVerification = async (req: Request, res: Response) => {
   }
 
   try {
+    // Create and store a random 4-digit email verification code
+    const code: string = `${randomInt(1000, 10000)}`;
+
+    await authDB.storeEmailVerificationCode({ userID: userData.id, code });
+
+    // Create verification email job
+    await addEmailVerificationJob({
+      firstName: userData.firstName,
+      email: userData.email,
+      code,
+    });
     const response: APIResponseNoData = {
       status: 200,
       error: null,
       data: null,
     };
-
     res.json(response);
     return;
   } catch (error) {
@@ -353,7 +363,7 @@ export const verifyEmail = async (req: Request, res: Response) => {
     // Check if request body is provided and valid
     const requestSchema = z.object({
       userID: z.string().nonempty(),
-      code: z.number(),
+      code: z.string().nonempty(),
     });
 
     const validRequest = requestSchema.safeParse(req.body);
@@ -521,7 +531,7 @@ export const bootstrapAdminUser = async (req: Request, res: Response) => {
     const user = await authDB.bootstrapAdmin({ email, firstName, lastName, password });
 
     // Create and store a random 4-digit email verification code
-    const code = randomInt(1000, 10000);
+    const code: string = `${randomInt(1000, 10000)}`;
 
     await authDB.storeEmailVerificationCode({ userID: user.id, code });
 
