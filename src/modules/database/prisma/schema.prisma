@@ -20,6 +20,7 @@ model User {
   avatar                  String                     @default("")
   admin                   Boolean                    @default(false)
   emailVerificationCode   EmailVerificationCode?
+  forgottenPasswordToken  ForgottenPasswordToken?
   realms                  RealmMembership[]
   socialTeam              SocialTeamMembership?
   kudosInvites            KudosInvite[]
@@ -35,6 +36,14 @@ model EmailVerificationCode {
   created DateTime @default(now())
   userID  String   @unique
   code    String   
+  user    User     @relation(fields: [userID], references: [id])
+}
+
+model ForgottenPasswordToken {
+  id      String   @id @default(uuid())
+  created DateTime @default(now())
+  userID  String   @unique
+  token    String   
   user    User     @relation(fields: [userID], references: [id])
 }
 
