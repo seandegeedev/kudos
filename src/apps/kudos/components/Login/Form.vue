@@ -119,7 +119,10 @@
       v-model:value="formData.email"
     />
     <FormFieldText label="Password" type="password" :error="!!formErrors.password" v-model:value="formData.password" />
-    <FormButton class="save-button" @click="submitForm"><span>Save</span></FormButton>
+    <div class="actions">
+      <NuxtLink href="/forgot-password" class="forgot-password-link">Forgot password? 🙄</NuxtLink>
+      <FormButton class="save-button" @click="submitForm"><span>Log in</span></FormButton>
+    </div>
   </form>
 </template>
 
@@ -141,7 +144,23 @@
     }
   }
 
-  .save-button {
-    justify-self: end;
+  .actions {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+  }
+
+  .forgot-password-link {
+    color: var(--color-text-muted);
+    cursor: pointer;
+
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+      color: var(--color-accent-00);
+    }
   }
 </style>
