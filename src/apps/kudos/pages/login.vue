@@ -32,13 +32,4 @@
     margin-bottom: 1rem;
     width: 12rem;
   }
-
-  .greeting {
-    width: 100%;
-
-    display: grid;
-    gap: 1rem;
-
-    line-height: 1.2rem;
-  }
 </style>
