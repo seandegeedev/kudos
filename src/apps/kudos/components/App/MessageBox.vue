@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   defineProps({
     type: {
-      type: String as PropType<'info' | 'error'>,
+      type: String as PropType<'info' | 'error' | 'success'>,
       default: 'info',
     },
   });
@@ -25,7 +25,19 @@
     &[data-type='error'] {
       background-color: var(--color-status-red-background-00);
       border-color: var(--color-status-red-border-00);
-      color: var(--color-status-red-type-00);
+
+      * {
+        color: var(--color-status-red-type-00);
+      }
+    }
+
+    &[data-type='success'] {
+      background-color: var(--color-status-green-background-00);
+      border-color: var(--color-status-green-border-00);
+
+      * {
+        color: var(--color-status-green-type-00);
+      }
     }
   }
 </style>
