@@ -10,8 +10,8 @@
   const validationSchema = z.object({
     email: z
       .string()
-      .email({ message: 'Invalid email address 💀' })
-      .nonempty({ message: 'All fields are required 🙄' }),
+      .nonempty({ message: 'All fields are required 🙄' })
+      .email({ message: 'Invalid email address 💀' }),
     password: z.string().nonempty({ message: 'All fields are required 🙄' }),
   });
 
@@ -33,7 +33,7 @@
 
   // This function is called when the form is submitted or when liveValidate is enabled
   // and the user types in the form fields
-  const validateForm = () => {
+  const validateForm = (): boolean => {
     liveValidate.value = true;
 
     const result = validationSchema.safeParse(formData.value);
