@@ -3,7 +3,7 @@ import type ms from 'ms';
 import z from 'zod';
 import { randomInt } from 'crypto';
 import authDB from '@endpoints/auth/auth.db';
-import { addEmailVerificationJob } from '@/job-engine/queues/emailQueue';
+import { addEmailVerificationJob, addPasswordResetJob } from '@/job-engine/queues/emailQueue';
 
 import type { Request, Response, NextFunction } from 'express';
 import type {
@@ -16,8 +16,8 @@ import type {
 } from '@kudos/types-api';
 
 // Get environment variables
-const JWT_SECRET = process.env.API_JWT_SECRET || 'gotcha_secret';
-const COOKIE_NAME = process.env.API_COOKIE_NAME || 'gotcha_auth';
+const JWT_SECRET = process.env.API_JWT_SECRET || 'kudos_secret';
+const COOKIE_NAME = process.env.API_COOKIE_NAME || 'kudos_auth';
 const COOKIE_EXPIRATION = process.env.API_COOKIE_EXPIRATION
   ? Number(process.env.API_COOKIE_EXPIRATION)
   : 60 * 60 * 1000;
@@ -472,6 +472,73 @@ export const verifyUser = async (req: Request, res: Response) => {
           admin: user.admin,
         },
       },
+    };
+
+    res.json(response);
+  } catch (error) {
+    const response: APIResponseNoData = {
+      status: 500,
+      error: error,
+      data: null,
+    };
+
+    res.json(response);
+    return;
+  }
+};
+
+export const sendPasswordResetEmail = async (req: Request, res: Response) => {
+  // Check if request body is provided and valid
+  const requestSchema = z.object({
+    email: z.string().nonempty(),
+  });
+
+  const validRequest = requestSchema.safeParse(req.body);
+
+  if (!validRequest.success) {
+    const response: APIResponseNoData = {
+      status: 400,
+      error: 'Invalid request body',
+      data: null,
+    };
+
+    res.json(response);
+    return;
+  }
+
+  const { email } = validRequest.data;
+
+  try {
+    // Check if user exists
+    const user = await authDB.getUserByEmail(email);
+
+    if (!user) {
+      const response: APIResponseNoData = {
+        status: 404,
+        error: 'User does not exist',
+        data: null,
+      };
+
+      res.json(response);
+      return;
+    }
+
+    // Create and store a jwt token
+    const token: string = jwt.sign({ user: user.id }, JWT_SECRET);
+
+    await authDB.storeForgottenPasswordToken({ userID: user.id, token });
+
+    // Create password reset email job
+    await addPasswordResetJob({
+      firstName: user.firstName,
+      email,
+      token,
+    });
+
+    const response: APIResponseNoData = {
+      status: 200,
+      error: null,
+      data: null,
     };
 
     res.json(response);

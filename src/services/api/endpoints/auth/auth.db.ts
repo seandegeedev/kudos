@@ -3,10 +3,7 @@ import { Prisma, PrismaClient } from '@kudos/database';
 
 const prisma = new PrismaClient();
 
-export const verifyCredentials = async ({
-  email,
-  password,
-}: {
+export const verifyCredentials = async (details: {
   email: string;
   password: string;
 }): Promise<{ verified: true; user: Prisma.UserGetPayload<object> } | { verified: false; user: null }> => {
@@ -14,12 +11,12 @@ export const verifyCredentials = async ({
     // Get user associated with email 👤
     const user = await prisma.user.findUnique({
       where: {
-        email,
+        email: details.email,
       },
     });
 
     // If user exists and password matches, return user ✅
-    if (user && (await bcrypt.compare(password, user.password))) {
+    if (user && (await bcrypt.compare(details.password, user.password))) {
       return { verified: true, user: user };
     }
 
@@ -30,16 +27,29 @@ export const verifyCredentials = async ({
   }
 };
 
-export const getUserByID = async (id: string): Promise<Prisma.UserGetPayload<object> | null> => {
+export const getUserByID = async (userID: string): Promise<Prisma.UserGetPayload<object> | null> => {
   try {
     // Return user by with provided id if it exists, returns null otherwise
     return await prisma.user.findUnique({
       where: {
-        id,
+        id: userID,
       },
     });
   } catch (error) {
     throw new Error(`Failed to get user: ${error}`);
+  }
+};
+
+export const getUserByEmail = async (email: string): Promise<Prisma.UserGetPayload<object> | null> => {
+  try {
+    // Return user by with provided email if it exists, returns null otherwise
+    return await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+  } catch (error) {
+    throw new Error(`Failed to get user by email: ${error}`);
   }
 };
 
@@ -156,6 +166,51 @@ export const storeEmailVerificationCode = async (details: { userID: string; code
   }
 };
 
+export const storeForgottenPasswordToken = async (details: { userID: string; token: string }): Promise<void> => {
+  try {
+    // Check if token already exists for the user
+    const existingToken = await prisma.forgottenPasswordToken.findUnique({
+      where: {
+        userID: details.userID,
+      },
+    });
+
+    // If token exists, update it with the new token, otherwise, create a new token
+    if (existingToken) {
+      await prisma.forgottenPasswordToken.update({
+        where: {
+          id: existingToken.id,
+        },
+        data: {
+          token: details.token,
+        },
+      });
+    } else {
+      await prisma.forgottenPasswordToken.create({
+        data: {
+          userID: details.userID,
+          token: details.token,
+        },
+      });
+    }
+  } catch (error) {
+    throw new Error(`Failed to store forgotten password token: ${error}`);
+  }
+};
+
+export const invalidateForgottenPasswordToken = async (userID: string): Promise<void> => {
+  try {
+    // Delete the token from the database
+    await prisma.forgottenPasswordToken.deleteMany({
+      where: {
+        userID,
+      },
+    });
+  } catch (error) {
+    throw new Error(`Failed to invalidate forgotten password token: ${error}`);
+  }
+};
+
 export default {
   verifyCredentials,
   getUserByID,
@@ -163,4 +218,7 @@ export default {
   adminBootstrapRequired,
   bootstrapAdmin,
   storeEmailVerificationCode,
+  storeForgottenPasswordToken,
+  invalidateForgottenPasswordToken,
+  getUserByEmail,
 };

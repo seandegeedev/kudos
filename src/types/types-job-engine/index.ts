@@ -22,3 +22,16 @@ export type VerificationEmailJobPayload = {
 };
 
 export type VerificationEmailJobData = EmailJobData<'verification', VerificationEmailJobPayload>;
+
+/*
+ * 1.2 Password Reset Email Job
+------------------------------------------------------------------------------------------------
+  */
+
+export type PasswordResetEmailJobPayload = {
+  firstName: string;
+  email: string;
+  token: string;
+};
+
+export type PasswordResetEmailJobData = EmailJobData<'password-reset', PasswordResetEmailJobPayload>;

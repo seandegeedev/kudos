@@ -21,6 +21,26 @@ export const sendVerificationEmail = async ({
   await transporter.sendMail(mailOptions);
 };
 
+export const sendPasswordResetEmail = async ({
+  firstName,
+  email,
+  token,
+}: {
+  firstName: string;
+  email: string;
+  token: string;
+}) => {
+  const mailOptions = {
+    from: { name: 'Kudos', address: SMTP_USER },
+    to: email,
+    subject: 'Kudos | Password Reset',
+    text: `Hello, ${firstName}\n\nEnter the link below to reset your password:\n\n${CLIENT_URL}/reset-password/${token}\n\nIf you did not request this, please ignore this email.`,
+  };
+
+  await transporter.sendMail(mailOptions);
+};
+
 export default {
   sendVerificationEmail,
+  sendPasswordResetEmail,
 };
