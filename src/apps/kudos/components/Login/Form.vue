@@ -152,14 +152,13 @@
   }
 
   .forgot-password-link {
-    color: var(--color-text-muted);
+    color: var(--color-link-normal);
     cursor: pointer;
 
-    text-decoration: underline;
+    text-decoration: none;
 
     &:hover {
-      text-decoration: none;
-      color: var(--color-accent-00);
+      text-decoration: underline;
     }
   }
 </style>
