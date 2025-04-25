@@ -554,6 +554,64 @@ export const sendPasswordResetEmail = async (req: Request, res: Response) => {
   }
 };
 
+export const resetPassword = async (req: Request, res: Response) => {
+  // Check if request body is provided and valid
+  const requestSchema = z.object({
+    token: z.string().nonempty(),
+    password: z.string().nonempty(),
+  });
+
+  const validRequest = requestSchema.safeParse(req.body);
+
+  if (!validRequest.success) {
+    const response: APIResponseNoData = {
+      status: 400,
+      error: 'Invalid request body',
+      data: null,
+    };
+
+    res.json(response);
+    return;
+  }
+
+  const { token, password } = validRequest.data;
+
+  try {
+    // Check if token is valid and change password ✅
+    const wasTokenValid = await authDB.resetPassword({ token, password });
+
+    if (!wasTokenValid) {
+      const response: APIResponseNoData = {
+        status: 400,
+        error: 'Invalid token',
+        data: null,
+      };
+
+      res.json(response);
+      return;
+    }
+
+    // Create response object 📦
+    const response: APIResponseNoData = {
+      status: 200,
+      error: null,
+      data: null,
+    };
+
+    res.json(response);
+    return;
+  } catch (error) {
+    const response: APIResponseNoData = {
+      status: 500,
+      error: error,
+      data: null,
+    };
+
+    res.json(response);
+    return;
+  }
+};
+
 // Bootstrap admin user if not already created
 export const bootstrapAdminUser = async (req: Request, res: Response) => {
   try {

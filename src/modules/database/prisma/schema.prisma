@@ -43,7 +43,7 @@ model ForgottenPasswordToken {
   id      String   @id @default(uuid())
   created DateTime @default(now())
   userID  String   @unique
-  token    String   
+  token   String   @unique  
   user    User     @relation(fields: [userID], references: [id])
 }
 

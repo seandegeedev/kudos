@@ -198,16 +198,42 @@ export const storeForgottenPasswordToken = async (details: { userID: string; tok
   }
 };
 
-export const invalidateForgottenPasswordToken = async (userID: string): Promise<void> => {
+export const resetPassword = async (details: { token: string; password: string }): Promise<boolean> => {
   try {
-    // Delete the token from the database
-    await prisma.forgottenPasswordToken.deleteMany({
+    // Find the user associated with the token
+    const token = await prisma.forgottenPasswordToken.findUnique({
       where: {
-        userID,
+        token: details.token,
       },
     });
+
+    if (!token) {
+      return false; // Token not found
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(details.password, 12);
+
+    // Update the user's password
+    await prisma.user.update({
+      where: {
+        id: token.userID,
+      },
+      data: {
+        password: hashedPassword,
+      },
+    });
+
+    // Delete the token from the database
+    await prisma.forgottenPasswordToken.delete({
+      where: {
+        id: token.id,
+      },
+    });
+
+    return true; // Password changed successfully
   } catch (error) {
-    throw new Error(`Failed to invalidate forgotten password token: ${error}`);
+    throw new Error(`Failed to change password: ${error}`);
   }
 };
 
@@ -219,6 +245,6 @@ export default {
   bootstrapAdmin,
   storeEmailVerificationCode,
   storeForgottenPasswordToken,
-  invalidateForgottenPasswordToken,
+  resetPassword,
   getUserByEmail,
 };
