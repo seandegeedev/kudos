@@ -338,6 +338,7 @@ export const sendEmailVerification = async (req: Request, res: Response) => {
       email: userData.email,
       code,
     });
+
     const response: APIResponseNoData = {
       status: 200,
       error: null,
@@ -382,9 +383,9 @@ export const verifyEmail = async (req: Request, res: Response) => {
     const { userID, code } = validRequest.data;
 
     // Check if token is valid ✅
-    const validToken = await authDB.validateVerificationCode({ userID, code });
+    const validCode = await authDB.validateVerificationCode({ userID, code });
 
-    if (!validToken) {
+    if (!validCode) {
       const response: APIResponseNoData = {
         status: 400,
         error: 'Invalid verification token',
