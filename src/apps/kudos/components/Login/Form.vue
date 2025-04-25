@@ -119,8 +119,8 @@
     />
     <FormFieldText label="Password" type="password" :error="!!formErrors.password" v-model:value="formData.password" />
     <div class="actions">
-      <NuxtLink href="/forgot-password" class="forgot-password-link">Forgot password? 🙄</NuxtLink>
       <FormButton class="save-button" @click="submitForm"><span>Log in</span></FormButton>
+      <NuxtLink href="/forgot-password" class="forgot-password-link">Forgot password? 🙄</NuxtLink>
     </div>
   </form>
 </template>
@@ -143,22 +143,14 @@
     }
   }
 
+  .save-button {
+    justify-content: center;
+  }
+
   .actions {
     width: 100%;
 
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-  }
-
-  .forgot-password-link {
-    color: var(--color-link-normal);
-    cursor: pointer;
-
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
+    display: grid;
+    gap: 1rem;
   }
 </style>

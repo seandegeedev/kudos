@@ -39,9 +39,16 @@ select {
 }
 
 a {
-  line-height: 1rem;
+  color: var(--color-link-normal);
+  cursor: pointer;
 
-  text-underline-offset: 0.2rem;
+  line-height: 1rem;
+  text-decoration: none;
+  text-underline-offset: 0.4rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 button {

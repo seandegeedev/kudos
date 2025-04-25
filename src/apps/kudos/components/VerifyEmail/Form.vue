@@ -14,6 +14,7 @@
     router.push({ name: 'app' });
   }
 
+  const autoVerify = ref(true);
   const userData = ref<{
     id: string;
     created: Date;
@@ -35,6 +36,14 @@
   });
 
   const validationSchema = z.string().length(4, { message: 'Verification code incomplete ❌' });
+
+  // Automatically submit the form when the code is complete
+  watch(code, newValue => {
+    if (autoVerify.value && newValue.length === 4) {
+      autoVerify.value = false; // Prevent auto-submit on subsequent changes
+      submitForm();
+    }
+  });
 
   const runChecks = async () => {
     // Check if the userID is valid

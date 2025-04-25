@@ -34,7 +34,7 @@ export const sendPasswordResetEmail = async ({
     from: { name: 'Kudos', address: SMTP_USER },
     to: email,
     subject: 'Kudos | Password Reset',
-    text: `Hello, ${firstName}\n\nEnter the link below to reset your password:\n\n${CLIENT_URL}/reset-password/${token}\n\nIf you did not request this, please ignore this email.`,
+    text: `Hello, ${firstName}\n\nClick the link below to reset your password:\n\n${CLIENT_URL}/reset-password/${token}\n\nIf you did not request this, please ignore this email.`,
   };
 
   await transporter.sendMail(mailOptions);

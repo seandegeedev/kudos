@@ -158,6 +158,6 @@
   }
 
   .next-button {
-    justify-self: end;
+    justify-content: center;
   }
 </style>

@@ -1,5 +1,9 @@
 <script lang="ts" setup>
+  import type { APIResponseNoData } from '@kudos/types-api';
   import z from 'zod';
+
+  const router = useRouter();
+  const kudosAPI = useKudosAPI();
 
   const message = ref('Ai... Enter your email address and we will send you a link to reset your password.');
   const submitted = ref(false);
@@ -43,6 +47,8 @@
   watch(
     () => formData.value,
     () => {
+      submissionError.value = '';
+
       if (liveValidate.value) {
         validateForm();
       }
@@ -53,6 +59,40 @@
   const submitForm = async () => {
     if (validateForm()) {
       try {
+        const response = await kudosAPI.post<APIResponseNoData>('/auth/send-password-reset-email', {
+          email: formData.value.email,
+        });
+
+        if (response.status !== 200) {
+          submissionError.value = 'A server error occurred while trying to log in 💀';
+          return;
+        }
+
+        const innerResponse = response.data;
+
+        // If login is not successful, set the error message and return
+        if (innerResponse.status !== 200) {
+          if (innerResponse.status === 404) {
+            submissionError.value = 'This email address does not belong to an existing user 👀';
+            return;
+          }
+
+          submissionError.value = 'A server error occurred while trying to log in 💀';
+          return;
+        }
+
+        message.value = 'Password reset email sent 💪 Check your inbox 📩';
+
+        submitted.value = true;
+        formData.value.email = '';
+        formError.value = '';
+        submissionError.value = '';
+        liveValidate.value = false;
+
+        // Redirect to the login page after 5 seconds
+        setTimeout(() => {
+          router.push('/login');
+        }, 5000);
       } catch (error) {
         submissionError.value = 'An error occurred 🙈 Please try again 🥲';
       }
@@ -73,7 +113,8 @@
     </AppMessageBox>
     <FormFieldText label="Email" type="email" :autofocus="true" :error="!!formError" v-model:value="formData.email" />
     <div class="actions">
-      <FormButton class="save-button" @click="submitForm"><span>Send Reset Link</span></FormButton>
+      <FormButton class="send-button" @click="submitForm"><span>Send Reset Link</span></FormButton>
+      <NuxtLink href="/login" class="login-link">👈 Back to login</NuxtLink>
     </div>
   </form>
 </template>
@@ -95,11 +136,14 @@
     line-height: 1.2rem;
   }
 
+  .send-button {
+    justify-content: center;
+  }
+
   .actions {
     width: 100%;
 
-    display: flex;
-    justify-content: flex-end;
-    align-items: end;
+    display: grid;
+    gap: 1rem;
   }
 </style>
