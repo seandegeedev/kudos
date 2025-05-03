@@ -11,6 +11,7 @@
 
 <style lang="scss" scoped>
   .app-navigation {
+    min-width: 16rem;
     display: grid;
     grid-template-rows: auto 1fr;
   }

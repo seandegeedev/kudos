@@ -2,7 +2,7 @@
   <main class="app">
     <AppNavigation />
     <div class="app-screens">
-      <span>screens</span>
+      <NuxtPage />
     </div>
   </main>
 </template>

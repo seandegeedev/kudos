@@ -8,6 +8,6 @@
 
 <style lang="scss" scoped>
   .header-title {
-    font-weight: 550;
+    font-size: 1.15rem;
   }
 </style>
