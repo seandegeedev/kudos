@@ -9,6 +9,5 @@ const avatarUploader = createUploader('avatars');
 const router = express.Router();
 
 router.post('/account/avatar', protect, avatarUploader.single('avatar'), uploadAvatar);
-//router.get('/account/avatar', protect, getAvatar);
 
 export default router;

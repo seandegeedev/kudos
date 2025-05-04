@@ -30,18 +30,6 @@ export const uploadAvatar = async (req: Request, res: Response) => {
     return;
   }
 
-  // Check if the file key is present and is correct
-  if (file.fieldname !== 'avatar') {
-    const response: APIResponseNoData = {
-      status: 400,
-      error: 'Invalid file key',
-      data: null,
-    };
-
-    res.json(response);
-    return;
-  }
-
   const response: APIResponseNoData = {
     status: 200,
     error: null,
@@ -51,5 +39,3 @@ export const uploadAvatar = async (req: Request, res: Response) => {
   res.json(response);
   return;
 };
-
-//export const getAvatar = async (req: Request, res: Response, next: NextFunction) => {};
