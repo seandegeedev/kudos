@@ -10,6 +10,7 @@
 <style lang="scss" scoped>
   .app {
     height: 100vh;
+
     padding: 1rem;
 
     display: grid;
@@ -19,6 +20,9 @@
   }
 
   .app-screens {
+    height: 100%;
+    overflow: hidden;
+
     background-color: var(--color-background-00);
     border-radius: 0.5rem;
   }
