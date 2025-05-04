@@ -14,7 +14,14 @@ logs/*
 
 # Media folder
 media/*
-!media/.gitkeep
+
+media/avatars/*
+!media/avatars/
+!media/avatars/.gitkeep
+
+media/reciepts/*
+!media/reciepts/
+!media/reciepts/.gitkeep
 
 # Database data folder
 data/db/*

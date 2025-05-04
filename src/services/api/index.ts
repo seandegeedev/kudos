@@ -1,7 +1,9 @@
+import path from 'path';
 import cors from 'cors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import apiRoot from '@endpoints/root/root.route';
+import { protect } from '@/endpoints/auth/auth.controller';
 
 const app = express();
 
@@ -17,10 +19,13 @@ app.use(
   })
 );
 
-/* API entry point */
+// Avatars
+app.use('/media/avatars', protect, express.static(path.join(__dirname, '../../../media/avatars')));
+
+// API entry point
 app.use('/api', apiRoot);
 
-/* Start the API sever */
+//Start the API sever
 app.listen(API_PORT, () => {
   console.log(`🚀 Kudos API is running on port ${API_PORT}`);
 });
