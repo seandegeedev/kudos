@@ -39,6 +39,34 @@ const useAccountStore = defineStore('account', () => {
     return '';
   });
 
+  const logout = async () => {
+    fetchError.value = null;
+
+    try {
+      const response = await kudosAPI.get('auth/logout');
+
+      if (response.status !== 200) {
+        fetchError.value = 'A server error occurred while trying to log out 💀';
+        return;
+      }
+
+      // Clear the user data
+      id.value = '';
+      firstName.value = '';
+      lastName.value = '';
+      email.value = '';
+      avatar.value = '';
+      verified.value = false;
+      admin.value = false;
+      created.value = undefined;
+
+      // Redirect to the login page
+      navigateTo('/login');
+    } catch (error) {
+      fetchError.value = 'An error occurred while trying to log out: ' + error;
+    }
+  };
+
   const fetch = async () => {
     fetchError.value = null;
 
@@ -76,6 +104,7 @@ const useAccountStore = defineStore('account', () => {
     verified,
     admin,
     created,
+    logout,
     fetch,
   };
 });

@@ -8,7 +8,14 @@
         <Avatar class="account-avatar" />
         <span>Account</span>
       </NuxtLink>
+      <div class="seperator"></div>
     </menu>
+    <div class="logout-section">
+      <NuxtLink href="/logout" class="menu-item">
+        <icon-right-from-bracket />
+        <span>Log out</span>
+      </NuxtLink>
+    </div>
   </div>
 </template>
 
@@ -19,6 +26,7 @@
 
     align-content: start;
     display: grid;
+    grid-template-rows: auto 1fr auto;
     gap: 0.5rem;
 
     border-top: 1px solid var(--color-border-00);
@@ -29,6 +37,7 @@
   }
 
   .menu {
+    align-content: start;
     display: grid;
   }
 
@@ -37,7 +46,7 @@
     align-items: center;
     gap: 0.5rem;
 
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem;
     border-radius: 0.5rem;
 
     color: var(--color-text-01);
@@ -55,5 +64,12 @@
 
   .account-avatar {
     width: 2rem;
+  }
+
+  .seperator {
+    height: 1px;
+    margin: 0 0.75rem;
+
+    background-color: var(--color-border-00);
   }
 </style>
