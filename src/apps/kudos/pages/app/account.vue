@@ -32,7 +32,7 @@
   }
 
   .header-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 
   .main {
@@ -54,7 +54,7 @@
     border-bottom: 1px solid var(--color-border-00);
 
     h2 {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
     }
   }
 </style>

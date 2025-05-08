@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-  const kudosAPI = useKudosAPI();
-  const kudosMedia = useKudosMedia();
+  import useAccountStore from '@/stores/account';
+
+  const accountStore = useAccountStore();
 
   const props = defineProps({
     userID: {
@@ -9,8 +10,19 @@
     },
   });
 
-  const source = ref('');
-  const alt = ref('');
+  const source = computed(() => {
+    if (!props.userID) {
+      return accountStore.avatarURL;
+    }
+    return '';
+  });
+
+  const alt = computed(() => {
+    if (!props.userID) {
+      return accountStore.displayName;
+    }
+    return '';
+  });
 </script>
 
 <template>
@@ -18,3 +30,23 @@
     <img v-if="source" :src="source" :alt="alt" class="avatar-image" />
   </div>
 </template>
+
+<style lang="scss" scoped>
+  .avatar {
+    width: 8rem;
+
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    .avatar-image {
+      height: auto;
+      width: 100%;
+
+      object-fit: cover;
+      object-position: center;
+
+      border-radius: 50%;
+    }
+  }
+</style>

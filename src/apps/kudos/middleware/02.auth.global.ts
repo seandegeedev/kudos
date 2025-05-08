@@ -1,4 +1,6 @@
-import type { APIResponseNoData, APIResponseAuthVerify } from '@kudos/types-api';
+import useAccountStore from '@stores/account';
+
+import type { APIResponseAuthVerify } from '@kudos/types-api';
 
 export default defineNuxtRouteMiddleware(async (to, _from) => {
   const kudosAPI = useKudosAPI();
@@ -31,4 +33,8 @@ export default defineNuxtRouteMiddleware(async (to, _from) => {
   if (authVerificationResponse.data.status === 200 && authVerificationResponse.data.data) {
     if (to.path === '/login') return navigateTo('/app');
   }
+
+  // Fetch the user data and store it in the account store
+  const accountStore = useAccountStore();
+  await accountStore.fetch();
 });

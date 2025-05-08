@@ -5,7 +5,7 @@
     </header>
     <menu class="menu">
       <NuxtLink href="/app/account" class="menu-item">
-        <icon-circle-user class="menu-item-icon" />
+        <Avatar class="account-avatar" />
         <span>Account</span>
       </NuxtLink>
     </menu>
@@ -51,5 +51,9 @@
 
   .menu-item-icon {
     font-size: 1.3rem;
+  }
+
+  .account-avatar {
+    width: 2rem;
   }
 </style>

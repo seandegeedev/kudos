@@ -1,3 +1,5 @@
+import { resolve } from 'path';
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
@@ -34,5 +36,8 @@ export default defineNuxtConfig({
   svgo: {
     componentPrefix: 'icon',
     autoImportPath: './assets/icons/',
+  },
+  alias: {
+    '@stores': resolve(__dirname, 'stores'),
   },
 });
