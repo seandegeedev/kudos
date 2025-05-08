@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { APIResponseAuthVerify } from '@kudos/types-api';
+import type { APIResponseAuthVerify, APIResponseMediaAccountAvatar } from '@kudos/types-api';
 
 const useAccountStore = defineStore('account', () => {
   const kudosAPI = useKudosAPI();
@@ -11,7 +11,12 @@ const useAccountStore = defineStore('account', () => {
   const firstName = ref<string>('');
   const lastName = ref<string>('');
   const email = ref<string>('');
-  const avatar = ref<string>('');
+  const avatar = ref<{
+    filename: string;
+    scale: number;
+    offsetX: number;
+    offsetY: number;
+  }>();
   const verified = ref<boolean>(false);
   const admin = ref<boolean>(false);
   const created = ref<Date>();
@@ -34,7 +39,7 @@ const useAccountStore = defineStore('account', () => {
 
   const avatarURL = computed(() => {
     if (avatar.value) {
-      return kudosMedia.getAvatarURL(avatar.value);
+      return kudosMedia.getAvatarURL(avatar.value.filename);
     }
     return '';
   });
@@ -55,7 +60,7 @@ const useAccountStore = defineStore('account', () => {
       firstName.value = '';
       lastName.value = '';
       email.value = '';
-      avatar.value = '';
+      avatar.value = undefined;
       verified.value = false;
       admin.value = false;
       created.value = undefined;
@@ -84,10 +89,35 @@ const useAccountStore = defineStore('account', () => {
       firstName.value = user.firstName;
       lastName.value = user.lastName;
       email.value = user.email;
-      avatar.value = user.avatar;
       verified.value = user.verified;
       admin.value = user.admin;
       created.value = user.created;
+
+      // Get user avatar
+
+      const avatarResponse = await kudosAPI.get<APIResponseMediaAccountAvatar>('media/account/avatar');
+
+      if (avatarResponse.status !== 200) {
+        fetchError.value = 'A server error occurred while trying to fetch account details 💀';
+        return;
+      }
+
+      if (avatarResponse.data.status !== 200 || !avatarResponse.data.data) {
+        if (avatarResponse.data.status === 404) {
+          avatar.value = undefined;
+          return;
+        }
+
+        fetchError.value = 'A server error occurred while trying to fetch account details 💀';
+        return;
+      }
+
+      avatar.value = {
+        filename: avatarResponse.data.data.filename,
+        scale: avatarResponse.data.data.scale,
+        offsetX: avatarResponse.data.data.offsetX,
+        offsetY: avatarResponse.data.data.offsetY,
+      };
     } catch (error) {
       fetchError.value = 'An error occurred while trying to fetch account details: ' + error;
     }

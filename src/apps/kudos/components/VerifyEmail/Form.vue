@@ -23,7 +23,6 @@
     verified: boolean;
     firstName: string;
     lastName: string;
-    avatar: string;
     admin: boolean;
   }>();
   const code = ref('');

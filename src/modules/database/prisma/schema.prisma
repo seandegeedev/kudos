@@ -17,8 +17,8 @@ model User {
   password                String
   firstName               String                     @db.VarChar(25)
   lastName                String                     @db.VarChar(25)
-  avatar                  String                     @default("")
   admin                   Boolean                    @default(false)
+  avatar                  UserAvatar?
   emailVerificationCode   EmailVerificationCode?
   forgottenPasswordToken  ForgottenPasswordToken?
   realms                  RealmMembership[]
@@ -29,6 +29,17 @@ model User {
   userTokenRequests       UserTokenRequest[]         @relation("userTokenRequests")
   socialTeamTokenRequests SocialTeamTokenRequest[]   @relation("socialTeamTokenRequests")
   tokenApprovals          UserTokenRequest[]         @relation("userTokenApprovals")
+}
+
+model UserAvatar {
+  id        String   @id @default(uuid())
+  userID    String   @unique
+  filename  String
+  previous  String   @default("")
+  scale     Decimal  @default(1)
+  offsetX   Decimal  @default(0)
+  offsetY   Decimal  @default(0)
+  user      User     @relation(fields: [userID], references: [id])
 }
 
 model EmailVerificationCode {
@@ -100,12 +111,12 @@ model RealmMembership {
   realmID                     String
   admin                       Boolean                 @default(false)
   default                     Boolean                 @default(false)
-  avatar                      String
   alias                       String                  @db.VarChar(25)
   lightXP                     Int                     @default(0)
   darkXP                      Int                     @default(0)
   user                        User                    @relation(fields: [userID], references: [id])
   realm                       Realm                   @relation(fields: [realmID], references: [id])
+  avatar                      RealMembershipAvatar?
   kudosGiven                  Kudos[]                 @relation("kudosGiven")
   kudosReceived               Kudos[]                 @relation("kudosReceived")
   kudosSecondsGiven           KudosSeconds[]
@@ -116,6 +127,17 @@ model RealmMembership {
   settings                    RealmMembershipSettings?
   achievements                Achievements[]
   @@unique([userID, realmID])
+}
+
+model RealMembershipAvatar {
+  id            String          @id @default(uuid())
+  membershipID  String          @unique
+  filename      String
+  previous      String
+  scale         Decimal         @default(1)
+  offsetX       Decimal         @default(0)
+  offsetY       Decimal         @default(0)
+  member        RealmMembership @relation(fields: [membershipID], references: [id])
 }
 
 model RealmMembershipSettings {

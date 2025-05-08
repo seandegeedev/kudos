@@ -12,7 +12,6 @@ export type ExpressLocals = {
     verified: boolean;
     firstName: string;
     lastName: string;
-    avatar: string;
     admin: boolean;
   } | null;
 };
@@ -55,7 +54,6 @@ export type APIResponseAuthVerify = APIResponse<{
     verified: boolean;
     firstName: string;
     lastName: string;
-    avatar: string;
     admin: boolean;
   };
 }>;
@@ -73,7 +71,6 @@ export type APIResponseAuthLogin = APIResponse<{
     verified: boolean;
     firstName: string;
     lastName: string;
-    avatar: string;
     admin: boolean;
   };
 }>;
@@ -91,7 +88,6 @@ export type APIResponseBootstrapAdmin = APIResponse<{
     verified: boolean;
     firstName: string;
     lastName: string;
-    avatar: string;
     admin: boolean;
   };
 }>;
@@ -109,7 +105,17 @@ export type APIResponseUserVerify = APIResponse<{
     verified: boolean;
     firstName: string;
     lastName: string;
-    avatar: string;
     admin: boolean;
   };
+}>;
+
+/*
+ * 2.4 GET /api/media/account/avatar
+------------------------------------------------------------------------------------------------
+ */
+export type APIResponseMediaAccountAvatar = APIResponse<{
+  filename: string;
+  scale: number;
+  offsetX: number;
+  offsetY: number;
 }>;

@@ -8,6 +8,7 @@
     <main class="main">
       <section class="details section">
         <header class="section-header"><h2>Personal Details</h2></header>
+        <AccountPersonalInfoForm />
       </section>
       <section class="password section">
         <header class="section-header"><h2>Password</h2></header>
