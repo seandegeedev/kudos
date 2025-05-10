@@ -1,12 +1,114 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+  import z from 'zod';
+  import useAccountStore from '@/stores/account';
+
+  const kudosAPI = useKudosAPI();
+  const accountStore = useAccountStore();
+
+  const validationSchema = z.object({
+    firstName: z.string().nonempty({ message: 'Both names are required 🙄' }),
+    lastName: z.string().nonempty({ message: 'Both names are required 🙄' }),
+  });
+
+  const liveValidate = ref(false);
+
+  const formData = ref({
+    firstName: accountStore.firstName,
+    lastName: accountStore.lastName,
+  });
+
+  const formErrors = ref({
+    firstName: '',
+    lastName: '',
+  });
+
+  const saveError = ref('');
+
+  const displayError = computed(() => {
+    return Object.values(formErrors.value).find(error => error !== '') || saveError.value;
+  });
+
+  const showSaveButton = computed(() => {
+    return formData.value.firstName !== accountStore.firstName || formData.value.lastName !== accountStore.lastName;
+  });
+
+  // This function is called when the form is submitted or when liveValidate is enabled
+  // and the user types in the form fields
+  const validateForm = () => {
+    liveValidate.value = true;
+
+    const result = validationSchema.safeParse(formData.value);
+
+    if (result.success) {
+      formErrors.value = {
+        firstName: '',
+        lastName: '',
+      };
+      return true;
+    } else {
+      formErrors.value = {
+        firstName: result.error.formErrors.fieldErrors.firstName?.[0] || '',
+        lastName: result.error.formErrors.fieldErrors.lastName?.[0] || '',
+      };
+      return false;
+    }
+  };
+
+  const saveDetails = async () => {
+    if (validateForm()) {
+      // Submit the form data to the server
+      try {
+        const response = await kudosAPI.post('/account/update-details', formData.value);
+
+        if (response.status !== 200) {
+          saveError.value = 'A server error occurred while trying to update account details 💀';
+          return;
+        }
+
+        const innerResponse = response.data;
+
+        // If login is not successful, set the error message and return
+        if (innerResponse.status !== 200) {
+          saveError.value = 'A server error occurred while trying to update account details 💀';
+          return;
+        }
+      } catch (error) {
+        saveError.value = 'An error occurred 🙈 Please try again 🥲';
+      }
+    }
+  };
+
+  // If liveValidate is enabled, validate the form on every change
+  // This is useful for showing validation errors as the user types
+  watch(
+    () => formData.value,
+    () => {
+      if (liveValidate.value) {
+        validateForm();
+      }
+    },
+    { deep: true }
+  );
+</script>
 
 <template>
   <form action.prevent class="personal-info-form">
-    <header class="header"><h2>Personal Details</h2></header>
+    <header class="header">
+      <h2>Personal Details</h2>
+      <FormButton v-if="showSaveButton" @click="saveDetails">Save</FormButton>
+    </header>
     <AccountAvatarChanger />
+    <AppMessageBox v-if="displayError" type="error">
+      <p>{{ displayError }}</p>
+    </AppMessageBox>
     <div class="fields">
-      <FormFieldText label="First Name" class="field" />
-      <FormFieldText label="Last Name" class="field" />
+      <FormFieldText
+        label="First Name"
+        :error="!!formErrors.firstName"
+        v-model:value="formData.firstName"
+        class="field"
+      />
+      <FormFieldText label="Last Name" :error="!!formErrors.lastName" v-model:value="formData.lastName" class="field" />
     </div>
   </form>
 </template>
@@ -34,6 +136,10 @@
 
   .header {
     padding-bottom: 0.5rem;
+
+    align-items: end;
+    display: flex;
+    justify-content: space-between;
 
     border-bottom: 1px solid var(--color-border-00);
 

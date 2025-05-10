@@ -2,7 +2,10 @@
 
 <template>
   <form action.prevent class="email-form">
-    <header class="header"><h2>Email</h2></header>
+    <header class="header">
+      <h2>Email</h2>
+      <FormButton>Update Email</FormButton>
+    </header>
     <p class="disclaimer">
       <strong>Note:</strong> Changing your email will log you out and require you to verify the new email address. A
       verification link will be sent to the new email address.
@@ -36,6 +39,10 @@
 
   .header {
     padding-bottom: 0.5rem;
+
+    align-items: end;
+    display: flex;
+    justify-content: space-between;
 
     border-bottom: 1px solid var(--color-border-00);
 

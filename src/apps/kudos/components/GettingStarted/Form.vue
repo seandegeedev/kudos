@@ -36,6 +36,10 @@
 
   const submissionError = ref('');
 
+  const displayError = computed(() => {
+    return Object.values(formErrors.value).find(error => error !== '') || submissionError.value;
+  });
+
   // This function is called when the form is submitted or when liveValidate is enabled
   // and the user types in the form fields
   const validateForm = () => {
@@ -61,10 +65,6 @@
       return false;
     }
   };
-
-  const displayError = computed(() => {
-    return Object.values(formErrors.value).find(error => error !== '') || submissionError.value;
-  });
 
   // If liveValidate is enabled, validate the form on every change
   // This is useful for showing validation errors as the user types

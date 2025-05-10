@@ -2,7 +2,10 @@
 
 <template>
   <form action.prevent class="password-form">
-    <header class="header"><h2>Password</h2></header>
+    <header class="header">
+      <h2>Password</h2>
+      <FormButton>Change Password</FormButton>
+    </header>
     <div class="fields">
       <FormFieldText label="Current Password" type="password" />
       <FormFieldText label="New Password" type="password" />
@@ -32,6 +35,10 @@
 
   .header {
     padding-bottom: 0.5rem;
+
+    align-items: end;
+    display: flex;
+    justify-content: space-between;
 
     border-bottom: 1px solid var(--color-border-00);
 
