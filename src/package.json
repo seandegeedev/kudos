@@ -4,7 +4,7 @@
   "author": "Sean De Gee",
   "description": "Kudos",
   "license": "MIT",
-  "packageManager": "bun@1.2.7",
+  "packageManager": "bun@1.2.13",
   "workspaces": [
     "apps/*",
     "services/*",

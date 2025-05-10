@@ -26,7 +26,7 @@ sudo apt install ca-certificates curl unzip -y
 #  Bun Installation
 # ============================================
 
-# Download and install latest version of Bun. For a specific version, replace with [curl -fsSL https://bun.sh/install | bash -s "bun-v1.2.7"]
+# Download and install latest version of Bun. For a specific version, replace with [curl -fsSL https://bun.sh/install | bash -s "bun-v1.2.13"]
 curl -fsSL https://bun.sh/install | bash
 
 # Make bun useable from the current shell

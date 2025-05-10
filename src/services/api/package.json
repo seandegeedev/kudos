@@ -9,20 +9,20 @@
     "start": "bun index.ts"
   },
   "devDependencies": {
-    "@eslint/js": "^9.24.0",
+    "@eslint/js": "^9.26.0",
     "@kudos/types-api": "workspace:*",
     "@kudos/types-job-engine": "workspace:*",
     "@types/bcrypt": "^5.0.2",
-    "@types/bun": "^1.2.10",
+    "@types/bun": "^1.2.12",
     "@types/cookie-parser": "^1.4.8",
-    "@types/cors": "^2.8.17",
+    "@types/cors": "^2.8.18",
     "@types/express": "^5.0.1",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/ms": "^2.1.0",
     "@types/multer": "^1.4.12",
-    "eslint": "^9.24.0",
-    "globals": "^16.0.0",
-    "typescript-eslint": "^8.30.1"
+    "eslint": "^9.26.0",
+    "globals": "^16.1.0",
+    "typescript-eslint": "^8.32.0"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"
@@ -30,7 +30,7 @@
   "dependencies": {
     "@kudos/database": "workspace:*",
     "bcrypt": "^5.1.1",
-    "bullmq": "^5.49.1",
+    "bullmq": "^5.52.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^5.1.0",
