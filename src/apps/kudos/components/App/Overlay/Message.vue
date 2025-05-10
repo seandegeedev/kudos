@@ -1,6 +1,12 @@
+<script lang="ts" setup>
+  import useMessageQueueStore from '@/stores/messageQueue';
+
+  const messageQueueStore = useMessageQueueStore();
+</script>
+
 <template>
   <div class="app-overlay-message">
-    <AppMessages />
+    <AppMessages v-if="messageQueueStore.messages.length" />
   </div>
 </template>
 

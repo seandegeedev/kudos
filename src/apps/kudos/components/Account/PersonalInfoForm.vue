@@ -1,10 +1,12 @@
 <script lang="ts" setup>
   import z from 'zod';
   import useAccountStore from '@/stores/account';
+  import useMessageQueueStore from '@/stores/messageQueue';
   import type { APIResponseNoData } from '@kudos/types-api';
 
   const kudosAPI = useKudosAPI();
   const accountStore = useAccountStore();
+  const messageQueueStore = useMessageQueueStore();
 
   const validationSchema = z.object({
     firstName: z.string().nonempty({ message: 'Both names are required 🙄' }),
@@ -76,6 +78,12 @@
 
         // If the update was successful, update the account store
         await accountStore.fetch();
+
+        // Display a success message
+        messageQueueStore.addMessage({
+          type: 'success',
+          message: 'Your personal details have been updated successfully ✅',
+        });
       } catch (error) {
         saveError.value = 'An error occurred 🙈 Please try again 🥲';
       }

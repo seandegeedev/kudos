@@ -1,8 +1,10 @@
 <script lang="ts" setup>
   import z from 'zod';
+  import useMessageQueueStore from '@/stores/messageQueue';
   import type { APIResponseNoData } from '@kudos/types-api';
 
   const kudosAPI = useKudosAPI();
+  const messageQueueStore = useMessageQueueStore();
 
   const validationSchema = z.object({
     currentPassword: z.string().nonempty({ message: 'Current password is required 🙄' }),
@@ -69,7 +71,7 @@
 
         const innerResponse = response.data;
 
-        // If login is not successful, set the error message and return
+        // If password change is not successful, set the error message and return
         if (innerResponse.status !== 200) {
           saveError.value = 'A server error occurred while trying to update password 💀';
           return;
@@ -77,11 +79,17 @@
 
         liveValidate.value = false;
 
-        // If login is successful, clear the form
+        // If password change is successful, clear the form
         formData.value = {
           currentPassword: '',
           newPassword: '',
         };
+
+        // Display a success message
+        messageQueueStore.addMessage({
+          type: 'success',
+          message: 'Your password has been updated successfully ✅',
+        });
       } catch (error) {
         saveError.value = 'An error occurred 🙈 Please try again 🥲';
       }
