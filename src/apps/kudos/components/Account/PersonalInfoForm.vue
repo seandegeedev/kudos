@@ -68,7 +68,7 @@
 
         const innerResponse = response.data;
 
-        // If login is not successful, set the error message and return
+        // If the update is not successful, set the error message and return
         if (innerResponse.status !== 200) {
           saveError.value = 'A server error occurred while trying to update account details 💀';
           return;

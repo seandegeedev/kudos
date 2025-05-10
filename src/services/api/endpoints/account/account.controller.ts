@@ -196,7 +196,7 @@ export const updateAccountEmail = async (req: Request, res: Response) => {
     // Create verification email job
     await addEmailVerificationJob({
       firstName: userData.firstName,
-      email: userData.email,
+      email: email,
       code,
     });
 
