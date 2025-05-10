@@ -1,5 +1,5 @@
-import z from 'zod';
-import mediaDB from '@endpoints/media/media.db';
+import { z } from 'zod';
+import mediaDB from '@endpoints/media/account/media.account.db';
 import mediaFile from '@endpoints/media/media.file';
 import type { Request, Response } from 'express';
 import type { APIResponseNoData, ExpressLocals, APIResponseMediaAccountAvatar } from '@kudos/types-api';
@@ -65,7 +65,7 @@ export const uploadAccountAvatar = async (req: Request, res: Response) => {
 
   const { file } = req;
 
-  // Check if file is present
+  // Check if file is present from multer middleware
   if (!file) {
     const response: APIResponseNoData = {
       status: 400,
@@ -78,6 +78,7 @@ export const uploadAccountAvatar = async (req: Request, res: Response) => {
   }
 
   try {
+    // Set the account avatar in the database
     const previousAvatar = await mediaDB.setAccountAvatar({
       userID: locals.user.id,
       avatar: {
@@ -88,7 +89,7 @@ export const uploadAccountAvatar = async (req: Request, res: Response) => {
       },
     });
 
-    // If there was a previous avatar, delete it
+    // If there was a previous avatar, delete it from the file system
     if (previousAvatar) {
       await mediaFile.deleteAvatar(previousAvatar);
     }
@@ -102,15 +103,6 @@ export const uploadAccountAvatar = async (req: Request, res: Response) => {
     res.json(response);
     return;
   }
-
-  const response: APIResponseNoData = {
-    status: 200,
-    error: null,
-    data: null,
-  };
-
-  res.json(response);
-  return;
 };
 
 export const adjustAccountAvatar = async (req: Request, res: Response) => {
@@ -152,7 +144,7 @@ export const adjustAccountAvatar = async (req: Request, res: Response) => {
 
   // Update avatar adjustments in the database
   try {
-    await mediaDB.updateAccountAvatarAdjustments({
+    await mediaDB.adjustAccountAvatar({
       userID: locals.user.id,
       adjustments: {
         scale,
@@ -181,49 +173,6 @@ export const adjustAccountAvatar = async (req: Request, res: Response) => {
   return;
 };
 
-export const cancelAccountAvatar = async (_req: Request, res: Response) => {
-  const locals = res.locals as ExpressLocals;
-
-  // Check if user is logged in, if not, return 401
-  if (!locals || !locals.user) {
-    const response: APIResponseNoData = {
-      status: 401,
-      error: 'Unauthorized',
-      data: null,
-    };
-
-    res.json(response);
-    return;
-  }
-
-  try {
-    const uploadedAvatar = await mediaDB.cancelAccountAvatar({
-      userID: locals.user.id,
-    });
-
-    if (uploadedAvatar) {
-      await mediaFile.deleteAvatar(uploadedAvatar);
-    }
-  } catch (error) {
-    const response: APIResponseNoData = {
-      status: 500,
-      error: 'Failed to cancel avatar: ' + error,
-      data: null,
-    };
-
-    res.json(response);
-    return;
-  }
-  const response: APIResponseNoData = {
-    status: 200,
-    error: null,
-    data: null,
-  };
-
-  res.json(response);
-  return;
-};
-
 export const removeAccountAvatar = async (_req: Request, res: Response) => {
   const locals = res.locals as ExpressLocals;
 
@@ -240,17 +189,22 @@ export const removeAccountAvatar = async (_req: Request, res: Response) => {
   }
 
   try {
-    const avatars = await mediaDB.removeAccountAvatar({
+    const avatar = await mediaDB.removeAccountAvatar({
       userID: locals.user.id,
     });
 
-    if (avatars) {
-      await mediaFile.deleteAvatar(avatars.current);
-
-      if (avatars.previous) {
-        await mediaFile.deleteAvatar(avatars.previous);
-      }
+    if (avatar) {
+      await mediaFile.deleteAvatar(avatar);
     }
+
+    const response: APIResponseNoData = {
+      status: 200,
+      error: null,
+      data: null,
+    };
+
+    res.json(response);
+    return;
   } catch (error) {
     const response: APIResponseNoData = {
       status: 500,
@@ -261,13 +215,4 @@ export const removeAccountAvatar = async (_req: Request, res: Response) => {
     res.json(response);
     return;
   }
-
-  const response: APIResponseNoData = {
-    status: 200,
-    error: null,
-    data: null,
-  };
-
-  res.json(response);
-  return;
 };

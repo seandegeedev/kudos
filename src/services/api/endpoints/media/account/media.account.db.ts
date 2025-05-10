@@ -26,22 +26,21 @@ export const setAccountAvatar = async (details: {
     });
 
     if (existingAvatar) {
-      // Update avatar entry
+      // If avatar exists, update it
       await prisma.userAvatar.update({
         where: { userID: details.userID },
         data: {
           filename: details.avatar.filename,
-          previous: existingAvatar.filename,
           scale: details.avatar.scale,
           offsetX: details.avatar.offsetX,
           offsetY: details.avatar.offsetY,
         },
       });
 
-      return existingAvatar.previous;
+      // Return the previous avatar's filename
+      return existingAvatar.filename;
     }
 
-    // Create new avatar entry
     await prisma.userAvatar.create({
       data: {
         userID: details.userID,
@@ -58,7 +57,7 @@ export const setAccountAvatar = async (details: {
   }
 };
 
-export const updateAccountAvatarAdjustments = async (details: {
+export const adjustAccountAvatar = async (details: {
   userID: string;
   adjustments: { scale: number; offsetX: number; offsetY: number };
 }): Promise<void> => {
@@ -77,9 +76,9 @@ export const updateAccountAvatarAdjustments = async (details: {
   }
 };
 
-export const cancelAccountAvatar = async (details: { userID: string }): Promise<string | null> => {
+export const removeAccountAvatar = async (details: { userID: string }): Promise<string | null> => {
   try {
-    // Get existing avatar if it exists
+    // Check if user has an avatar
     const existingAvatar = await prisma.userAvatar.findUnique({
       where: { userID: details.userID },
     });
@@ -88,36 +87,13 @@ export const cancelAccountAvatar = async (details: { userID: string }): Promise<
       return null;
     }
 
-    // Update avatar entry
-    await prisma.userAvatar.update({
+    // Delete the avatar from the database
+    await prisma.userAvatar.delete({
       where: { userID: details.userID },
-      data: {
-        filename: existingAvatar.previous,
-        previous: '',
-      },
     });
 
-    // Return the filename of the previous avatar
+    // Return the filename of the deleted avatar
     return existingAvatar.filename;
-  } catch (error) {
-    throw new Error(`Failed to cancel user account avatar: ${error}`);
-  }
-};
-
-export const removeAccountAvatar = async (details: {
-  userID: string;
-}): Promise<{ current: string; previous: string } | null> => {
-  try {
-    // Delete avatar entry
-    const avatar = await prisma.userAvatar.delete({
-      where: { userID: details.userID },
-    });
-
-    // Return the filenames of the current and previous avatars
-    return {
-      current: avatar.filename,
-      previous: avatar.previous,
-    };
   } catch (error) {
     throw new Error(`Failed to remove user account avatar: ${error}`);
   }
@@ -126,7 +102,6 @@ export const removeAccountAvatar = async (details: {
 export default {
   getAccountAvatar,
   setAccountAvatar,
-  updateAccountAvatarAdjustments,
-  cancelAccountAvatar,
+  adjustAccountAvatar,
   removeAccountAvatar,
 };

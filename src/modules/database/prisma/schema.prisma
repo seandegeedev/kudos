@@ -35,7 +35,6 @@ model UserAvatar {
   id        String   @id @default(uuid())
   userID    String   @unique
   filename  String
-  previous  String   @default("")
   scale     Decimal  @default(1)
   offsetX   Decimal  @default(0)
   offsetY   Decimal  @default(0)
@@ -133,7 +132,6 @@ model RealMembershipAvatar {
   id            String          @id @default(uuid())
   membershipID  String          @unique
   filename      String
-  previous      String
   scale         Decimal         @default(1)
   offsetX       Decimal         @default(0)
   offsetY       Decimal         @default(0)
