@@ -1,6 +1,7 @@
 <script lang="ts" setup>
   import z from 'zod';
   import useAccountStore from '@/stores/account';
+  import type { APIResponseNoData } from '@kudos/types-api';
 
   const kudosAPI = useKudosAPI();
   const accountStore = useAccountStore();
@@ -58,7 +59,7 @@
     if (validateForm()) {
       // Submit the form data to the server
       try {
-        const response = await kudosAPI.post('/account/update-details', formData.value);
+        const response = await kudosAPI.post<APIResponseNoData>('/account/update-details', formData.value);
 
         if (response.status !== 200) {
           saveError.value = 'A server error occurred while trying to update account details 💀';
@@ -72,6 +73,9 @@
           saveError.value = 'A server error occurred while trying to update account details 💀';
           return;
         }
+
+        // If the update was successful, update the account store
+        await accountStore.fetch();
       } catch (error) {
         saveError.value = 'An error occurred 🙈 Please try again 🥲';
       }
@@ -105,10 +109,15 @@
       <FormFieldText
         label="First Name"
         :error="!!formErrors.firstName"
+        autocomplete="given-name"
         v-model:value="formData.firstName"
-        class="field"
       />
-      <FormFieldText label="Last Name" :error="!!formErrors.lastName" v-model:value="formData.lastName" class="field" />
+      <FormFieldText
+        label="Last Name"
+        :error="!!formErrors.lastName"
+        autocomplete="family-name"
+        v-model:value="formData.lastName"
+      />
     </div>
   </form>
 </template>

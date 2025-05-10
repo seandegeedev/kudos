@@ -33,6 +33,11 @@
       required: false,
       default: false,
     },
+    autocomplete: {
+      type: String as PropType<string>,
+      required: false,
+      default: 'on',
+    },
   });
 
   // Define a prop for the password visibility toggle
@@ -66,6 +71,7 @@
         :type="inputType"
         :placeholder="placeholder"
         :autofocus="autofocus"
+        :autocomplete="autocomplete"
         v-model="modelValue"
         class="input"
       />
