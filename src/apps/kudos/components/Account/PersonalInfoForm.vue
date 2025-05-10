@@ -2,6 +2,7 @@
 
 <template>
   <form action.prevent class="personal-info-form">
+    <header class="header"><h2>Personal Details</h2></header>
     <AccountAvatarChanger />
     <div class="fields">
       <FormFieldText label="First Name" class="field" />
@@ -13,7 +14,7 @@
 <style lang="scss" scoped>
   .personal-info-form {
     padding: 1rem 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 
     container-type: inline-size;
     display: grid;
@@ -28,6 +29,16 @@
 
     @container (max-width: 500px) {
       grid-template-columns: 1fr;
+    }
+  }
+
+  .header {
+    padding-bottom: 0.5rem;
+
+    border-bottom: 1px solid var(--color-border-00);
+
+    h2 {
+      font-size: 1.2rem;
     }
   }
 </style>

@@ -7,15 +7,12 @@
     </header>
     <main class="main">
       <section class="details section">
-        <header class="section-header"><h2>Personal Details</h2></header>
         <AccountPersonalInfoForm />
       </section>
       <section class="password section">
-        <header class="section-header"><h2>Password</h2></header>
         <AccountPasswordForm />
       </section>
       <section class="email section">
-        <header class="section-header"><h2>Email</h2></header>
         <AccountEmailForm />
       </section>
     </main>
@@ -45,19 +42,5 @@
     width: 100%;
 
     justify-self: center;
-  }
-
-  .section {
-    min-height: 10rem;
-  }
-
-  .section-header {
-    padding-bottom: 0.5rem;
-
-    border-bottom: 1px solid var(--color-border-00);
-
-    h2 {
-      font-size: 1.2rem;
-    }
   }
 </style>
