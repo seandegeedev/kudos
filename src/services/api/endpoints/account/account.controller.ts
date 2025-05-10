@@ -61,9 +61,84 @@ export const updateAccountDetails = async (req: Request, res: Response) => {
     };
 
     res.json(response);
+    return;
   }
 };
 
-//export const updateAccountPassword = async (req: Request, res: Response) => {};
+export const updateAccountPassword = async (req: Request, res: Response) => {
+  const locals = res.locals as ExpressLocals;
+  const userData = locals.user;
+
+  // Check if user is logged in, if not, return 401
+  if (!userData) {
+    const response: APIResponseNoData = {
+      status: 401,
+      error: 'Unauthorized',
+      data: null,
+    };
+
+    res.json(response);
+    return;
+  }
+
+  try {
+    // Check if request body is provided and valid
+    const requestSchema = z.object({
+      currentPassword: z.string().nonempty(),
+      newPassword: z.string().nonempty(),
+    });
+
+    const validRequest = requestSchema.safeParse(req.body);
+
+    if (!validRequest.success) {
+      const response: APIResponseNoData = {
+        status: 400,
+        error: 'Invalid request body',
+        data: null,
+      };
+
+      res.json(response);
+      return;
+    }
+
+    const userID = userData.id;
+    const { currentPassword, newPassword } = validRequest.data;
+
+    // Update password in db 🔑
+    const passwordUpdated = await accountDB.updateAccountPassword({
+      userID,
+      currentPassword,
+      newPassword,
+    });
+
+    if (!passwordUpdated) {
+      const response: APIResponseNoData = {
+        status: 400,
+        error: 'Invalid current password',
+        data: null,
+      };
+
+      res.json(response);
+      return;
+    }
+
+    const response: APIResponseNoData = {
+      status: 200,
+      error: null,
+      data: null,
+    };
+    res.json(response);
+    return;
+  } catch (error) {
+    const response: APIResponseNoData = {
+      status: 500,
+      error: error,
+      data: null,
+    };
+
+    res.json(response);
+    return;
+  }
+};
 
 //export const updateAccountEmail = async (req: Request, res: Response) => {};

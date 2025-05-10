@@ -75,6 +75,8 @@
           return;
         }
 
+        liveValidate.value = false;
+
         // If login is successful, clear the form
         formData.value = {
           currentPassword: '',
@@ -105,6 +107,9 @@
       <h2>Password</h2>
       <FormButton v-if="showChangePasswordButton" @click="savePassword">Change Password</FormButton>
     </header>
+    <AppMessageBox v-if="displayError" type="error">
+      <p>{{ displayError }}</p>
+    </AppMessageBox>
     <div class="fields">
       <FormFieldText
         label="Current Password"
