@@ -93,6 +93,15 @@ export const uploadAccountAvatar = async (req: Request, res: Response) => {
     if (previousAvatar) {
       await mediaFile.deleteAvatar(previousAvatar);
     }
+
+    const response: APIResponseNoData = {
+      status: 200,
+      error: null,
+      data: null,
+    };
+
+    res.json(response);
+    return;
   } catch (error) {
     const response: APIResponseNoData = {
       status: 500,
