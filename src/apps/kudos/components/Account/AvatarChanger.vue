@@ -19,6 +19,11 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
+
+    @container (max-width: 500px) {
+      display: grid;
+      gap: 1rem;
+    }
   }
 
   .avatar {

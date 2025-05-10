@@ -12,9 +12,11 @@
       </section>
       <section class="password section">
         <header class="section-header"><h2>Password</h2></header>
+        <AccountPasswordForm />
       </section>
       <section class="email section">
         <header class="section-header"><h2>Email</h2></header>
+        <AccountEmailForm />
       </section>
     </main>
   </div>

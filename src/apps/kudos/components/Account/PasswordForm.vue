@@ -1,17 +1,16 @@
 <script lang="ts" setup></script>
 
 <template>
-  <form action.prevent class="personal-info-form">
-    <AccountAvatarChanger />
+  <form action.prevent class="password-form">
     <div class="fields">
-      <FormFieldText label="First Name" class="field" />
-      <FormFieldText label="Last Name" class="field" />
+      <FormFieldText label="Current Password" type="password" />
+      <FormFieldText label="New Password" type="password" />
     </div>
   </form>
 </template>
 
 <style lang="scss" scoped>
-  .personal-info-form {
+  .password-form {
     padding: 1rem 0;
     margin-bottom: 1rem;
 
