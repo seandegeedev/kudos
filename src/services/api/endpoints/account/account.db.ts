@@ -35,7 +35,7 @@ export const updateAccountPassword = async ({
   userID: string;
   currentPassword: string;
   newPassword: string;
-}) => {
+}): Promise<boolean> => {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -67,7 +67,52 @@ export const updateAccountPassword = async ({
   }
 };
 
+export const updateAccountEmail = async ({
+  userID,
+  newEmail,
+}: {
+  userID: string;
+  newEmail: string;
+}): Promise<boolean> => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userID,
+      },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const emailExists = await prisma.user.findUnique({
+      where: {
+        email: newEmail,
+      },
+    });
+
+    if (emailExists) {
+      return false; // Email already exists
+    }
+
+    await prisma.user.update({
+      where: {
+        id: userID,
+      },
+      data: {
+        email: newEmail,
+        verified: false,
+      },
+    });
+
+    return true;
+  } catch (error) {
+    throw new Error(`Error updating account email: ${error}`);
+  }
+};
+
 export default {
   updateAccountDetails,
   updateAccountPassword,
+  updateAccountEmail,
 };

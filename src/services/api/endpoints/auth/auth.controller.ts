@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
-import type ms from 'ms';
 import z from 'zod';
 import { randomInt } from 'crypto';
 import authDB from '@endpoints/auth/auth.db';
 import { addEmailVerificationJob, addPasswordResetJob } from '@/job-engine/queues/emailQueue';
+import type ms from 'ms';
 
 import type { Request, Response, NextFunction } from 'express';
 import type {
