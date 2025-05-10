@@ -73,6 +73,11 @@
 
         // If password change is not successful, set the error message and return
         if (innerResponse.status !== 200) {
+          if (innerResponse.status === 401) {
+            saveError.value = 'Current password is incorrect 👀';
+            return;
+          }
+
           saveError.value = 'A server error occurred while trying to update password 💀';
           return;
         }
@@ -84,6 +89,9 @@
           currentPassword: '',
           newPassword: '',
         };
+
+        // Clear any error messages
+        saveError.value = '';
 
         // Display a success message
         messageQueueStore.addMessage({

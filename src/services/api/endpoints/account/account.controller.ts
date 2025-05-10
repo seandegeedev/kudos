@@ -116,7 +116,7 @@ export const updateAccountPassword = async (req: Request, res: Response) => {
 
     if (!passwordUpdated) {
       const response: APIResponseNoData = {
-        status: 400,
+        status: 401,
         error: 'Invalid current password',
         data: null,
       };
