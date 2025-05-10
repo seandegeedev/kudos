@@ -101,10 +101,7 @@
   };
 
   const resendConfirmationEmail = async () => {
-    console.log('Resending confirmation email...');
     const response = await kudosAPI.get('/auth/send-email-verification');
-
-    console.log('Response:', response);
 
     if (response.data.status !== 200) {
       submissionError.value = 'Failed to resend verification email. Please try again.';
