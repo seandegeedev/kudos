@@ -17,6 +17,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "nodemailer": "^6.10.1"
+    "nodemailer": "^6.10.1",
+    "p-retry": "^6.2.1"
   }
 }
