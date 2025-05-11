@@ -1,13 +1,11 @@
 <template>
-  <div class="app-overlay-popups"></div>
+  <div class="app-overlay-popups" id="popup-teleport"></div>
 </template>
 
 <style lang="scss" scoped>
   .app-overlay-popups {
-    padding: 1rem;
-
     display: grid;
-    place-content: center;
+    height: 100%;
 
     pointer-events: none;
   }

@@ -1,3 +1,13 @@
+<script lang="ts" setup>
+  import AccountAvatarEditorPopup from '@/components/Account/AvatarEditorPopup.vue';
+
+  const avatarEditorPopup = ref<InstanceType<typeof AccountAvatarEditorPopup> | null>(null);
+
+  const openAvatarEditorPopup = () => {
+    avatarEditorPopup.value?.open();
+  };
+</script>
+
 <template>
   <div class="avatar-changer">
     <div class="avatar-details">
@@ -8,10 +18,11 @@
       </div>
     </div>
     <div class="actions">
-      <FormButton type="solid" size="small">Change</FormButton>
+      <FormButton type="solid" size="small" @click="openAvatarEditorPopup">Change</FormButton>
       <FormButton type="outline" size="small">Remove</FormButton>
     </div>
   </div>
+  <AccountAvatarEditorPopup ref="avatarEditorPopup" />
 </template>
 
 <style lang="scss" scoped>
