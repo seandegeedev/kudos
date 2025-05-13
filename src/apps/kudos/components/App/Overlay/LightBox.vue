@@ -1,5 +1,5 @@
 <template>
-  <div class="lightbox" @click.stop="$emit('clickOutside')">
+  <div class="lightbox" @click.self="$emit('clickOutside')">
     <slot />
   </div>
 </template>
