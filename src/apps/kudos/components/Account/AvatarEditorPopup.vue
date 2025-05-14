@@ -139,7 +139,7 @@
         <icon-xmark class="close-button" @click="verifyClose" />
       </div>
       <div class="avatar-box">
-        <div ref="imageWrapperElement" class="avatar-image-wrapper" @click="selectFile">
+        <div ref="imageWrapperElement" class="avatar-image-wrapper">
           <img
             ref="imageElement"
             :src="imageSource"
@@ -148,7 +148,12 @@
             @load="imageLoaded"
           />
         </div>
-        <div class="avatar-circle-overlay"></div>
+        <div class="avatar-circle-overlay">
+          <FormButton size="small" class="change-button" @click="selectFile">
+            <icon-pen />
+            <span>Change</span>
+          </FormButton>
+        </div>
       </div>
       <div class="controls"></div>
       <div class="actions">
@@ -215,13 +220,15 @@
 
   .avatar-circle-overlay {
     height: 100%;
+    padding: 1rem;
     z-index: 1;
 
+    align-items: end;
+    display: grid;
     grid-area: content;
+    justify-content: end;
 
     background: radial-gradient(circle at center, transparent 70.5%, var(--color-background-00) calc(70.5% + 1px));
-
-    pointer-events: none;
   }
 
   .avatar-image-wrapper {
@@ -240,6 +247,11 @@
       object-fit: cover;
       object-position: center;
     }
+  }
+
+  .change-button {
+    display: flex;
+    gap: 0.25rem;
   }
 
   .actions {
