@@ -111,6 +111,7 @@
     border-radius: 50%;
 
     .avatar-image {
+      max-width: none;
       object-fit: cover;
       object-position: center;
     }
