@@ -11,7 +11,7 @@
 <template>
   <div class="avatar-changer">
     <div class="avatar-details">
-      <Avatar class="avatar" />
+      <AvatarView class="avatar" />
       <div class="avatar-label">
         <label>Profile Picture</label>
         <p class="avatar-spec">PNG, JPEG, GIF under 5MB</p>

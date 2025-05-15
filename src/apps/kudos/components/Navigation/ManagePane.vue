@@ -5,7 +5,7 @@
     </header>
     <menu class="menu">
       <NuxtLink href="/app/account" class="menu-item">
-        <Avatar class="account-avatar" />
+        <AvatarView class="account-avatar" />
         <span>Account</span>
       </NuxtLink>
       <div class="seperator"></div>
