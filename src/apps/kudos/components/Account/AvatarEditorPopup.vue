@@ -16,6 +16,17 @@
   const imageOrientation = ref<'landscape' | 'portrait' | 'square'>('square');
   const saveError = ref('');
 
+  const currentTransform = ref({
+    x: 0,
+    y: 0,
+    scale: 1,
+  });
+
+  const currentCursorPosition = ref({
+    x: 0,
+    y: 0,
+  });
+
   const imageSource = computed(() => {
     if (!uploadedImageSrc.value) {
       return accountStore.avatarURL;
@@ -145,6 +156,7 @@
             :src="imageSource"
             :alt="accountStore.displayName"
             :style="imageStyle"
+            @dragstart.prevent
             @load="imageLoaded"
           />
         </div>
@@ -165,7 +177,6 @@
 
 <style lang="scss" scoped>
   .avatar-editor {
-    min-height: 30rem;
     padding: 0.5rem 1.5rem 1.5rem 1.5rem;
 
     display: grid;
@@ -229,6 +240,8 @@
     justify-content: end;
 
     background: radial-gradient(circle at center, transparent 70.5%, var(--color-background-00) calc(70.5% + 1px));
+
+    pointer-events: none;
   }
 
   .avatar-image-wrapper {
@@ -241,9 +254,9 @@
     justify-content: center;
 
     background-color: aqua;
-    cursor: pointer;
 
     img {
+      max-width: none;
       object-fit: cover;
       object-position: center;
     }
@@ -252,6 +265,8 @@
   .change-button {
     display: flex;
     gap: 0.25rem;
+
+    pointer-events: all;
   }
 
   .actions {
