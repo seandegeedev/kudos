@@ -109,7 +109,7 @@
       <h2>Personal Details</h2>
       <FormButton v-if="showSaveButton" @click="saveDetails">Save</FormButton>
     </header>
-    <AccountAvatarChanger />
+    <AvatarField />
     <AppMessageBox v-if="displayError" type="error">
       <p>{{ displayError }}</p>
     </AppMessageBox>

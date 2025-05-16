@@ -32,7 +32,7 @@
     return 'account';
   });
 
-  const source = computed(() => {
+  const imageSource = computed(() => {
     if (avatarType.value === 'account') {
       return accountStore.avatarURL;
     }
@@ -92,7 +92,7 @@
 
 <template>
   <div class="avatar-view">
-    <img ref="imageElement" v-if="source" class="avatar-image" :src="source" :alt="alt" :style="imageStyle" />
+    <img ref="imageElement" v-if="imageSource" class="avatar-image" :src="imageSource" :alt="alt" :style="imageStyle" />
   </div>
 </template>
 
