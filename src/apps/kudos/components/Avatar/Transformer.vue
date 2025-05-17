@@ -72,6 +72,8 @@
 
 <style lang="scss" scoped>
   .avatar-transformer {
+    aspect-ratio: 1 / 1;
+
     display: grid;
     grid-template-areas: 'content';
     grid-template-columns: 1fr;
