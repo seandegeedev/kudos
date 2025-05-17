@@ -16,6 +16,8 @@
 
   const imageElement = ref<HTMLImageElement | null>(null);
 
+  const imageOrientation = ref<'landscape' | 'portrait' | 'square'>('square');
+
   const avatarType = computed(() => {
     if (props.userID) {
       if (props.domainID) {
@@ -65,6 +67,14 @@
   });
 
   const imageStyle = computed(() => {
+    return {
+      width: imageOrientation.value === 'portrait' || imageOrientation.value === 'square' ? '100%' : 'auto',
+      height: imageOrientation.value === 'landscape' ? '100%' : 'auto',
+      transform: `scale(${imageTransforms.value.scale}) translate(${imageTransforms.value.offsetX}%, ${imageTransforms.value.offsetY}%)`,
+    };
+  });
+
+  const onImageLoad = async () => {
     if (!imageElement.value) {
       return {};
     }
@@ -72,33 +82,33 @@
     const imageWidth = imageElement.value.naturalWidth;
     const imageHeight = imageElement.value.naturalHeight;
 
-    let imageOrientation: 'landscape' | 'portrait' | 'square' = 'square';
-
     if (imageWidth > imageHeight) {
-      imageOrientation = 'landscape';
+      imageOrientation.value = 'landscape';
     } else if (imageWidth < imageHeight) {
-      imageOrientation = 'portrait';
+      imageOrientation.value = 'portrait';
     } else {
-      imageOrientation = 'square';
+      imageOrientation.value = 'square';
     }
-
-    return {
-      width: imageOrientation === 'portrait' || imageOrientation === 'square' ? '100%' : 'auto',
-      height: imageOrientation === 'landscape' ? '100%' : 'auto',
-      transform: `scale(${imageTransforms.value.scale}) translate(${imageTransforms.value.offsetX}%, ${imageTransforms.value.offsetY}%)`,
-    };
-  });
+  };
 </script>
 
 <template>
   <div class="avatar-view">
-    <img ref="imageElement" v-if="imageSource" class="avatar-image" :src="imageSource" :alt="alt" :style="imageStyle" />
+    <img
+      ref="imageElement"
+      v-if="imageSource"
+      class="avatar-image"
+      :src="imageSource"
+      :alt="alt"
+      :style="imageStyle"
+      @load="onImageLoad"
+    />
   </div>
 </template>
 
 <style lang="scss" scoped>
   .avatar-view {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1;
     overflow: hidden;
     width: 8rem;
 
