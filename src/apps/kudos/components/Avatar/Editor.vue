@@ -255,9 +255,11 @@
   <AppPopup ref="popup" @click-outside="verifyClose">
     <div class="avatar-editor">
       <div class="avatar-actions">
+        <p class="avatar-title">Edit Avatar</p>
         <p class="reset-button" @click="cancelImageSelection">Reset</p>
         <icon-xmark class="close-button" @click="verifyClose" />
       </div>
+
       <div class="transformer-wrapper">
         <AvatarTransformer :src="imageSource" v-model:transform="currentTransform" class="avatar-transformer" />
         <FormButton size="small" class="change-button" @click="selectImage">
@@ -276,17 +278,22 @@
 
     display: grid;
     gap: 1rem;
+
     grid-template-rows: auto 1fr auto;
 
     background-color: var(--color-background-00);
     border-radius: 0.5rem;
   }
 
+  .avatar-title {
+    font-size: 1.2rem;
+  }
+
   .avatar-actions {
     align-items: center;
-    display: flex;
+    display: grid;
     gap: 1rem;
-    justify-content: end;
+    grid-template-columns: 1fr auto auto;
   }
 
   .transformer-wrapper {
