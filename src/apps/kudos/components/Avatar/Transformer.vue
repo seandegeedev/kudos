@@ -20,6 +20,11 @@
     y: 0,
   });
 
+  const previousCursorPosition = ref({
+    x: 0,
+    y: 0,
+  });
+
   const imageStyle = computed(() => {
     if (!imageElement.value) {
       return {};
@@ -59,12 +64,84 @@
       scale: Math.max(1, Math.min(5, transform.value.scale + delta)),
     };
   };
+
+  const beginDrag = (event: MouseEvent) => {
+    if (!imageElement.value || !imageWrapperElement.value) {
+      return;
+    }
+
+    currentCursorPosition.value = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+
+    document.onmousemove = drag;
+    document.onmouseup = endDrag;
+  };
+
+  const drag = (event: MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (!imageElement.value) {
+      return;
+    }
+
+    // Get image dimensions
+    const rect = imageElement.value.getBoundingClientRect();
+
+    const imageWidth = rect.width;
+    const imageHeight = rect.height;
+
+    previousCursorPosition.value = {
+      x: currentCursorPosition.value.x - event.clientX,
+      y: currentCursorPosition.value.y - event.clientY,
+    };
+
+    currentCursorPosition.value = {
+      x: event.clientX,
+      y: event.clientY,
+    };
+
+    // Get the transform values of the image
+    const imageStyle = window.getComputedStyle(imageElement.value);
+    const transformStyle = imageStyle.transform;
+
+    let translateX = 0;
+    let translateY = 0;
+
+    const matrix = transformStyle
+      .match(/matrix.*\((.+)\)/)?.[1]
+      .split(', ')
+      .map(Number);
+
+    if (matrix) {
+      translateX = matrix[4];
+      translateY = matrix[5];
+    }
+
+    let newTranslateXAsPercentage = ((translateX - previousCursorPosition.value.x) / imageWidth) * 100;
+    let newTranslateYAsPercentage = ((translateY - previousCursorPosition.value.y) / imageHeight) * 100;
+
+    // TODO: Add bounds checking to prevent dragging outside the image
+
+    transform.value = {
+      ...transform.value,
+      x: newTranslateXAsPercentage,
+      y: newTranslateYAsPercentage,
+    };
+  };
+
+  const endDrag = (event: MouseEvent) => {
+    document.onmousemove = null;
+    document.onmouseup = null;
+  };
 </script>
 
 <template>
   <div class="avatar-transformer">
     <div ref="imageWrapperElement" class="image-wrapper">
-      <img ref="imageElement" :src="src" :style="imageStyle" @wheel.prevent="zoom" @dragstart.prevent />
+      <img ref="imageElement" :src="src" :style="imageStyle" @wheel.prevent="zoom" @mousedown.prevent="beginDrag" />
     </div>
     <div class="crop-overlay"></div>
   </div>

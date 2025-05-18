@@ -1,5 +1,9 @@
+<script lang="ts" setup>
+  const emit = defineEmits(['clickOutside']);
+</script>
+
 <template>
-  <div class="lightbox" @click.self="$emit('clickOutside')">
+  <div class="lightbox" @mousedown.self="emit('clickOutside')">
     <slot />
   </div>
 </template>
