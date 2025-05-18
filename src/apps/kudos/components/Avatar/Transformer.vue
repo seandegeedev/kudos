@@ -52,8 +52,8 @@
     };
   });
 
-  const zoom = (event: WheelEvent) => {
-    if (!imageElement.value) {
+  const zoom = async (event: WheelEvent) => {
+    if (!imageElement.value || !imageWrapperElement.value) {
       return;
     }
 
@@ -83,15 +83,21 @@
     event.stopPropagation();
     event.preventDefault();
 
-    if (!imageElement.value) {
+    if (!imageElement.value || !imageWrapperElement.value) {
       return;
     }
 
     // Get image dimensions
-    const rect = imageElement.value.getBoundingClientRect();
+    const imageRect = imageElement.value.getBoundingClientRect();
 
-    const imageWidth = rect.width;
-    const imageHeight = rect.height;
+    const imageWidth = imageRect.width;
+    const imageHeight = imageRect.height;
+
+    // Get wrapper dimensions
+    const wrapperRect = imageWrapperElement.value.getBoundingClientRect();
+
+    const wrapperWidth = wrapperRect.width;
+    const wrapperHeight = wrapperRect.height;
 
     previousCursorPosition.value = {
       x: currentCursorPosition.value.x - event.clientX,
@@ -123,12 +129,16 @@
     let newTranslateXAsPercentage = ((translateX - previousCursorPosition.value.x) / imageWidth) * 100;
     let newTranslateYAsPercentage = ((translateY - previousCursorPosition.value.y) / imageHeight) * 100;
 
-    // TODO: Add bounds checking to prevent dragging outside the image
+    const maxTranslateX = ((imageWidth - wrapperWidth) / (2 * imageWidth)) * 100;
+    const maxTranslateY = ((imageHeight - wrapperHeight) / (2 * imageHeight)) * 100;
+
+    const minTranslateX = -maxTranslateX;
+    const minTranslateY = -maxTranslateY;
 
     transform.value = {
       ...transform.value,
-      x: newTranslateXAsPercentage,
-      y: newTranslateYAsPercentage,
+      x: Math.max(minTranslateX, Math.min(maxTranslateX, newTranslateXAsPercentage)),
+      y: Math.max(minTranslateY, Math.min(maxTranslateY, newTranslateYAsPercentage)),
     };
   };
 
