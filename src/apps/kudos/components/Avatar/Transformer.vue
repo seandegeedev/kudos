@@ -25,6 +25,8 @@
     y: 0,
   });
 
+  const isDragging = ref(false);
+
   const imageStyle = computed(() => {
     if (!imageElement.value) {
       return {};
@@ -49,6 +51,7 @@
       transform: `scale(${transform.value?.scale || 1}) translate(${transform.value?.x || 0}%, ${
         transform.value?.y || 0
       }%)`,
+      cursor: isDragging.value ? 'grabbing' : 'grab',
     };
   });
 
@@ -59,8 +62,43 @@
 
     const delta = event.deltaY > 0 ? -0.1 : 0.1;
 
+    // Correct the transform values to prevent the image from being zoomed out of the wrapper
+    const imageRect = imageElement.value.getBoundingClientRect();
+    const wrapperRect = imageWrapperElement.value.getBoundingClientRect();
+
+    const imageWidth = imageRect.width;
+    const imageHeight = imageRect.height;
+    const wrapperWidth = wrapperRect.width;
+    const wrapperHeight = wrapperRect.height;
+
+    const imageStyle = window.getComputedStyle(imageElement.value);
+    const transformStyle = imageStyle.transform;
+
+    let translateX = 0;
+    let translateY = 0;
+
+    const matrix = transformStyle
+      .match(/matrix.*\((.+)\)/)?.[1]
+      .split(', ')
+      .map(Number);
+
+    if (matrix) {
+      translateX = matrix[4];
+      translateY = matrix[5];
+    }
+
+    let newTranslateXAsPercentage = ((translateX - currentCursorPosition.value.x) / imageWidth) * 100;
+    let newTranslateYAsPercentage = ((translateY - currentCursorPosition.value.y) / imageHeight) * 100;
+
+    const maxTranslateX = Math.floor((imageWidth - wrapperWidth) / (2 * imageWidth)) * 100;
+    const maxTranslateY = Math.floor((imageHeight - wrapperHeight) / (2 * imageHeight)) * 100;
+
+    const minTranslateX = -maxTranslateX;
+    const minTranslateY = -maxTranslateY;
+
     transform.value = {
-      ...transform.value,
+      x: Math.max(minTranslateX, Math.min(maxTranslateX, newTranslateXAsPercentage)),
+      y: Math.max(minTranslateY, Math.min(maxTranslateY, newTranslateYAsPercentage)),
       scale: Math.max(1, Math.min(5, transform.value.scale + delta)),
     };
   };
@@ -69,6 +107,10 @@
     if (!imageElement.value || !imageWrapperElement.value) {
       return;
     }
+
+    isDragging.value = true;
+    // Set the cursor to grabbing
+    document.body.style.cursor = 'grabbing';
 
     currentCursorPosition.value = {
       x: event.clientX,
@@ -143,6 +185,10 @@
   };
 
   const endDrag = (event: MouseEvent) => {
+    isDragging.value = false;
+
+    document.body.style.cursor = 'auto';
+
     document.onmousemove = null;
     document.onmouseup = null;
   };
