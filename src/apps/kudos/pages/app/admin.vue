@@ -1,20 +1,28 @@
+<script lang="ts" setup>
+  const route = useRoute();
+
+  const currentPage = computed(() => {
+    return route.path.split('/').pop();
+  });
+</script>
+
 <template>
   <div class="admin page-basic">
     <header class="header">
       <h1 class="header-title">Kudos Admin</h1>
       <div class="admin-tabs">
-        <div class="admin-tab admin-tab__selected">
+        <NuxtLink to="/app/admin/users" :class="['admin-tab', { 'admin-tab__selected': currentPage === 'users' }]">
           <icon-users />
           <span>Users</span>
-        </div>
-        <div class="admin-tab">
-          <icon-realm filled />
+        </NuxtLink>
+        <NuxtLink to="/app/admin/realms" :class="['admin-tab', { 'admin-tab__selected': currentPage === 'realms' }]">
+          <icon-realm />
           <span>Realms</span>
-        </div>
-        <div class="admin-tab">
+        </NuxtLink>
+        <NuxtLink to="/app/admin/social" :class="['admin-tab', { 'admin-tab__selected': currentPage === 'social' }]">
           <icon-champagne-glasses />
           <span>Social</span>
-        </div>
+        </NuxtLink>
       </div>
     </header>
     <main class="main">
@@ -47,13 +55,21 @@
   }
 
   .admin-tab {
-    padding: 0.25rem 0.65rem;
+    padding: 0.35rem 0.65rem;
 
     align-items: center;
     display: flex;
     gap: 0.25rem;
 
     border-radius: 0.3rem;
+    color: var(--color-text-normal);
+
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+      background-color: var(--color-background-00);
+      text-decoration: none;
+    }
 
     &.admin-tab__selected {
       background-color: var(--color-background-00);

@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+  import useAccountStore from '@/stores/account';
+
+  const accountStore = useAccountStore();
+</script>
+
 <template>
   <div class="navigation-manage-pane">
     <header class="header">
@@ -10,7 +16,7 @@
       </NuxtLink>
       <div class="seperator"></div>
     </menu>
-    <NuxtLink href="/app/admin" class="menu-item">
+    <NuxtLink v-if="accountStore.admin" href="/app/admin" class="menu-item">
       <icon-user-crown />
       <span>Kudos Admin</span>
     </NuxtLink>

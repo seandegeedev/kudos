@@ -3,4 +3,8 @@ export default defineNuxtRouteMiddleware(async (to, _from) => {
   if (to.path === '/' || to.path === '/app') {
     return navigateTo('/app/account');
   }
+
+  if (to.path === '/app/admin') {
+    return navigateTo('/app/admin/users');
+  }
 });
