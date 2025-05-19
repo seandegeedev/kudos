@@ -1,5 +1,6 @@
 :root {
   --anim-slide-up: slide-up 0.3s ease-in-out forwards;
+  --anim-page-entry: page-entry 0.2s ease-in-out forwards;
 
   @keyframes slide-up {
     0% {
@@ -11,8 +12,6 @@
       transform: translateY(0);
     }
   }
-
-  --anim-page-entry: page-entry 0.2s ease-in-out forwards;
 
   @keyframes page-entry {
     0% {
