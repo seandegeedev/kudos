@@ -259,7 +259,6 @@
         <p class="reset-button" @click="cancelImageSelection">Reset</p>
         <icon-xmark class="close-button" @click="verifyClose" />
       </div>
-
       <div class="transformer-wrapper">
         <AvatarTransformer :src="imageSource" v-model:transform="currentTransform" class="avatar-transformer" />
         <FormButton size="small" class="change-button" @click="selectImage">

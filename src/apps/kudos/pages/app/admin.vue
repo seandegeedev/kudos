@@ -3,8 +3,18 @@
     <header class="header">
       <h1 class="header-title">Kudos Admin</h1>
       <div class="admin-tabs">
-        <div class="admin-tab admin-tab__selected">Users</div>
-        <div class="admin-tab">Realms</div>
+        <div class="admin-tab admin-tab__selected">
+          <icon-users />
+          <span>Users</span>
+        </div>
+        <div class="admin-tab">
+          <icon-realm filled />
+          <span>Realms</span>
+        </div>
+        <div class="admin-tab">
+          <icon-champagne-glasses />
+          <span>Social</span>
+        </div>
       </div>
     </header>
     <main class="main">
@@ -37,7 +47,11 @@
   }
 
   .admin-tab {
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 0.65rem;
+
+    align-items: center;
+    display: flex;
+    gap: 0.25rem;
 
     border-radius: 0.3rem;
 
