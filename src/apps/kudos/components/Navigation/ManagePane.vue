@@ -10,6 +10,10 @@
       </NuxtLink>
       <div class="seperator"></div>
     </menu>
+    <NuxtLink href="/app/admin" class="menu-item">
+      <icon-user-crown />
+      <span>Kudos Admin</span>
+    </NuxtLink>
     <div class="logout-section">
       <NuxtLink href="/logout" class="menu-item">
         <icon-right-from-bracket />
@@ -42,14 +46,15 @@
   }
 
   .menu-item {
-    display: flex;
+    padding: 0.75rem;
+
     align-items: center;
+    display: flex;
     gap: 0.5rem;
 
-    padding: 0.75rem;
     border-radius: 0.5rem;
-
     color: var(--color-text-01);
+
     text-decoration: none;
 
     &:hover {

@@ -68,3 +68,16 @@ svg.nuxt-icon {
   height: auto;
   margin: 0;
 }
+
+.page-basic {
+  height: 100%;
+  overflow: hidden;
+
+  padding: 1.5rem 2rem;
+
+  align-content: start;
+  display: grid;
+  gap: 1rem;
+
+  animation: var(--anim-page-entry);
+}

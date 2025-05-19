@@ -1,7 +1,7 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div class="account page">
+  <div class="account page-basic">
     <header class="header">
       <h1 class="header-title">Account Information</h1>
     </header>
@@ -20,23 +20,12 @@
 </template>
 
 <style lang="scss" scoped>
-  .account {
-    height: 100%;
-    overflow: hidden;
-
-    padding: 2rem 3rem;
-
-    align-content: start;
-    display: grid;
-    gap: 2rem;
-  }
-
   .header-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .main {
-    max-width: 75rem;
+    max-width: 80rem;
     overflow-y: auto;
     padding-right: 1rem;
     width: 100%;
