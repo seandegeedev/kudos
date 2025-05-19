@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/create-invite', protectAdminOnly);
 router.post('/remove-invite', protectAdminOnly);
-router.post('/accept-invite');
-router.get('/invite');
+//router.post('/accept-invite');
+//router.get('/invite');
 
 export default router;
