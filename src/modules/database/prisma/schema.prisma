@@ -61,9 +61,9 @@ model KudosInvite {
   id       String   @id @default(uuid())
   created  DateTime @default(now())
   archived Boolean  @default(false)
-  email    String
+  email    String   @unique
   fromID   String
-  code     String
+  code     String   @unique
   redeemed Boolean  @default(false)
   from     User     @relation(fields: [fromID], references: [id])
 }

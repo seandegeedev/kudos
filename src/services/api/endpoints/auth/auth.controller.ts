@@ -4,7 +4,6 @@ import { randomInt } from 'crypto';
 import authDB from '@endpoints/auth/auth.db';
 import { addEmailVerificationJob, addPasswordResetJob } from '@/job-engine/queues/emailQueue';
 import type ms from 'ms';
-
 import type { Request, Response, NextFunction } from 'express';
 import type {
   APIResponseNoData,
@@ -123,7 +122,7 @@ export const protectAdminOnly = async (_req: Request, res: Response, next: NextF
     const locals = res.locals as ExpressLocals;
 
     // Check if user is logged in, if not, return 401
-    if (!locals) {
+    if (!locals.user) {
       const response: APIResponseNoData = {
         status: 401,
         error: 'Unauthorized',
