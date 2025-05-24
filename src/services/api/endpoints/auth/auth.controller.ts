@@ -117,7 +117,7 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
 };
 
 // Route protection middleware for admin only
-export const protectAdminOnly = async (_req: Request, res: Response, next: NextFunction) => {
+export const adminOnly = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const locals = res.locals as ExpressLocals;
 

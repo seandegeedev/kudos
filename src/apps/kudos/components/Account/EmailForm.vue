@@ -3,7 +3,6 @@
   import useAccountStore from '@/stores/account';
   import type { APIResponseNoData } from '@kudos/types-api';
 
-  const router = useRouter();
   const kudosAPI = useKudosAPI();
   const accountStore = useAccountStore();
 

@@ -110,7 +110,7 @@ export type APIResponseUserVerify = APIResponse<{
 }>;
 
 /*
- * 2.4 GET /api/media/account/avatar
+ * 3.1 GET /api/media/account/avatar
 ------------------------------------------------------------------------------------------------
  */
 export type APIResponseMediaAccountAvatar = APIResponse<{
@@ -118,4 +118,18 @@ export type APIResponseMediaAccountAvatar = APIResponse<{
   scale: number;
   offsetX: number;
   offsetY: number;
+}>;
+
+/*
+ * 4.1 GET /api/manage/users
+------------------------------------------------------------------------------------------------
+ */
+export type APIResponseInvite = APIResponse<{
+  id: string;
+  created: Date;
+  archived: boolean;
+  email: string;
+  fromID: string;
+  code: string;
+  redeemed: boolean;
 }>;
