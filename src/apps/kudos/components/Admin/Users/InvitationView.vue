@@ -22,7 +22,7 @@
   });
 
   const invitationLink = computed(() => {
-    return `${window.location.origin}/invite/${props.invitationID}`;
+    return `${window.location.origin}/invite/${invitationDetails.value.code}`;
   });
 
   const getInvitationDetails = async () => {
@@ -59,6 +59,26 @@
     }
   };
 
+  const copyInviteCode = async () => {
+    await navigator.clipboard.writeText(invitationDetails.value.code);
+
+    messageQueueStore.addMessage({
+      type: 'success',
+      message: 'Invitation code copied to clipboard! 🎉',
+    });
+  };
+
+  const copyInviteLink = async () => {
+    await navigator.clipboard.writeText(invitationLink.value);
+
+    messageQueueStore.addMessage({
+      type: 'success',
+      message: 'Invitation link copied to clipboard! 🎉',
+    });
+  };
+
+  const deleteInvite = async () => {};
+
   onBeforeMount(async () => {
     await getInvitationDetails();
   });
@@ -73,11 +93,11 @@
       </div>
     </div>
     <div class="actions">
-      <p class="action"><icon-clone /> <span>Code</span></p>
-      <p class="action"><icon-clone /> <span>Link</span></p>
+      <p class="action" @click="copyInviteCode"><icon-clone /> <span>Code</span></p>
+      <p class="action" @click="copyInviteLink"><icon-clone /> <span>Link</span></p>
     </div>
     <form class="view-form" submit.prevent>
-      <FormButton>Delete</FormButton>
+      <FormButton @click="deleteInvite">Delete</FormButton>
     </form>
   </div>
 </template>
