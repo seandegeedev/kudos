@@ -183,6 +183,20 @@ export const createInvite = async (req: Request, res: Response) => {
     const fromID = userData.id;
     const { email } = request.data;
 
+    // Check if an invitation for this email already exists
+    const existingInvite = await manageUsersDB.doesKudosInvitationForEmailExist({ email });
+
+    if (existingInvite) {
+      const response = {
+        status: 400,
+        error: 'An invitation for this email already exists',
+        data: null,
+      };
+
+      res.json(response);
+      return;
+    }
+
     const invitation = await manageUsersDB.createKudosInvitation({
       fromID,
       email,

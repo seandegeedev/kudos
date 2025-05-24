@@ -68,6 +68,18 @@ const createKudosInvitation = async (details: {
   }
 };
 
+const doesKudosInvitationForEmailExist = async (details: { email: string }): Promise<boolean> => {
+  try {
+    // Check if a Kudos invitation for the given email exists
+    const invite = await prisma.kudosInvite.findUnique({
+      where: { email: details.email },
+    });
+    return invite !== null;
+  } catch (error) {
+    throw new Error(`Failed to check Kudos invitation existence: ${error}`);
+  }
+};
+
 const archiveKudosInvitation = async (details: {
   inviteID: string;
 }): Promise<Prisma.KudosInviteGetPayload<object> | null> => {
@@ -118,6 +130,7 @@ const redeemKudosInvitation = async (details: {
 
 export default {
   getKudosInvitationByCode,
+  doesKudosInvitationForEmailExist,
   createKudosInvitation,
   archiveKudosInvitation,
   removeKudosInvitation,

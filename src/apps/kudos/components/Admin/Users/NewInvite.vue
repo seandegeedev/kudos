@@ -38,8 +38,21 @@
     return invitationID.value !== '';
   });
 
+  // If liveValidate is enabled, validate the form on every change
+  // This is useful for showing validation errors as the user types
+  watch(
+    () => formData.value,
+    () => {
+      if (liveValidate.value) {
+        validateForm();
+      }
+    },
+    { deep: true }
+  );
+
   const validateForm = () => {
     liveValidate.value = true;
+    saveError.value = '';
 
     const result = validationSchema.safeParse(formData.value);
 
@@ -73,6 +86,11 @@
 
       // If update is not successful, set the error message and return
       if (innerResponse.status !== 200 || !innerResponse.data) {
+        if (innerResponse.status === 400) {
+          saveError.value = 'An invite code already exists for this email address 😢';
+          return;
+        }
+
         saveError.value = 'An unknown error occurred while trying to create an invite code 💀';
         return;
       }
@@ -117,6 +135,9 @@
         <AdminUsersInvitationView :invitationID="invitationID" />
       </template>
       <template v-else>
+        <AppMessageBox v-if="displayError" type="error">
+          <p>{{ displayError }}</p>
+        </AppMessageBox>
         <form @submit.prevent class="new-form">
           <FormFieldText label="Email" name="email" placeholder="Enter email" v-model:value="formData.email" />
           <div class="actions">
@@ -133,6 +154,7 @@
 <style lang="scss" scoped>
   .new-invite {
     min-width: 25rem;
+    max-width: 30rem;
     padding: 1rem;
 
     display: grid;
