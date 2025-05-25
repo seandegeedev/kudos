@@ -133,3 +133,14 @@ export type APIResponseInvite = APIResponse<{
   code: string;
   redeemed: boolean;
 }>;
+
+export type APIResponseNewUser = APIResponse<{
+  id: string;
+  created: Date;
+  archived: boolean;
+  email: string;
+  verified: boolean;
+  firstName: string;
+  lastName: string;
+  admin: boolean;
+}>;

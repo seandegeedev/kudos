@@ -75,7 +75,7 @@
     }
 
     try {
-      const response = await kudosAPI.post<APIResponseInvite>('/manage/users/create-invite', formData.value);
+      const response = await kudosAPI.post<APIResponseInvite>('/manage/users/invite', formData.value);
 
       if (response.status !== 200) {
         saveError.value = 'A server error occurred while trying to update account details 💀';

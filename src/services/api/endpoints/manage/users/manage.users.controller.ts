@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { randomInt } from 'crypto';
 import manageUsersDB from '@endpoints/manage/users/manage.users.db';
 import type { Request, Response } from 'express';
-import type { APIResponseNoData, ExpressLocals } from '@kudos/types-api';
+import type { APIResponseNoData, APIResponseInvite, APIResponseNewUser, ExpressLocals } from '@kudos/types-api';
 
 export const createInvite = async (req: Request, res: Response) => {
   const locals = res.locals as ExpressLocals;
@@ -27,7 +27,7 @@ export const createInvite = async (req: Request, res: Response) => {
   const request = requestSchema.safeParse(req.body);
 
   if (!request.success) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 400,
       error: 'Invalid request body',
       data: null,
@@ -47,7 +47,7 @@ export const createInvite = async (req: Request, res: Response) => {
     const existingInvite = await manageUsersDB.doesKudosInvitationForEmailExist({ email });
 
     if (existingInvite) {
-      const response = {
+      const response: APIResponseNoData = {
         status: 400,
         error: 'An invitation for this email already exists',
         data: null,
@@ -64,7 +64,7 @@ export const createInvite = async (req: Request, res: Response) => {
     });
 
     if (!invitation) {
-      const response = {
+      const response: APIResponseNoData = {
         status: 500,
         error: 'Failed to create invite',
         data: null,
@@ -74,7 +74,7 @@ export const createInvite = async (req: Request, res: Response) => {
       return;
     }
 
-    const response = {
+    const response: APIResponseInvite = {
       status: 200,
       error: null,
       data: invitation,
@@ -83,7 +83,7 @@ export const createInvite = async (req: Request, res: Response) => {
     res.json(response);
     return;
   } catch (error) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 500,
       error: 'Failed to create invite: ' + error,
       data: null,
@@ -103,7 +103,7 @@ export const getInvite = async (req: Request, res: Response) => {
   const query = querySchema.safeParse(req.query);
 
   if (!query.success) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 400,
       error: 'Invalid query parameters',
       data: null,
@@ -115,7 +115,7 @@ export const getInvite = async (req: Request, res: Response) => {
   const { inviteID, email } = query.data;
 
   if (!inviteID && !email) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 400,
       error: 'Either inviteID or email must be provided',
       data: null,
@@ -129,7 +129,7 @@ export const getInvite = async (req: Request, res: Response) => {
       const invite = await manageUsersDB.getKudosInvitationByID({ inviteID });
 
       if (!invite) {
-        const response = {
+        const response: APIResponseNoData = {
           status: 404,
           error: 'Invite not found',
           data: null,
@@ -139,7 +139,7 @@ export const getInvite = async (req: Request, res: Response) => {
         return;
       }
 
-      const response = {
+      const response: APIResponseInvite = {
         status: 200,
         error: null,
         data: invite,
@@ -151,7 +151,7 @@ export const getInvite = async (req: Request, res: Response) => {
       const invite = await manageUsersDB.getKudosInvitationsByEmail({ email });
 
       if (!invite) {
-        const response = {
+        const response: APIResponseNoData = {
           status: 404,
           error: 'Invite not found',
           data: null,
@@ -161,7 +161,7 @@ export const getInvite = async (req: Request, res: Response) => {
         return;
       }
 
-      const response = {
+      const response: APIResponseInvite = {
         status: 200,
         error: null,
         data: invite,
@@ -171,7 +171,7 @@ export const getInvite = async (req: Request, res: Response) => {
       return;
     }
   } catch (error) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 500,
       error: 'Failed to fetch invite: ' + error,
       data: null,
@@ -190,7 +190,7 @@ export const getInviteByID = async (req: Request, res: Response) => {
   const params = paramsSchema.safeParse(req.params);
 
   if (!params.success) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 400,
       error: 'Invalid parameters',
       data: null,
@@ -206,7 +206,7 @@ export const getInviteByID = async (req: Request, res: Response) => {
     const invite = await manageUsersDB.getKudosInvitationByID({ inviteID });
 
     if (!invite) {
-      const response = {
+      const response: APIResponseNoData = {
         status: 404,
         error: 'Invite not found',
         data: null,
@@ -216,7 +216,7 @@ export const getInviteByID = async (req: Request, res: Response) => {
       return;
     }
 
-    const response = {
+    const response: APIResponseInvite = {
       status: 200,
       error: null,
       data: invite,
@@ -225,7 +225,7 @@ export const getInviteByID = async (req: Request, res: Response) => {
     res.json(response);
     return;
   } catch (error) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 500,
       error: 'Failed to fetch invite: ' + error,
       data: null,
@@ -244,7 +244,7 @@ export const deleteInvite = async (req: Request, res: Response) => {
   const params = paramsSchema.safeParse(req.params);
 
   if (!params.success) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 400,
       error: 'Invalid parameters',
       data: null,
@@ -260,7 +260,7 @@ export const deleteInvite = async (req: Request, res: Response) => {
     const deleted = await manageUsersDB.deleteKudosInvite({ inviteID });
 
     if (!deleted) {
-      const response = {
+      const response: APIResponseNoData = {
         status: 404,
         error: 'Invite not found or already deleted',
         data: null,
@@ -270,16 +270,16 @@ export const deleteInvite = async (req: Request, res: Response) => {
       return;
     }
 
-    const response = {
+    const response: APIResponseInvite = {
       status: 200,
       error: null,
-      data: { message: 'Invite deleted successfully' },
+      data: deleted,
     };
 
     res.json(response);
     return;
   } catch (error) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 500,
       error: 'Failed to delete invite: ' + error,
       data: null,
@@ -305,7 +305,7 @@ export const acceptInvite = async (req: Request, res: Response) => {
   const details = bodySchema.safeParse(req.body);
 
   if (!params.success || !details.success) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 400,
       error: 'Invalid parameters',
       data: null,
@@ -322,7 +322,7 @@ export const acceptInvite = async (req: Request, res: Response) => {
     const invite = await manageUsersDB.getKudosInvitationByCode({ inviteCode: inviteCode });
 
     if (!invite) {
-      const response = {
+      const response: APIResponseNoData = {
         status: 404,
         error: 'Invite not found',
         data: null,
@@ -334,7 +334,7 @@ export const acceptInvite = async (req: Request, res: Response) => {
 
     // Check if the invite is already accepted
     if (invite.archived || invite.redeemed) {
-      const response = {
+      const response: APIResponseNoData = {
         status: 400,
         error: 'Invite has already accepted or archived',
         data: null,
@@ -354,7 +354,7 @@ export const acceptInvite = async (req: Request, res: Response) => {
 
     await manageUsersDB.redeemKudosInvitation({ inviteID: invite.id });
 
-    const response = {
+    const response: APIResponseNewUser = {
       status: 200,
       error: null,
       data: newUser,
@@ -363,7 +363,7 @@ export const acceptInvite = async (req: Request, res: Response) => {
     res.json(response);
     return;
   } catch (error) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 500,
       error: 'Failed to accept invite: ' + error,
       data: null,
@@ -381,7 +381,7 @@ export const archiveInvite = async (req: Request, res: Response) => {
   const params = paramsSchema.safeParse(req.params);
 
   if (!params.success) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 400,
       error: 'Invalid parameters',
       data: null,
@@ -397,7 +397,7 @@ export const archiveInvite = async (req: Request, res: Response) => {
     const archivedInvite = await manageUsersDB.archiveKudosInvite({ inviteID });
 
     if (!archivedInvite) {
-      const response = {
+      const response: APIResponseNoData = {
         status: 404,
         error: 'Invite not found or already archived',
         data: null,
@@ -406,7 +406,8 @@ export const archiveInvite = async (req: Request, res: Response) => {
       res.json(response);
       return;
     }
-    const response = {
+
+    const response: APIResponseInvite = {
       status: 200,
       error: null,
       data: archivedInvite,
@@ -415,7 +416,7 @@ export const archiveInvite = async (req: Request, res: Response) => {
     res.json(response);
     return;
   } catch (error) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 500,
       error: 'Failed to archive invite: ' + error,
       data: null,
@@ -432,7 +433,7 @@ export const getInviteByCode = async (req: Request, res: Response) => {
   });
   const query = querySchema.safeParse(req.query);
   if (!query.success) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 400,
       error: 'Invalid query parameters',
       data: null,
@@ -448,7 +449,7 @@ export const getInviteByCode = async (req: Request, res: Response) => {
     const invite = await manageUsersDB.getKudosInvitationByCode({ inviteCode });
 
     if (!invite) {
-      const response = {
+      const response: APIResponseNoData = {
         status: 404,
         error: 'Invite not found',
         data: null,
@@ -458,7 +459,7 @@ export const getInviteByCode = async (req: Request, res: Response) => {
       return;
     }
 
-    const response = {
+    const response: APIResponseInvite = {
       status: 200,
       error: null,
       data: invite,
@@ -467,7 +468,7 @@ export const getInviteByCode = async (req: Request, res: Response) => {
     res.json(response);
     return;
   } catch (error) {
-    const response = {
+    const response: APIResponseNoData = {
       status: 500,
       error: 'Failed to fetch invite: ' + error,
       data: null,
