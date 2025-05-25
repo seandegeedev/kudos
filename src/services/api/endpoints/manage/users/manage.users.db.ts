@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import { Prisma, PrismaClient } from '@kudos/database';
 
 const prisma = new PrismaClient();
@@ -80,7 +81,7 @@ const doesKudosInvitationForEmailExist = async (details: { email: string }): Pro
   }
 };
 
-const archiveKudosInvitation = async (details: {
+const archiveKudosInvite = async (details: {
   inviteID: string;
 }): Promise<Prisma.KudosInviteGetPayload<object> | null> => {
   try {
@@ -97,7 +98,7 @@ const archiveKudosInvitation = async (details: {
   }
 };
 
-const removeKudosInvitation = async (details: {
+const deleteKudosInvite = async (details: {
   inviteID: string;
 }): Promise<Prisma.KudosInviteGetPayload<object> | null> => {
   try {
@@ -128,13 +129,40 @@ const redeemKudosInvitation = async (details: {
   }
 };
 
+const createUser = async (details: {
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+}): Promise<Prisma.UserGetPayload<object>> => {
+  try {
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(details.password, 12);
+
+    // Create a new user
+    const user = await prisma.user.create({
+      data: {
+        email: details.email,
+        firstName: details.firstName,
+        lastName: details.lastName,
+        password: hashedPassword,
+      },
+    });
+
+    return user;
+  } catch (error) {
+    throw new Error(`Failed to create user: ${error}`);
+  }
+};
+
 export default {
   getKudosInvitationByCode,
   doesKudosInvitationForEmailExist,
   createKudosInvitation,
-  archiveKudosInvitation,
-  removeKudosInvitation,
+  archiveKudosInvite,
+  deleteKudosInvite,
   redeemKudosInvitation,
   getKudosInvitationByID,
   getKudosInvitationsByEmail,
+  createUser,
 };
