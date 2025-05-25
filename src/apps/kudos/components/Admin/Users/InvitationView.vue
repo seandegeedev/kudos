@@ -27,7 +27,7 @@
 
   const getInvitationDetails = async () => {
     try {
-      const response = await kudosAPI.get<APIResponseInvite>(`/manage/users/invite?inviteID=${props.invitationID}`);
+      const response = await kudosAPI.get<APIResponseInvite>(`/manage/users/invite/${props.invitationID}`);
 
       if (response.status !== 200) {
         messageQueueStore.addMessage({
