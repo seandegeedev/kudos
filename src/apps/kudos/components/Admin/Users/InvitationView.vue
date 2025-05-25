@@ -5,6 +5,8 @@
   const kudosAPI = useKudosAPI();
   const messageQueueStore = useMessageQueueStore();
 
+  const emit = defineEmits(['deleted']);
+
   const props = defineProps({
     invitationID: {
       type: String,
@@ -64,7 +66,7 @@
 
     messageQueueStore.addMessage({
       type: 'success',
-      message: 'Invitation code copied to clipboard! 🎉',
+      message: 'Invitation code copied to clipboard 💪',
     });
   };
 
@@ -73,11 +75,45 @@
 
     messageQueueStore.addMessage({
       type: 'success',
-      message: 'Invitation link copied to clipboard! 🎉',
+      message: 'Invitation link copied to clipboard 💪',
     });
   };
 
-  const deleteInvite = async () => {};
+  const deleteInvite = async () => {
+    try {
+      const response = await kudosAPI.delete<APIResponseInvite>(`/manage/users/invite/${props.invitationID}`);
+
+      if (response.status !== 200) {
+        messageQueueStore.addMessage({
+          type: 'error',
+          message: 'Failed to delete invitation 💀',
+        });
+        return;
+      }
+
+      const innerResponse = response.data;
+
+      if (innerResponse.status !== 200) {
+        messageQueueStore.addMessage({
+          type: 'error',
+          message: 'Failed to delete invitation 💀',
+        });
+        return;
+      }
+
+      messageQueueStore.addMessage({
+        type: 'success',
+        message: 'Invitation deleted successfully 💪',
+      });
+
+      emit('deleted');
+    } catch (error) {
+      messageQueueStore.addMessage({
+        type: 'error',
+        message: 'Failed to delete invitation 💀',
+      });
+    }
+  };
 
   onBeforeMount(async () => {
     await getInvitationDetails();

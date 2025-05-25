@@ -99,7 +99,7 @@
 
       messageQueueStore.addMessage({
         type: 'success',
-        message: 'Invite code created successfully! 💪',
+        message: 'Invite code created successfully 💪',
       });
     } catch (error) {
       saveError.value = 'An unknown error occurred while trying to create an invite code 💀';
@@ -132,7 +132,7 @@
         </FormButton>
       </header>
       <template v-if="invitationCreated">
-        <AdminUsersInvitationView :invitationID="invitationID" />
+        <AdminUsersInvitationView :invitationID="invitationID" @deleted="close" />
       </template>
       <template v-else>
         <AppMessageBox v-if="displayError" type="error">
