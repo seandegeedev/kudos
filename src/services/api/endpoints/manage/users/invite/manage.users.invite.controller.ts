@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { randomInt } from 'crypto';
-import manageUsersDB from '@endpoints/manage/users/manage.users.db';
+import manageUsersDB from '@endpoints/manage/users/invite/manage.users.invite.db';
 import type { Request, Response } from 'express';
 import type { APIResponseNoData, APIResponseInvite, APIResponseNewUser, ExpressLocals } from '@kudos/types-api';
 
