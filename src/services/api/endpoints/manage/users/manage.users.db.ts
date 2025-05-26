@@ -3,6 +3,19 @@ import { Prisma, PrismaClient } from '@kudos/database';
 
 const prisma = new PrismaClient();
 
+const getUserByEmail = async (details: { email: string }): Promise<Prisma.UserGetPayload<object> | null> => {
+  try {
+    // Get a user by email
+    const user = await prisma.user.findUnique({
+      where: { email: details.email },
+    });
+
+    return user;
+  } catch (error) {
+    throw new Error(`Failed to get user by email: ${error}`);
+  }
+};
+
 const getKudosInvitationByCode = async (details: {
   inviteCode: string;
 }): Promise<Prisma.KudosInviteGetPayload<object> | null> => {
@@ -156,6 +169,7 @@ const createUser = async (details: {
 };
 
 export default {
+  getUserByEmail,
   getKudosInvitationByCode,
   doesKudosInvitationForEmailExist,
   createKudosInvitation,

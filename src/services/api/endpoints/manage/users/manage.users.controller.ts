@@ -49,7 +49,21 @@ export const createInvite = async (req: Request, res: Response) => {
     if (existingInvite) {
       const response: APIResponseNoData = {
         status: 400,
-        error: 'An invitation for this email already exists',
+        error: 'An invitation for this email already exists 💀',
+        data: null,
+      };
+
+      res.json(response);
+      return;
+    }
+
+    // Check if a user with this email already exists
+    const existingUser = await manageUsersDB.getUserByEmail({ email });
+
+    if (existingUser) {
+      const response: APIResponseNoData = {
+        status: 400,
+        error: 'A user with this email already exists 💀',
         data: null,
       };
 
@@ -66,7 +80,7 @@ export const createInvite = async (req: Request, res: Response) => {
     if (!invitation) {
       const response: APIResponseNoData = {
         status: 500,
-        error: 'Failed to create invite',
+        error: 'Failed to create invite 💀',
         data: null,
       };
 
@@ -85,7 +99,7 @@ export const createInvite = async (req: Request, res: Response) => {
   } catch (error) {
     const response: APIResponseNoData = {
       status: 500,
-      error: 'Failed to create invite: ' + error,
+      error: 'Failed to create invite 💀 ' + error,
       data: null,
     };
 

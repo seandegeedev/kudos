@@ -87,7 +87,8 @@
       // If update is not successful, set the error message and return
       if (innerResponse.status !== 200 || !innerResponse.data) {
         if (innerResponse.status === 400) {
-          saveError.value = 'An invite code already exists for this email address 😢';
+          saveError.value =
+            (innerResponse.error as string) || 'An error occurred while trying to create an invite code 💀';
           return;
         }
 
