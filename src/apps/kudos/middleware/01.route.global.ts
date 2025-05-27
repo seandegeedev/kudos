@@ -5,6 +5,10 @@ export default defineNuxtRouteMiddleware(async (to, _from) => {
   }
 
   if (to.path === '/app/admin') {
-    return navigateTo('/app/admin/users');
+    return navigateTo('/app/admin/users/accounts');
+  }
+
+  if (to.path === '/app/admin/users') {
+    return navigateTo('/app/admin/users/accounts');
   }
 });

@@ -2,7 +2,13 @@
   const route = useRoute();
 
   const currentPage = computed(() => {
-    return route.path.split('/').pop();
+    return route.path.includes('/app/admin/users')
+      ? 'users'
+      : route.path.includes('/app/admin/realms')
+      ? 'realms'
+      : route.path.includes('/app/admin/social')
+      ? 'social'
+      : '';
   });
 </script>
 
