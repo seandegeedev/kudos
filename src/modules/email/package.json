@@ -10,7 +10,7 @@
     "update": "bun update --latest"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.12",
+    "@types/bun": "^1.2.16",
     "@types/nodemailer": "^6.4.17"
   },
   "peerDependencies": {

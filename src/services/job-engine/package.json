@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@kudos/types-job-engine": "workspace:*",
-    "@types/bun": "^1.2.12"
+    "@types/bun": "^1.2.16"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"
