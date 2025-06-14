@@ -17,6 +17,6 @@
   },
   "dependencies": {
     "@kudos/email": "workspace:*",
-    "bullmq": "^5.52.2"
+    "bullmq": "^5.53.3"
   }
 }

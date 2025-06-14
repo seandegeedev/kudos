@@ -16,12 +16,12 @@
   },
   "devDependencies": {
     "@types/bun": "^1.2.16",
-    "prisma": "^6.7.0"
+    "prisma": "^6.9.0"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@prisma/client": "^6.7.0"
+    "@prisma/client": "^6.9.0"
   }
 }
