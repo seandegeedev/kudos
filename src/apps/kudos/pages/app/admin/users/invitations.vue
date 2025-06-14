@@ -1,3 +1,5 @@
 <template>
-  <div>invitations</div>
+  <div>
+    <AdminUsersInvitationsTable />
+  </div>
 </template>
