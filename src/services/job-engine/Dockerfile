@@ -1,5 +1,5 @@
 # Start with a base image that has Node.js installed
-FROM node:22.14.0
+FROM node:22.16.0
 
 # Install dependencies for Bun
 RUN apt-get update && \

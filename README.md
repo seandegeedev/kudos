@@ -9,7 +9,7 @@ Made with ❤️ by [Sean De Gee](https://github.com/SeanDeGeeDev) for [Sintrex 
 
 - OS: Ubuntu 24.04.1 LT
 - Git: 2.43.0
-- Node: 22.14.0
+- Node: 22.16.0
 - Bun: 1.2.16
 - Docker: 27.5.1
 
@@ -68,7 +68,7 @@ docker compose -p kudos down
 On you development machine, the following prerequisites will need to be installed
 
 - Git: 2.43.0
-- Node: 22.14.0
+- Node: 22.16.0
 - Bun: 1.2.16
 - Docker: 27.5.1
 
