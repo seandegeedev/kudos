@@ -6,26 +6,31 @@
       created: '2023-10-01',
       email: 'tes@email.com',
       status: 'Pending',
+      id: 'id-1234',
     },
     {
       created: '2023-10-01',
       email: 'tes@email.com',
       status: 'Pending',
+      id: 'id-1234',
     },
     {
       created: '2023-10-01',
       email: 'tes@email.com',
       status: 'Pending',
+      id: 'id-1234',
     },
     {
       created: '2023-10-01',
       email: 'tes@email.com',
       status: 'Pending',
+      id: 'id-1234',
     },
     {
       created: '2023-10-01',
       email: 'tes@email.com',
       status: 'Pending',
+      id: 'id-1234',
     },
   ]);
 
@@ -40,6 +45,16 @@
 
     return columns.value.map(column => column.key) as DataColumns[];
   });
+
+  const revokeInvitation = async (id: string) => {
+    // Logic to delete the invitation by id
+    console.log(`Deleting invitation with id: ${id}`);
+  };
+
+  const resendInvitation = async (id: string) => {
+    // Logic to resend the invitation by id
+    console.log(`Resending invitation with id: ${id}`);
+  };
 </script>
 
 <template>
