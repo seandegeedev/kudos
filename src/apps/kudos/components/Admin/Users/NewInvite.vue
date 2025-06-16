@@ -75,6 +75,8 @@
     }
 
     try {
+      saveError.value = '';
+
       const response = await kudosAPI.post<APIResponseInvite>('/manage/users/invite', formData.value);
 
       if (response.status !== 200) {
@@ -84,7 +86,6 @@
 
       const innerResponse = response.data;
 
-      // If update is not successful, set the error message and return
       if (innerResponse.status !== 200 || !innerResponse.data) {
         if (innerResponse.status === 400) {
           saveError.value =
@@ -97,6 +98,12 @@
       }
 
       invitationID.value = innerResponse.data.id;
+
+      formData.value.email = '';
+      formErrors.value = {
+        email: '',
+      };
+      liveValidate.value = false;
 
       messageQueueStore.addMessage({
         type: 'success',

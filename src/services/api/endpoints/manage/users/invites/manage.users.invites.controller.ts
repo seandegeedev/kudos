@@ -6,8 +6,8 @@ import type { APIResponseNoData, APIResponseInvites } from '@kudos/types-api';
 export const getInvites = async (req: Request, res: Response) => {
   const querySchema = z.object({
     search: z.string().optional(),
-    size: z.number().optional(),
-    page: z.number().optional(),
+    size: z.coerce.number().optional(),
+    page: z.coerce.number().optional(),
   });
 
   const query = querySchema.safeParse(req.query);
