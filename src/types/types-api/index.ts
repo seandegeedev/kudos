@@ -158,7 +158,7 @@ export type APIResponseNewUser = APIResponse<{
 
 export type APIResponseInvites = APIResponseList<{
   id: string;
-  created: Date;
+  created: string;
   archived: boolean;
   email: string;
   fromID: string;
