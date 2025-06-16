@@ -34,6 +34,16 @@ export type APIResponse<T> =
 
 export type APIResponseNoData = APIResponse<null>;
 
+export type APIResponseList<T> = APIResponse<{
+  data: T[];
+  page: number;
+  size: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  pages: number;
+  count: number;
+}>;
+
 /*
  * 2.1 GET /api/status
 ------------------------------------------------------------------------------------------------
@@ -124,6 +134,7 @@ export type APIResponseMediaAccountAvatar = APIResponse<{
  * 4.1 GET /api/manage/users
 ------------------------------------------------------------------------------------------------
  */
+
 export type APIResponseInvite = APIResponse<{
   id: string;
   created: Date;
@@ -143,4 +154,14 @@ export type APIResponseNewUser = APIResponse<{
   firstName: string;
   lastName: string;
   admin: boolean;
+}>;
+
+export type APIResponseInvites = APIResponseList<{
+  id: string;
+  created: Date;
+  archived: boolean;
+  email: string;
+  fromID: string;
+  code: string;
+  redeemed: boolean;
 }>;
